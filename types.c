@@ -3,7 +3,30 @@
  */
 
 #include "pgpdump.h"
-#include "autotime.h"
+
+#if TIME_WITH_SYS_TIME
+# include <sys/time.h>
+# include <time.h>
+#else
+# if HAVE_SYS_TIME_H
+#  include <sys/time.h>
+# else
+#  include <time.h>
+# endif
+#endif
+
+#if HAVE_STRUCT_TM_TM_ZONE
+# define tm_zone(tm) (tm->tm_zone)
+#elif HAVE_TZNAME
+# define tm_zone(tm) (tzname[tm->tm_isdst])
+#elif __MINGW32__ /* xxx For MINGW32 */
+# define tm_zone(tm) (tzname[tm->tm_isdst])
+#else
+# ifndef tzname  /* For SGI. */
+  extern char *tzname[]; /* RS6000 and others reject char **tzname. */
+# endif
+# define tm_zone(tm) (tzname[tm->tm_isdst])
+#endif
 
 private void time4_base(char *, time_t *);
 private time_t key_creation_time = 0;
@@ -32,7 +55,7 @@ PUB_ALGS[] = {
 	"Reserved for Elliptic Curve(pub 18)", 
 	"Reserved for ECDSA(pub 19)", 
 	"ElGamal Encrypt or Sign (pub 20)", 
-	"X9.42 Diffie-Hellman (pub 21)", 
+	"Reserved for Diffie-Hellman (pub 21)", 
 };
 #define PUB_ALGS_NUM (sizeof(PUB_ALGS) / sizeof(char *))
 
@@ -54,8 +77,8 @@ SYM_ALGS[] = {
 	"Triple-DES(sym 2)",
 	"CAST5(sym 3)", 
 	"Blowfish(sym 4)", 
-	"SAFER-SK128(sym 5)", 
-	"DES/SK(sym 6)", 
+	"Reserved(sym 5)", 
+	"Reserved(sym 6)", 
 	"AES with 128-bit key(sym 7)", 
 	"AES with 192-bit key(sym 8)", 
 	"AES with 256-bit key(sym 9)",
@@ -132,10 +155,10 @@ HASH_ALGS[] = {
 	"MD5(hash 1)",
 	"SHA1(hash 2)",
 	"RIPEMD160(hash 3)",
-	"double-width SHA(hash 4)",
-	"MD2(hash 5)", 
-	"TIGER192(hash 6)",
-	"HAVAL-5-160(hash 7)",
+	"Reserved(hash 4)",
+	"Reserved(hash 5)", 
+	"Reserved(hash 6)",
+	"Reserved(hash 7)",
 	"SHA256(hash 8)",
 	"SHA384(hash 9)",
 	"SHA512(hash 10)",

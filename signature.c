@@ -90,7 +90,7 @@ signature_type(int type)
 		printf("Timestamp signature(0x40).");
 		break;
 	case 0x50:
-		printf("Notary signature(0x50).");
+		printf("Third-Party Confirmation signature(0x50).");
 		break;
 	default:
 		printf("unknown(%02x)", type);

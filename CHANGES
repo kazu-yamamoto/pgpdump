@@ -1,5 +1,11 @@
 			      Change Log
 
+0.19 2003/06/06
+
+* Catching up to 2440bis-08.
+* Supporting MINGW32. This is dirty and needs to be refined.
+* autotime.h -> types.c
+
 0.18 2003/05/20
 
 * Supporting MacOS X.
