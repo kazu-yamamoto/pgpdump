@@ -30,8 +30,8 @@ signature_multi_precision_integer(int pub, int skip)
 		break;
 	case 16:
 	case 20:
-		multi_precision_integer("ElGamal ?");
-		multi_precision_integer("ElGamal ?");
+		multi_precision_integer("ElGamal a = g^k mod p");
+		multi_precision_integer("ElGamal b = (h - a*x)/k mod p - 1");
 		break;
 	case 17:
 		multi_precision_integer("DSA r");

@@ -82,5 +82,3 @@ The official home page of pgpdump is:
 
 	- pgpdump assumes that a compressed packet continues until
 	  the end of the specified file.
-	- Some packets produced by GnuPG can't be parsed since their
-	  spec is not available.

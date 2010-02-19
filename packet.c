@@ -34,11 +34,11 @@ TAG[TAG_NUM] = {
 	"Trust Packet", 
 	"User ID Packet", 
 	"Public Subkey Packet",
-	"Symmetrically Encrypted and MDC Packet",  /* xxx */
-	"Modification Detection Code Packet",  /* xxx */
-	"unknown", /* xxx PHOTO */
-	"Symmetrically Encrypted and MDC Packet", /* xxx GPG */
-	"Modification Detection Code Packet",     /* xxx GPG */
+	"unknown",
+	"unknown",
+	"unknown",
+	"Symmetrically Encrypted and MDC Packet",
+	"Modification Detection Code Packet",
 	"unknown",
 	"unknown",
 	"unknown",
@@ -102,11 +102,11 @@ private void
 	Trust_Packet,
 	User_ID_Packet,
 	Public_Subkey_Packet,
-	NULL, /* xxx */
-	NULL, /* xxx */
-	NULL, /* xxx */
-	Symmetrically_Encrypted_and_MDC_Packet, /* xxx */
-	Modification_Detection_Code_Packet, /* xxx */
+	NULL,
+	NULL,
+	NULL,
+	Symmetrically_Encrypted_and_MDC_Packet,
+	Modification_Detection_Code_Packet,
 	NULL,
 	NULL,
 	NULL,

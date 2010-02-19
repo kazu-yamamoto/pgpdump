@@ -117,7 +117,7 @@ comp_algs(unsigned int type)
 	printf("\n");
 }
 
-#define HASH_ALGS_NUM 8
+#define HASH_ALGS_NUM 11
 private char *
 HASH_ALGS[] = {
 	"unknown(hash 0)",
@@ -128,6 +128,9 @@ HASH_ALGS[] = {
 	"MD2(hash 5)", 
 	"TIGER192(hash 6)",
 	"HAVAL-5-160(hash 7)",
+	"SHA256(hash 8)",
+	"SHA384(hash 9)",
+	"SHA512(hash 10)",
 };
 
 public void
