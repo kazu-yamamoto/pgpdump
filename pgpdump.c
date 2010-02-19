@@ -14,7 +14,7 @@ int mflag;
 int pflag;
 int uflag;
 
-private string pgpdump_version = "0.24, Copyright (C) 1998-2004 Kazu Yamamoto";
+private string pgpdump_version = "0.25, Copyright (C) 1998-2006 Kazu Yamamoto";
 private string prog;
 
 private string getprog(void);

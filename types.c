@@ -160,6 +160,7 @@ HASH_ALGS[] = {
 	"SHA256(hash 8)",
 	"SHA384(hash 9)",
 	"SHA512(hash 10)",
+	"SHA224(hash 11)",
 };
 #define HASH_ALGS_NUM (sizeof(HASH_ALGS) / sizeof(string))
 
@@ -316,6 +317,9 @@ string_to_key(void)
 		printf("\t\tSalt - ");
 		dump(8);
 		printf("\n");
+		break;
+	case 2: 
+		printf("\tReserved string-to-key(s2k %d)\n", type);
 		break;
 	case 3:
 		printf("\tIterated and salted string-to-key(s2k %d):\n", type);
