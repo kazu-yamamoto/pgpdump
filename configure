@@ -2123,9 +2123,9 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
-echo "$as_me:$LINENO: checking for main in -lz" >&5
-echo $ECHO_N "checking for main in -lz... $ECHO_C" >&6
-if test "${ac_cv_lib_z_main+set}" = set; then
+echo "$as_me:$LINENO: checking for inflate in -lz" >&5
+echo $ECHO_N "checking for inflate in -lz... $ECHO_C" >&6
+if test "${ac_cv_lib_z_inflate+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   ac_check_lib_save_LIBS=$LIBS
@@ -2138,11 +2138,17 @@ cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
 
-
+/* Override any gcc2 internal prototype to avoid an error.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+/* We use char because int might match the return type of a gcc2
+   builtin and then its argument prototype would still apply.  */
+char inflate ();
 int
 main ()
 {
-main ();
+inflate ();
   ;
   return 0;
 }
@@ -2159,24 +2165,88 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  ac_cv_lib_z_main=yes
+  ac_cv_lib_z_inflate=yes
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-ac_cv_lib_z_main=no
+ac_cv_lib_z_inflate=no
 fi
 rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
 LIBS=$ac_check_lib_save_LIBS
 fi
-echo "$as_me:$LINENO: result: $ac_cv_lib_z_main" >&5
-echo "${ECHO_T}$ac_cv_lib_z_main" >&6
-if test $ac_cv_lib_z_main = yes; then
+echo "$as_me:$LINENO: result: $ac_cv_lib_z_inflate" >&5
+echo "${ECHO_T}$ac_cv_lib_z_inflate" >&6
+if test $ac_cv_lib_z_inflate = yes; then
   cat >>confdefs.h <<_ACEOF
 #define HAVE_LIBZ 1
 _ACEOF
 
   LIBS="-lz $LIBS"
+
+fi
+
+
+echo "$as_me:$LINENO: checking for BZ2_bzBuffToBuffDecompress in -lbz2" >&5
+echo $ECHO_N "checking for BZ2_bzBuffToBuffDecompress in -lbz2... $ECHO_C" >&6
+if test "${ac_cv_lib_bz2_BZ2_bzBuffToBuffDecompress+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lbz2  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+/* Override any gcc2 internal prototype to avoid an error.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+/* We use char because int might match the return type of a gcc2
+   builtin and then its argument prototype would still apply.  */
+char BZ2_bzBuffToBuffDecompress ();
+int
+main ()
+{
+BZ2_bzBuffToBuffDecompress ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_lib_bz2_BZ2_bzBuffToBuffDecompress=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+ac_cv_lib_bz2_BZ2_bzBuffToBuffDecompress=no
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+echo "$as_me:$LINENO: result: $ac_cv_lib_bz2_BZ2_bzBuffToBuffDecompress" >&5
+echo "${ECHO_T}$ac_cv_lib_bz2_BZ2_bzBuffToBuffDecompress" >&6
+if test $ac_cv_lib_bz2_BZ2_bzBuffToBuffDecompress = yes; then
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBBZ2 1
+_ACEOF
+
+  LIBS="-lbz2 $LIBS"
 
 fi
 

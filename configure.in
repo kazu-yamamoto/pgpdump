@@ -5,8 +5,8 @@ dnl Checks for programs.
 dnl AC_PROG_INSTALL
 
 dnl Checks for libraries.
-dnl Replace `main' with a function in -lz:
-AC_CHECK_LIB(z, main)
+AC_CHECK_LIB(z, inflate)
+AC_CHECK_LIB(bz2, BZ2_bzBuffToBuffDecompress)
 
 dnl Checks for header files.
 AC_CONFIG_HEADER(config.h)

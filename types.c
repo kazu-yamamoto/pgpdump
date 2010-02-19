@@ -135,6 +135,7 @@ COMP_ALGS[] = {
 	"Uncompressed(comp 0)",
 	"ZIP <RFC1951>(comp 1)", 
 	"ZLIB <RFC1950>(comp 2)",
+	"BZip2(comp 3)",
 };
 #define COMP_ALGS_NUM (sizeof(COMP_ALGS) / sizeof(char *))
 

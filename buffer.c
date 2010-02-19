@@ -16,7 +16,13 @@ private int decode_radix64(byte *, unsigned int);
 #include <zlib.h>
 private int inflate_gzip(byte *, unsigned int);
 private z_stream z;
-#endif
+#endif  /* HAVE_LIBZ */
+
+#ifdef HAVE_LIBBZ2
+#include <bzlib.h>
+private int inflate_bzip2(byte *, unsigned int);
+private bz_stream bz;
+#endif  /* HAVE_LIBBZ2 */
 
 #define NUL '\0'
 #define CR  '\r'
@@ -219,18 +225,18 @@ inflate_gzip(byte *p, unsigned int max)
 		err = inflate(&z, Z_SYNC_FLUSH);
 
 		if (err != Z_OK && err != Z_STREAM_END)
-			warn_exit("inflate error (%d).", err);
+			warn_exit("zlib inflate error (%d).", err);
 
 		inflated = max - z.avail_out;		
 
-		if (old == z.avail_out)
+		if (old == z.avail_out && z.avail_in != 0)
 			break;
 
 		if (err == Z_STREAM_END) {
 			done = YES;
 			/* 8 bytes (crc and isize) are left. */
 			if (inflateEnd(&z) != Z_OK)
-				warn_exit("inflateEnd error.");
+				warn_exit("zlib inflateEnd error.");
 			break;
 		}
 	}
@@ -238,6 +244,49 @@ inflate_gzip(byte *p, unsigned int max)
 	return inflated;
 }
 #endif /* HAVE_LIBZ */
+
+#ifdef HAVE_LIBBZ2
+private int
+inflate_bzip2(byte *p, unsigned int max)
+{
+	static int done = NO;
+	int err, size, inflated = 0, old;
+
+	if (done == YES) return 0;
+
+	bz.next_out = p;
+	bz.avail_out = max;
+
+	while (bz.avail_out != 0) {
+		if (bz.avail_in == 0) {
+			size = (*d_func2)(d_buf2, sizeof(d_buf2));
+			bz.next_in  = d_buf2;
+			bz.avail_in = size;
+		}
+
+		old = bz.avail_out;
+		err = BZ2_bzDecompress(&bz);
+
+		if (err != BZ_OK && err != BZ_STREAM_END)
+			warn_exit("bzip2 BZ2_bzDecompress error (%d).", err);
+
+		inflated = max - bz.avail_out;		
+
+		if (old == bz.avail_out && bz.avail_in != 0)
+			break;
+
+		if (err == BZ_STREAM_END) {
+			done = YES;
+			/* 8 bytes (crc and isize) are left. */
+			if (BZ2_bzDecompressEnd(&bz) != BZ_OK)
+				warn_exit("bzip2 BZ2_bzDecompressEnd error.");
+			break;
+		}
+	}
+
+	return inflated;
+}
+#endif /* HAVE_LIBBZ2 */
 
 public int
 Getc1(void)
@@ -302,44 +351,71 @@ set_binary(void)
 public void
 Compressed_Data_Packet(int len)
 {
-#ifdef HAVE_LIBZ
+#if defined(HAVE_LIBZ) || defined(HAVE_LIBBZ2)
 	unsigned int alg = Getc();
 	int err = Z_OK;
+	private int (*func)(byte *, unsigned int);
 	
 	comp_algs(alg);
 
+#ifdef HAVE_LIBZ
 	z.zalloc = (alloc_func)0;
 	z.zfree = (free_func)0;
 	z.opaque = (voidpf)0;
+#endif /* HAVE_LIBZ */
+#ifdef HAVE_LIBBZ2
+	bz.bzalloc = (void *)0;
+	bz.bzfree = (void *)0;
+	bz.opaque = (void *)0;
+#endif /* HAVE_LIBBZ2 */
 
 	/* 
 	 * 0 uncompressed
-	 * 1 ZIP 1951 without zlib header
+	 * 1 ZIP without zlib header (RFC 1951)
 	 *	inflateInit2 (strm, -13)
-	 * 2 ZLIB 1950 with zlib header
+	 * 2 ZLIB with zlib header (RFC 1950)
 	 *	inflateInit  (strm)
+	 * 3 BZIP2 (http://sources.redhat.com/bzip2/)
 	 */
 
 	switch (alg) {
 	case 0:
 		return;
+#ifdef HAVE_LIBZ
 	case 1:
 		err = inflateInit2(&z, -13);
+		if (err != Z_OK) warn_exit("zlib inflateInit error.");
+		func = inflate_gzip;
 		break;
 	case 2:
 		err = inflateInit(&z);
+		if (err != Z_OK) warn_exit("zlib inflateInit error.");
+		func = inflate_gzip;
 		break;
+#endif /* HAVE_LIBZ */
+#ifdef HAVE_LIBBZ2
+	case 3:
+		err = BZ2_bzDecompressInit(&bz, 0, 0);
+		if (err != BZ_OK) warn_exit("bzip2 BZ2_bzDecompressInit error.");
+		func = inflate_bzip2;
+		break;
+#endif /* HAVE_LIBBZ2 */
 	default:
 		warn_exit("unknown compress algorithm.");
 	}
 
-	if (err != Z_OK)
-		warn_exit("inflateInit error.");
-
+#ifdef HAVE_LIBZ
 	z.next_in  = d_buf2;
 	z.avail_in = AVAIL_COUNT;
 	z.next_out = 0;
 	z.avail_out = sizeof(d_buf2);
+#endif /* HAVE_LIBZ */
+#ifdef HAVE_LIBBZ2
+	bz.next_in  = d_buf2;
+	bz.avail_in = AVAIL_COUNT;
+	bz.next_out = 0;
+	bz.avail_out = sizeof(d_buf2);
+#endif /* HAVE_LIBBZ2 */
 
 	memcpy(d_buf2, NEXT_IN, AVAIL_COUNT);
 	AVAIL_COUNT = 0;
@@ -347,16 +423,16 @@ Compressed_Data_Packet(int len)
 	if (d_func1 == NULL) {
 		d_func1 = NULL;
 		d_func2 = read_binary;
-		d_func3 = inflate_gzip;
+		d_func3 = func;
 	} else {
 		d_func1 = read_radix64;
 		d_func2 = decode_radix64;
-		d_func3 = inflate_gzip;
+		d_func3 = func;
 	}
-#else /* HAVE_LIBZ */
+#else /* defined(HAVE_LIBZ) || defined(HAVE_LIBBZ2) */
 	comp_algs(Getc());
-	warn_exit("can't uncompress without zlib.");
-#endif /* HAVE_LIBZ */
+	warn_exit("can't uncompress without zlib/bzip2.");
+#endif /* defined(HAVE_LIBZ) || defined(HAVE_LIBBZ2) */
 }
 
 /* 
