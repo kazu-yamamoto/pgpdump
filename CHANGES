@@ -1,5 +1,11 @@
 			      Change Log
 
+0.24 2004/12/24
+
+* More secure programming style.
+* Adding GnuPG string-to-key.
+* Adding a missing key flag.
+
 0.23 2004/10/27
 
 * Catching up to 2440bis-10/11.

@@ -256,13 +256,11 @@ key_flags(int len)
 	if (c & 0x08)
 		printf("\t\tFlag - This key may be used to encrypt storage\n");
 	if (c & 0x10)
-		printf("\t\tFlag - The private component of this key may have been split by "
-					"a secret-sharing mechanism\n");
+		printf("\t\tFlag - The private component of this key may have been split by a secret-sharing mechanism\n");
+	if (c & 0x20)
+		printf("\t\tFlag - This key may be used for authentication\n");
 	if (c & 0x80)
-		printf("\t\tFlag - The private component of this key may be in the "
-					"possession of more than one person\n");
-	if ((c & ~0x60) == 0)
-		printf("\t\tFlag - \n");
+		printf("\t\tFlag - The private component of this key may be in the possession of more than one person\n");
 	skip(len-1);
 }
 

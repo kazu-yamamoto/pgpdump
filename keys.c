@@ -115,15 +115,15 @@ Secret_Key_Packet(int len)
 	case 254:
 		sym = Getc();
 		sym_algs(sym);
-		string_to_key();
-		IV(iv_len(sym));
+		if (string_to_key() == YES)
+			IV(iv_len(sym));
 		encrypted_Secret_Key(len - Getc_getlen(), YES);
 		break;
 	case 255:
 		sym = Getc();
 		sym_algs(sym);
-		string_to_key();
-		IV(iv_len(sym));
+		if (string_to_key() == YES)
+			IV(iv_len(sym));
 		encrypted_Secret_Key(len - Getc_getlen(), NO);
 		break;
 	default:

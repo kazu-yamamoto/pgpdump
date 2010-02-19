@@ -90,7 +90,7 @@ public void sig_expiration_time4(string);
 public void key_creation_time4(string);
 public void key_expiration_time4(string);
 public void ver(int, int, int);
-public void string_to_key(void);
+public int string_to_key(void);
 public void multi_precision_integer(string);
 	
 /*

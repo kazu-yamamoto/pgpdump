@@ -64,7 +64,7 @@ pub_algs(unsigned int type)
 {
 	printf("\tPub alg - ");
 	if (type < PUB_ALGS_NUM)
-		printf(PUB_ALGS[type]);
+		printf("%s", PUB_ALGS[type]);
 	else
 		printf("unknown(pub %d)", type);
 	printf("\n");
@@ -98,7 +98,7 @@ public void
 sym_algs2(unsigned int type)
 {
 	if (type < SYM_ALGS_NUM)
-		printf(SYM_ALGS[type]);
+		printf("%s", SYM_ALGS[type]);
 	else
 		printf("unknown(sym %d)", type);
 }
@@ -141,7 +141,7 @@ comp_algs(unsigned int type)
 {
 	printf("\tComp alg - ");
 	if (type < COMP_ALGS_NUM)
-		printf(COMP_ALGS[type]);
+		printf("%s", COMP_ALGS[type]);
 	else
 		printf("unknown(comp %d)", type);
 	printf("\n");
@@ -168,7 +168,7 @@ hash_algs(unsigned int type)
 {
 	printf("\tHash alg - ");
 	if (type < HASH_ALGS_NUM)
-		printf(HASH_ALGS[type]);
+		printf("%s", HASH_ALGS[type]);
 	else
 		printf("unknown(hash %d)", type);
 	printf("\n");
@@ -297,18 +297,19 @@ ver(int old, int new, int ver)
 
 #define EXPBIAS 6
 
-public void
+public int
 string_to_key(void)
 {
+	int has_iv = YES;
 	int type = Getc();
 
 	switch (type) {
-	case 0x00:
+	case 0:
 		printf("\tSimple string-to-key(s2k %d):\n", type);
 		printf("\t");
 		hash_algs(Getc());
 		break;
-	case 0x01:
+	case 1:
 		printf("\tSalted string-to-key(s2k %d):\n", type);
 		printf("\t");
 		hash_algs(Getc());
@@ -316,7 +317,7 @@ string_to_key(void)
 		dump(8);
 		printf("\n");
 		break;
-	case 0x03:
+	case 3:
 		printf("\tIterated and salted string-to-key(s2k %d):\n", type);
 		printf("\t");
 		hash_algs(Getc());
@@ -329,9 +330,15 @@ string_to_key(void)
 			printf("\t\tCount - %d(coded count %d)\n", count, c);
 		}
 		break;
+	case 101:
+		printf("\tGnuPG string-to-key(s2k %d)\n", type);
+		has_iv = NO;
+		skip(5);
+		break;
 	default:
 		printf("\tUnknown string-to-key(s2k %d)\n", type);
 	}
+	return has_iv;
 }
 
 public void

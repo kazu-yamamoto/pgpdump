@@ -14,7 +14,7 @@ int mflag;
 int pflag;
 int uflag;
 
-private string pgpdump_version = "0.23, Copyright (C) 1998-2004 Kazu Yamamoto";
+private string pgpdump_version = "0.24, Copyright (C) 1998-2004 Kazu Yamamoto";
 private string prog;
 
 private string getprog(void);
@@ -198,12 +198,15 @@ kdump(int len)
 }
 
 public void
-gdump(int len) /* mixed dump (like gnupg) */
+gdump(int len) /* mixed dump (like GnuPG) */
 {       
         int i;
         for (i = 0; i < len; i++) {
                 int c = Getc();
-                printf(isprint(c)?"%c":"\\x%02x", c);
+		if (isprint(c) == NO)
+			printf("\\x%02x", c);
+		else
+			printf("%c", c);
         }
 }
 
