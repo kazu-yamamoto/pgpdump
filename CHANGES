@@ -1,5 +1,13 @@
 			      Change Log
 
+0.11 2001/05/20
+
+* Defining line_not_blank().
+	Stefan H. Holek <stefan>
+* Enhancing Public_Key_Encrypted_Session_Key_Packet().
+	Stefan H. Holek <stefan>
+	Brian M. Carlson <karlsson>
+
 0.10 2001/05/08
 
 * Fixing key_server_preferences().

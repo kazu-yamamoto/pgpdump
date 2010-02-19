@@ -20,11 +20,18 @@ Public_Key_Encrypted_Session_Key_Packet(int len)
 	pub_algs(pub);
 	switch (pub) {
 	case 1:
+	case 2:
+	case 3:
 		multi_precision_integer("RSA m^e mod n");
 		break;
 	case 16:
-		multi_precision_integer("DSA g^k mod p");
-		multi_precision_integer("DSA m * y^k mod p");
+	case 20:
+		multi_precision_integer("ElGamal g^k mod p");
+		multi_precision_integer("ElGamal m * y^k mod p");
+		break;
+	case 17:
+		multi_precision_integer("DSA ?");
+		multi_precision_integer("DSA ?");
 		break;
 	default:
 		printf("\t\tunknown(pub %d)\n", pub);

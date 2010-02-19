@@ -2,10 +2,12 @@
  * buffer.c
  */
 
+#include <ctype.h>
 #include "pgpdump.h"
 
 typedef unsigned char byte;
 
+private int line_not_blank(char *);
 private int read_binary(byte *, unsigned int);
 private int read_radix64(byte *, unsigned int);
 private int decode_radix64(byte *, unsigned int);
@@ -59,6 +61,17 @@ base256[] = {
 };
 
 private int
+line_not_blank(char *s) 
+{ 
+	while (isspace(*s)) {
+	  	if (*s == CR || *s == LF)
+			return NO;
+	  	s++; 
+	}
+	return YES;
+}
+
+private int
 read_binary(byte *p, unsigned int max)
 {
 	/* errno */
@@ -88,7 +101,7 @@ read_radix64(byte *p, unsigned int max)
 		do {
 			if (fgets(tmpbuf, BUFSIZ, stdin) == NULL)
 				warn_exit("can't find PGP armor.");
-		} while (tmpbuf[0] != CR && tmpbuf[0] != LF);
+		} while (line_not_blank(tmpbuf) == YES);
 		found = YES;
 	}
 
