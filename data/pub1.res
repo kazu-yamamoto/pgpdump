@@ -1,6 +1,6 @@
 Old: Public Key Packet(tag 6)(418 bytes)
 	Ver 4 - new
-	Public key creation time - Sun Oct 11 23:27:53 1998
+	Public key creation time - Sun Oct 11 23:27:53 JST 1998
 	Pub alg - DSA Digital Signature Standard(pub 17)
 	DSA p(1024 bits) - ...
 	DSA q(160 bits) - ...
@@ -14,7 +14,7 @@ Old: Signature Packet(tag 2)(87 bytes)
 	Pub alg - DSA Digital Signature Standard(pub 17)
 	Hash alg - SHA1(hash 2)
 	Hashed Sub: signature creation time(sub 2)(4 bytes)
-		Time - Sun Oct 11 23:27:53 1998
+		Time - Sun Oct 11 23:27:53 JST 1998
 	Hashed Sub: preferred symmetric algorithms(sub 11)(2 bytes)
 		Sym alg - Blowfish(sym 4)
 		Sym alg - CAST5(sym 3)
@@ -25,7 +25,7 @@ Old: Signature Packet(tag 2)(87 bytes)
 		Hash alg - MD5(hash 1)
 	Hashed Sub: preferred compression algorithms(sub 22)(2 bytes)
 		Comp alg - ZLIB <RFC1950>(comp 2)
-		Comp alg - ZIP DEFLATE 13 <RFC1951>(comp 1)
+		Comp alg - ZIP <RFC1951>(comp 1)
 	Hashed Sub: key server preferences(sub 23)(1 bytes)
 		Flag - No-modify
 	Sub: issuer key ID(sub 16)(8 bytes)
@@ -36,7 +36,7 @@ Old: Signature Packet(tag 2)(87 bytes)
 		-> hash(160 bits)
 Old: Public Subkey Packet(tag 14)(269 bytes)
 	Ver 4 - new
-	Public key creation time - Sun Oct 11 23:29:23 1998
+	Public key creation time - Sun Oct 11 23:29:23 JST 1998
 	Pub alg - ElGamal Encrypt-Only(pub 16)
 	ElGamal p(1024 bits) - ...
 	ElGamal g(3 bits) - ...
@@ -47,7 +47,7 @@ Old: Signature Packet(tag 2)(70 bytes)
 	Pub alg - DSA Digital Signature Standard(pub 17)
 	Hash alg - SHA1(hash 2)
 	Hashed Sub: signature creation time(sub 2)(4 bytes)
-		Time - Sun Oct 11 23:29:23 1998
+		Time - Sun Oct 11 23:29:23 JST 1998
 	Sub: issuer key ID(sub 16)(8 bytes)
 		Key ID - fd 90 da 97 32 d8 eb d2 
 	Hash left 2 bytes - 42 66 

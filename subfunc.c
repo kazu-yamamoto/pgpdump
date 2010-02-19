@@ -67,11 +67,25 @@ key_expiration_time(int len)
 }	
 
 public void
-placeholder_for_backward_compatibility(int len)
+additional_decryption_key(int len)
 {
-	printf("\t\txxx\n");
-	skip(len);
-	/* xxx */
+	int c = Getc();
+	printf("\t\tClass - ");
+	switch (c) {
+	case 0x80:
+		printf("Strong request");
+		break;
+	case 0x0:
+		printf("Normal");
+		break;
+	default:
+		printf("Unknown class(%02x)", c);
+	}
+	printf("\n");
+	printf("\t");
+	pub_algs(Getc());
+	printf("\t");
+	fingerprint();
 }
 
 public void
@@ -89,12 +103,20 @@ revocation_key(int len)
 {
 	int c = Getc();
 	printf("\t\tClass - ");
-	if (c == 0x80)
-		printf("Unrestricted");
-	else if (c == 0xc0)
-		printf("Sensitive");
+	if (c & 0x80)
+		switch (c) {
+		case 0x80:
+			printf("Normal");
+			break;
+		case 0xc0:
+			printf("Sensitive");
+			break;
+		default:
+			printf("Unknown class(%02x)", c);
+		}
 	else
 		printf("Unknown class(%02x)", c);
+
 	printf("\n");
 	printf("\t");
 	pub_algs(Getc());
@@ -226,18 +248,26 @@ reason_for_revocation(int len)
 {
 	int c = Getc();
 	printf("\t\tReason - ");
-	if (c == 0)
+	switch (c) {
+	case 0:
 		printf("No reason specified");
-	else if (c == 0x01)
+		break;
+	case 0x01:
 		printf("Key is superceded");
-	else if (c == 0x02)
+		break;
+	case 0x02:
 		printf("Key material has been compromised");
-	else if (c == 0x03)
+		break;
+	case 0x03:
 		printf("Key is retired and no longer used");
-	else if (c == 0x20)
+		break;
+	case 0x20:
 		printf("User ID information is no longer valid");
-	else
+		break;
+	default:
 		printf("Unknown reason(%02x)", c);
+		break;
+	}
 	printf("\n");
 	printf("\t\tComment - ");
 	pdump(len - 1);

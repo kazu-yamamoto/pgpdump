@@ -11,7 +11,7 @@ New: Signature Packet(tag 2)(63 bytes)
 	Ver 3 - old
 	Hash material(5 bytes):
 		Sig type - Signature of a binary document(0x00).
-		Creation time - Fri Nov 27 22:35:02 1998
+		Creation time - Fri Nov 27 22:35:02 JST 1998
 	Key ID - a7 97 78 e2 47 b6 30 37 
 	Pub alg - DSA Digital Signature Standard(pub 17)
 	Hash alg - SHA1(hash 2)

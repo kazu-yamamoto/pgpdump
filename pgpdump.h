@@ -137,7 +137,7 @@ public void trust_signature(int);
 public void regular_expression(int);
 public void revocable(int);
 public void key_expiration_time(int);
-public void placeholder_for_backward_compatibility(int);
+public void additional_decryption_key(int);
 public void preferred_symmetric_algorithms(int);
 public void revocation_key(int);
 public void issuer_key_ID(int);
