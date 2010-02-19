@@ -11,7 +11,7 @@ INSTALL  = install -c -m
 
 INCS = pgpdump.h
 SRCS = pgpdump.c types.c tagfuncs.c packet.c subfunc.c signature.c keys.c \
-       buffer.c uatfunc.c 
+       buffer.c uatfunc.c
 OBJS = pgpdump.o types.o tagfuncs.o packet.o subfunc.o signature.o keys.o \
        buffer.o uatfunc.o
 PROG = pgpdump

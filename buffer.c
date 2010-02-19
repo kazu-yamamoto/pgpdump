@@ -50,7 +50,7 @@ private byte d_buf3[BUFSIZ];
 private signed char
 base256[] = {
 	OOB,OOB,OOB,OOB, OOB,OOB,OOB,OOB, OOB,OOB,ELF,OOB, OOB,ECR,OOB,OOB,
-    
+
 	OOB,OOB,OOB,OOB, OOB,OOB,OOB,OOB, OOB,OOB,OOB,OOB, OOB,OOB,OOB,OOB,
       /*                                                -                / */
 	OOB,OOB,OOB,OOB, OOB,OOB,OOB,OOB, OOB,OOB,OOB, 62, OOB,OOB,OOB, 63,
@@ -63,16 +63,16 @@ base256[] = {
       /*      a   b   c    d   e   f   g    h   i   j   k    l   m   n   o*/
 	OOB, 26, 27, 28,  29, 30, 31, 32,  33, 34, 35, 36,  37, 38, 39, 40,
       /*  p   q   r   s    t   u   v   w    x   y   z                     */
-	 41, 42, 43, 44,  45, 46, 47, 48,  49, 50, 51,OOB, OOB,OOB,OOB,OOB, 
+	 41, 42, 43, 44,  45, 46, 47, 48,  49, 50, 51,OOB, OOB,OOB,OOB,OOB,
 };
 
 private int
-line_not_blank(byte *s) 
-{ 
+line_not_blank(byte *s)
+{
 	while (isspace(*s)) {
 	  	if (*s == CR || *s == LF)
 			return NO;
-	  	s++; 
+		s++;
 	}
 	return YES;
 }
@@ -370,7 +370,7 @@ Compressed_Data_Packet(int len)
 	bz.opaque = (void *)0;
 #endif /* HAVE_LIBBZ2 */
 
-	/* 
+	/*
 	 * 0 uncompressed
 	 * 1 ZIP without zlib header (RFC 1951)
 	 *	inflateInit2 (strm, -13)
@@ -436,14 +436,14 @@ Compressed_Data_Packet(int len)
 #endif /* defined(HAVE_LIBZ) || defined(HAVE_LIBBZ2) */
 }
 
-/* 
+/*
  * Copyright (C) 1998 Kazuhiko Yamamoto
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
@@ -452,7 +452,7 @@ Compressed_Data_Packet(int len)
  * 3. Neither the name of the author nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR

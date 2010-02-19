@@ -24,19 +24,19 @@ private int is_partial(int);
 private string
 TAG[] = {
 	"Reserved",
-	"Public-Key Encrypted Session Key Packet", 
-	"Signature Packet", 
-	"Symmetric-Key Encrypted Session Key Packet", 
-	"One-Pass Signature Packet", 
-	"Secret Key Packet", 
-	"Public Key Packet", 
-	"Secret Subkey Packet", 
-	"Compressed Data Packet", 
-	"Symmetrically Encrypted Data Packet", 
+	"Public-Key Encrypted Session Key Packet",
+	"Signature Packet",
+	"Symmetric-Key Encrypted Session Key Packet",
+	"One-Pass Signature Packet",
+	"Secret Key Packet",
+	"Public Key Packet",
+	"Secret Subkey Packet",
+	"Compressed Data Packet",
+	"Symmetrically Encrypted Data Packet",
 	"Marker Packet",
-	"Literal Data Packet", 
-	"Trust Packet", 
-	"User ID Packet", 
+	"Literal Data Packet",
+	"Trust Packet",
+	"User ID Packet",
 	"Public Subkey Packet",
 	"unknown",
 	"unknown",
@@ -166,18 +166,18 @@ SIGSUB[] = {
 	"signature creation time(sub 2)",
 	"signature expiration time(sub 3)",
 	"exportable certification(sub 4)",
-	"trust signature(sub 5)", 
+	"trust signature(sub 5)",
 	"regular expression(sub 6)",
 	"revocable(sub 7)",
 	"reserved(sub 8)",
 	"key expiration time(sub 9)",
 	"additional decryption key(sub 10) WARNING: see CA-2000-18!!!",
-	"preferred symmetric algorithms(sub 11)", 
-	"revocation key(sub 12)", 
+	"preferred symmetric algorithms(sub 11)",
+	"revocation key(sub 12)",
 	"reserved(sub 13)",
 	"reserved(sub 14)",
 	"reserved(sub 15)",
-	"issuer key ID(sub 16)", 
+	"issuer key ID(sub 16)",
 	"reserved(sub 17)",
 	"reserved(sub 18)",
 	"reserved(sub 19)",
@@ -187,7 +187,7 @@ SIGSUB[] = {
 	"key server preferences(sub 23)",
 	"preferred key server(sub 24)",
 	"primary User ID(sub 25)",
-	"policy URL(sub 26)", 
+	"policy URL(sub 26)",
 	"key flags(sub 27)",
 	"signer's User ID(sub 28)",
 	"reason for revocation(sub 29)",
@@ -201,34 +201,34 @@ private funcptr
 sigsub_func[] = {
 	NULL,
 	NULL,
-	signature_creation_time, 
-	signature_expiration_time, 
-	exportable_certification, 
-	trust_signature, 
-	regular_expression, 
-	revocable, 
-	NULL, 
+	signature_creation_time,
+	signature_expiration_time,
+	exportable_certification,
+	trust_signature,
+	regular_expression,
+	revocable,
+	NULL,
 	key_expiration_time,
 	additional_decryption_key,
-	preferred_symmetric_algorithms, 
-	revocation_key, 
-	NULL, 
-	NULL, 
-	NULL, 
-	issuer_key_ID, 
-	NULL, 
-	NULL, 
-	NULL, 
-	notation_data, 
-	preferred_hash_algorithms, 
-	preferred_compression_algorithms, 
-	key_server_preferences, 
-	preferred_key_server, 
-	primary_user_id, 
-	policy_URL, 
+	preferred_symmetric_algorithms,
+	revocation_key,
+	NULL,
+	NULL,
+	NULL,
+	issuer_key_ID,
+	NULL,
+	NULL,
+	NULL,
+	notation_data,
+	preferred_hash_algorithms,
+	preferred_compression_algorithms,
+	key_server_preferences,
+	preferred_key_server,
+	primary_user_id,
+	policy_URL,
 	key_flags,
-	signer_user_id, 
-	reason_for_revocation, 
+	signer_user_id,
+	reason_for_revocation,
         features,
         signature_target,
 	embedded_signature,
@@ -367,7 +367,7 @@ parse_packet(void)
 		if (len == EOF) return;
 	}
 	if ( have_packet == NO )
-		warn_exit("unexpected end of file."); 
+		warn_exit("unexpected end of file.");
 }
 
 public void
@@ -447,14 +447,14 @@ parse_userattr_subpacket(string prefix, int tlen)
 	}
 }
 
-/* 
+/*
  * Copyright (C) 1998 Kazuhiko Yamamoto
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
@@ -463,7 +463,7 @@ parse_userattr_subpacket(string prefix, int tlen)
  * 3. Neither the name of the author nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR

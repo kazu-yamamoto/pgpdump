@@ -14,13 +14,13 @@ private void plain_Secret_Key(int);
 private void encrypted_Secret_Key(int, int);
 
 public void
-Public_Subkey_Packet(int len) 
+Public_Subkey_Packet(int len)
 {
 	Public_Key_Packet(len);
 }
 
 public void
-Public_Key_Packet(int len) 
+Public_Key_Packet(int len)
 {
 	VERSION = Getc();
 	printf("\tVer %d - ", VERSION);
@@ -95,7 +95,7 @@ IV(unsigned int len)
 }
 
 public void
-Secret_Subkey_Packet(int len) 
+Secret_Subkey_Packet(int len)
 {
 	Secret_Key_Packet(len);
 }
@@ -235,14 +235,14 @@ encrypted_Secret_Key(int len, int sha1)
 	}
 }
 
-/* 
+/*
  * Copyright (C) 1998 Kazuhiko Yamamoto
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
@@ -251,7 +251,7 @@ encrypted_Secret_Key(int len, int sha1)
  * 3. Neither the name of the author nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR

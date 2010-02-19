@@ -30,7 +30,7 @@ Here is an example:
 		Key ID - 0xA79778E247B63037
 		Pub alg - DSA Digital Signature Algorithm(pub 17)
 		Hash alg - SHA1(hash 2)
-		Hash left 2 bytes - 8f 82 
+		Hash left 2 bytes - 8f 82
 		DSA r(160 bits) - ...
 		DSA s(157 bits) - ...
 			-> hash(DSA q bits)
@@ -47,7 +47,7 @@ Take the following steps to install "pgpdump".
 
 			       <Usage>
 
-To know how to use pgpdump, type "pgpdump -h". 
+To know how to use pgpdump, type "pgpdump -h".
 
 Some examples are stored in the "data" directory. Also, you can
 visualize your pubring and secring.

@@ -34,28 +34,28 @@ private time_t sig_creation_time = 0;
 
 private string
 PUB_ALGS[] = {
-	"unknown(pub 0)", 
+	"unknown(pub 0)",
 	"RSA Encrypt or Sign(pub 1)",
 	"RSA Encrypt-Only(pub 2)",
 	"RSA Sign-Only(pub 3)",
 	"unknown(pub 4)",
-	"unknown(pub 5)", 
-	"unknown(pub 6)", 
-	"unknown(pub 7)", 
-	"unknown(pub 8)", 
-	"unknown(pub 9)", 
-	"unknown(pub 10)", 
-	"unknown(pub 11)", 
-	"unknown(pub 12)", 
-	"unknown(pub 13)", 
-	"unknown(pub 14)", 
-	"unknown(pub 15)", 
-	"ElGamal Encrypt-Only(pub 16)", 
+	"unknown(pub 5)",
+	"unknown(pub 6)",
+	"unknown(pub 7)",
+	"unknown(pub 8)",
+	"unknown(pub 9)",
+	"unknown(pub 10)",
+	"unknown(pub 11)",
+	"unknown(pub 12)",
+	"unknown(pub 13)",
+	"unknown(pub 14)",
+	"unknown(pub 15)",
+	"ElGamal Encrypt-Only(pub 16)",
 	"DSA Digital Signature Algorithm(pub 17)",
-	"Reserved for Elliptic Curve(pub 18)", 
-	"Reserved for ECDSA(pub 19)", 
-	"Reserved formerly ElGamal Encrypt or Sign(pub 20)", 
-	"Reserved for Diffie-Hellman (pub 21)", 
+	"Reserved for Elliptic Curve(pub 18)",
+	"Reserved for ECDSA(pub 19)",
+	"Reserved formerly ElGamal Encrypt or Sign(pub 20)",
+	"Reserved for Diffie-Hellman (pub 21)",
 };
 #define PUB_ALGS_NUM (sizeof(PUB_ALGS) / sizeof(string))
 
@@ -72,15 +72,15 @@ pub_algs(unsigned int type)
 
 private string
 SYM_ALGS[] = {
-	"Plaintext or unencrypted data(sym 0)", 
-	"IDEA(sym 1)", 
+	"Plaintext or unencrypted data(sym 0)",
+	"IDEA(sym 1)",
 	"Triple-DES(sym 2)",
-	"CAST5(sym 3)", 
-	"Blowfish(sym 4)", 
-	"Reserved(sym 5)", 
-	"Reserved(sym 6)", 
-	"AES with 128-bit key(sym 7)", 
-	"AES with 192-bit key(sym 8)", 
+	"CAST5(sym 3)",
+	"Blowfish(sym 4)",
+	"Reserved(sym 5)",
+	"Reserved(sym 6)",
+	"AES with 128-bit key(sym 7)",
+	"AES with 192-bit key(sym 8)",
 	"AES with 256-bit key(sym 9)",
 	"Twofish with 256-bit key(sym 10)",
 };
@@ -130,7 +130,7 @@ iv_len(unsigned int type)
 private string
 COMP_ALGS[] = {
 	"Uncompressed(comp 0)",
-	"ZIP <RFC1951>(comp 1)", 
+	"ZIP <RFC1951>(comp 1)",
 	"ZLIB <RFC1950>(comp 2)",
 	"BZip2(comp 3)",
 };
@@ -154,7 +154,7 @@ HASH_ALGS[] = {
 	"SHA1(hash 2)",
 	"RIPEMD160(hash 3)",
 	"Reserved(hash 4)",
-	"Reserved(hash 5)", 
+	"Reserved(hash 5)",
 	"Reserved(hash 6)",
 	"Reserved(hash 7)",
 	"SHA256(hash 8)",
@@ -202,7 +202,7 @@ time4_base(string str, time_t *pt)
 		printf("\t%s - cannot print date after 2038-01-19\n", str);
 		return;
 	}
-        
+
 	ptm = uflag ? gmtime(pt) : localtime(pt);
 
 	pat = asctime(ptm);
@@ -210,9 +210,9 @@ time4_base(string str, time_t *pt)
 	pyr = pat + 20;
 
 	if (uflag)
-		printf("\t%s - %s UTC %s", str, pat, pyr); 
+		printf("\t%s - %s UTC %s", str, pat, pyr);
 	else
-		printf("\t%s - %s %s %s", str, pat, tm_zone(ptm), pyr); 
+		printf("\t%s - %s %s %s", str, pat, tm_zone(ptm), pyr);
 }
 
 public void
@@ -318,7 +318,7 @@ string_to_key(void)
 		dump(8);
 		printf("\n");
 		break;
-	case 2: 
+	case 2:
 		printf("\tReserved string-to-key(s2k %d)\n", type);
 		break;
 	case 3:
@@ -364,14 +364,14 @@ multi_precision_integer(string str)
 }
 
 
-/* 
+/*
  * Copyright (C) 1998 Kazuhiko Yamamoto
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
@@ -380,7 +380,7 @@ multi_precision_integer(string str)
  * 3. Neither the name of the author nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR

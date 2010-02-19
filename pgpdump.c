@@ -149,7 +149,7 @@ main(int argc, string argv[])
         if (argc > 0) {
 	        string target = argv[0];
 		if (freopen(target, "rb", stdin) == NULL)
-			warn_exit("can't open %s.", target); 
+			warn_exit("can't open %s.", target);
         }
 	
 	parse_packet();
@@ -157,7 +157,7 @@ main(int argc, string argv[])
 }
 
 public void
-skip(int len) 
+skip(int len)
 {
         int i;
         for (i = 0; i < len; i++)
@@ -165,7 +165,7 @@ skip(int len)
 }
 
 public void
-dump(int len) 
+dump(int len)
 {
         if (gflag)
                 gdump(len);
@@ -177,19 +177,19 @@ dump(int len)
 }
 
 public void
-pdump(int len) 
+pdump(int len)
 {
         if (gflag)
                 gdump(len);
         else {
                 int i;
-                for (i = 0; i < len; i++) 
+                for (i = 0; i < len; i++)
                         printf("%c", Getc());
         }
 }
 
 public void
-kdump(int len) 
+kdump(int len)
 {
         int i;
         printf("0x");
@@ -199,7 +199,7 @@ kdump(int len)
 
 public void
 gdump(int len) /* mixed dump (like GnuPG) */
-{       
+{
         int i;
         for (i = 0; i < len; i++) {
                 int c = Getc();
@@ -210,14 +210,14 @@ gdump(int len) /* mixed dump (like GnuPG) */
         }
 }
 
-/* 
+/*
  * Copyright (C) 1998 Kazuhiko Yamamoto
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
@@ -226,7 +226,7 @@ gdump(int len) /* mixed dump (like GnuPG) */
  * 3. Neither the name of the author nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
