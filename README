@@ -1,7 +1,7 @@
 		   pgpdump: a PGP packet visualizer
 
 		    Kazu Yamamoto <kazu@iij.ad.jp>
-			     Sep 6, 2007
+			     Feb 19, 2010
 
 
 			      <Overview>
@@ -55,7 +55,7 @@ visualize your pubring and secring.
 			     <Home page>
 
 The official home page of pgpdump is:
-	http://pgp.iijlab.net/pgpdump.html
+	http://www.mew.org/~kazu/proj/pgpdump/
 
 				<Bugs>
 
