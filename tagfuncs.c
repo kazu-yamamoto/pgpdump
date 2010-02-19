@@ -37,7 +37,7 @@ Public_Key_Encrypted_Session_Key_Packet(int len)
 		printf("\t\tunknown(pub %d)\n", pub);
 		skip(len - 10);
 	}
-	printf("\t\t-> m = sym alg(1) + checksum(2) + PKCS-1 block type 02\n");
+	printf("\t\t-> m = sym alg(1 byte) + checksum(2 bytes) + PKCS-1 block type 02\n");
 }
 
 public void
@@ -52,7 +52,7 @@ Symmetric_Key_Encrypted_Session_Key_Packet(int len)
 	left -= Getc_getlen();
 	if (left != 0) {
 		printf("\tEncrypted session key\n");
-		printf("\t\t-> sym alg(1) + session key\n");
+		printf("\t\t-> sym alg(1 bytes) + session key\n");
 		skip(left);
 	}
 }
@@ -134,14 +134,16 @@ public void
 Symmetrically_Encrypted_and_MDC_Packet(int len)
 {
 	printf("\tVer %d\n", Getc());
-	printf("\tEncrypted data (plain text + MDC SHA1(20))\n");
+	printf("\tEncrypted data (plain text + MDC SHA1(20 bytes))\n");
 	skip(len - 1);
 }
 
+/* this function is not used because this packet appears only
+   in encrypted packets. */
 public void
 Modification_Detection_Code_Packet(int len)
 {
-	printf("\tMDC - SHA1(20)\n");
+	printf("\tMDC - SHA1(20 bytes)\n");
 	skip(len);
 }
 

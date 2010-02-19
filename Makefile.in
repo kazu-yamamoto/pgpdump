@@ -33,6 +33,7 @@ clean:
 
 distclean:
 	$(RM) $(OBJS) $(PROG) $(CNF) $(MKF)
-install:
+
+install: all
 	$(INSTALL) 555 $(PROG) $(bindir)
 	$(INSTALL) 444 $(MAN) $(mandir)

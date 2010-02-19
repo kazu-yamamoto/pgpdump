@@ -43,8 +43,10 @@ Public_Key_Packet(int len)
 private void
 old_Public_Key_Packet(void)
 {
+        int days = Getc();
+        days += Getc() * 256;
 	time4("Public key creation time");
-	printf("\tValid days - %d[0 is forever]\n", Getc() * 256 + Getc());
+	printf("\tValid days - %d[0 is forever]\n", days);
 	PUBLIC = Getc();
 	pub_algs(PUBLIC);
 	multi_precision_integer("RSA n");
@@ -129,7 +131,7 @@ Secret_Key_Packet(int len)
 			skip(len - Getc_getlen());
 			break;
 		}	
-		printf("\t\t-> m = sym alg(1) + checksum(2) + PKCS-1 block type 02\n");
+		printf("\t\t-> m = sym alg(1 byte) + checksum(2 bytes) + PKCS-1 block type 02\n");
 		break;
 	case 255:
 		sym = Getc();

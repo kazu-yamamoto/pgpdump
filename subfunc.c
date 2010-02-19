@@ -158,8 +158,10 @@ notation_data(int len)
 	c = Getc();
 	if (c != 0) printf("Unknown flag4(%02x)", c);
 	printf("\n");
-	nlen = Getc() * 256 + Getc();
-	vlen = Getc() * 256 + Getc();
+	nlen = Getc() * 256;
+	nlen += Getc();
+	vlen = Getc() * 256;
+	vlen += Getc();
 	printf("\t\tName - ");
 	if (human)
 		pdump(nlen);

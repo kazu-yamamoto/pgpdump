@@ -232,10 +232,12 @@ get_new_len(int c)
 		len = c;
 	else if (c < 224)
 		len = ((c - 192) << 8) + Getc() + 192;
-	else if (c == 255)
-		len = (Getc() << 24) | (Getc () << 16)
-			| (Getc() << 8) | Getc ();
-	else
+	else if (c == 255) {
+	        len = (Getc() << 24);
+	        len |= (Getc() << 16);
+	        len |= (Getc() << 8);
+	        len |= Getc();
+	} else
 		len = 1 << (c & PARTIAL_MASK);
 	return len;
 }
@@ -288,11 +290,14 @@ parse_packet(void)
 				len = Getc();
 				break;
 			case 1:
-				len = (Getc() << 8) + Getc();
+				len = (Getc() << 8);
+				len += Getc();
 				break;
 			case 2:
-				len = (Getc() << 24) | (Getc () << 16) |
-					(Getc() << 8) | Getc ();
+			        len = Getc() << 24;
+			        len |= Getc() << 16;
+			        len |= Getc() << 8;
+			        len |= Getc();
 				break;
 			case 3:
 				if (tag == TAG_COMPRESSED)
@@ -348,8 +353,10 @@ parse_subpacket(char *prefix, int tlen)
 			len = ((len - 192) << 8) + Getc() + 192;
 			tlen -= 2;
 		} else if (len == 255) {
-			len = (Getc() << 24) | (Getc () << 16) |
-				(Getc() << 8) | Getc ();
+		        len = Getc() << 24;
+		        len |= Getc() << 16;
+		        len |= Getc() << 8;
+		        len |= Getc();
 			tlen -= 5;
 		}
 		tlen -= len;

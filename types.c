@@ -297,8 +297,10 @@ string_to_key(void)
 public void
 multi_precision_integer(char *str)
 {
-	int bits = Getc() * 256 + Getc();
-	int bytes = (bits + 7) / 8;
+        int bytes;
+        int bits = Getc() * 256;
+        bits += Getc();
+        bytes = (bits + 7) / 8;
 		
 	printf("\t%s(%d bits) - ", str, bits);
 	if (iflag) {

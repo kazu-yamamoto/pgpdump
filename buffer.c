@@ -91,17 +91,17 @@ read_radix64(byte *p, unsigned int max)
 
 	again:
 		do {
-			if (fgets(tmpbuf, BUFSIZ, stdin) == NULL)
+			if (fgets((char *) tmpbuf, BUFSIZ, stdin) == NULL)
 				warn_exit("can't find PGP armor boundary.");
-		} while (strncmp("-----BEGIN PGP", tmpbuf, 14) != 0);
+		} while (strncmp("-----BEGIN PGP", (char *) tmpbuf, 14) != 0);
 
-		if (strncmp("-----BEGIN PGP SIGNED", tmpbuf, 21) == 0)
+		if (strncmp("-----BEGIN PGP SIGNED", (char *) tmpbuf, 21) == 0)
 			goto again;
 
 		do {
-			if (fgets(tmpbuf, BUFSIZ, stdin) == NULL)
+			if (fgets((char *) tmpbuf, BUFSIZ, stdin) == NULL)
 				warn_exit("can't find PGP armor.");
-		} while (line_not_blank(tmpbuf) == YES);
+		} while (line_not_blank((char *) tmpbuf) == YES);
 		found = YES;
 	}
 

@@ -1,5 +1,10 @@
 			      Change Log
 
+0.12 2001/08/14
+
+* Portability hack.
+	Stefan Bellon <sbellon>
+
 0.11 2001/05/20
 
 * Defining line_not_blank().

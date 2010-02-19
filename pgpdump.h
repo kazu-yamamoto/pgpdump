@@ -29,11 +29,11 @@
  * Global
  */
 
-int iflag;
-int lflag;
-int mflag;
-int pflag;
-int uflag;
+public int iflag;
+public int lflag;
+public int mflag;
+public int pflag;
+public int uflag;
 
 /*
  * pgpdump.c
@@ -61,7 +61,7 @@ public void Getc_resetlen(void);
 	} while (0)
 
 #define pdump(len) do {\
-		int i; for (i = 0; i < (len); i++) putchar(Getc());\
+		int i; for (i = 0; i < (len); i++) printf("%c", Getc());\
 	} while (0)
 
 #define dump(len) do {\
