@@ -15,6 +15,7 @@ private int decode_radix64(byte *, unsigned int);
 #ifdef HAVE_LIBZ
 #include <zlib.h>
 private int inflate_gzip(byte *, unsigned int);
+private z_stream z;
 #endif
 
 #define NUL '\0'
@@ -29,8 +30,6 @@ private int inflate_gzip(byte *, unsigned int);
 private unsigned int MAGIC_COUNT = 0;
 private unsigned int AVAIL_COUNT = 0;
 private byte *NEXT_IN = NULL;
-
-private z_stream z;
 
 private int (*d_func1)(byte *, unsigned int);
 private int (*d_func2)(byte *, unsigned int);
@@ -264,7 +263,7 @@ Getc(void)
 {
 	int c = Getc1();
 	if (c == EOF)
-		warn_exit("unexpected end of file");
+		warn_exit("unexpected end of file.");
 	return c;
 }
 

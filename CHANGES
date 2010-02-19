@@ -1,5 +1,14 @@
 			      Change Log
 
+0.13 2001/10/24
+
+* Workaround for minus date.
+	"Stefan H. Holek" <stefan>
+* No-libz hack.
+	"Bruce Kroeze" <bkroeze>
+* Small fixes.
+	"Stefan H. Holek" <stefan>
+
 0.12 2001/08/14
 
 * Portability hack.

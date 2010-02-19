@@ -164,6 +164,11 @@ time4_base(char *str, time_t *pt)
 	char* pat;
 	char* pyr;
 
+	if (*pt < 0) {  /* 32 bit time_t and after 2038-01-19 */
+		printf("\t%s - cannot print date after 2038-01-19\n", str);
+		return;
+	}
+        
 	ptm = uflag ? gmtime(pt) : localtime(pt);
 
 	pat = asctime(ptm);

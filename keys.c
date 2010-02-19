@@ -43,9 +43,10 @@ Public_Key_Packet(int len)
 private void
 old_Public_Key_Packet(void)
 {
-        int days = Getc();
-        days += Getc() * 256;
+	int days;
 	time4("Public key creation time");
+	days = Getc();
+	days += Getc() * 256;
 	printf("\tValid days - %d[0 is forever]\n", days);
 	PUBLIC = Getc();
 	pub_algs(PUBLIC);

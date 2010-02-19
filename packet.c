@@ -256,6 +256,7 @@ parse_packet(void)
 {
 	int c, tag, len = 0;
 	int partial = NO;
+	int have_packet = NO;
 
 	c = getchar();
 	ungetc(c, stdin);
@@ -271,6 +272,7 @@ parse_packet(void)
 		set_armor();
 	
 	while ((c = Getc1()) != EOF) {
+		have_packet = YES;
 		partial = NO;
 		tag = c & TAG_MASK;
 		if (c & NEW_TAG_FLAG) {
@@ -338,6 +340,8 @@ parse_packet(void)
 		}
 		if (len == EOF) return;
 	}
+	if ( have_packet == NO )
+		warn_exit("unexpected end of file."); 
 }
 
 public void
