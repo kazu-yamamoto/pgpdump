@@ -89,6 +89,9 @@ signature_type(int type)
 	case 0x40:
 		printf("Timestamp signature(0x40).");
 		break;
+	case 0x50:
+		printf("Notary signature(0x50).");
+		break;
 	default:
 		printf("unknown(%02x)", type);
 		break;

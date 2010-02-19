@@ -1,7 +1,7 @@
 Old: Public Key Packet(tag 6)(418 bytes)
 	Ver 4 - new
 	Public key creation time - Thu Nov 26 22:49:00 JST 1998
-	Pub alg - DSA Digital Signature Standard(pub 17)
+	Pub alg - DSA Digital Signature Algorithm(pub 17)
 	DSA p(1024 bits) - ...
 	DSA q(160 bits) - ...
 	DSA g(1024 bits) - ...
@@ -11,7 +11,7 @@ Old: User ID Packet(tag 13)(31 bytes)
 Old: Signature Packet(tag 2)(75 bytes)
 	Ver 4 - new
 	Sig type - Generic certification of a User ID and Public Key packet(0x10).
-	Pub alg - DSA Digital Signature Standard(pub 17)
+	Pub alg - DSA Digital Signature Algorithm(pub 17)
 	Hash alg - SHA1(hash 2)
 	Hashed Sub: signature creation time(sub 2)(4 bytes)
 		Time - Thu Nov 26 22:49:00 JST 1998
@@ -30,7 +30,7 @@ Old: User ID Packet(tag 13)(20 bytes)
 Old: Signature Packet(tag 2)(75 bytes)
 	Ver 4 - new
 	Sig type - Generic certification of a User ID and Public Key packet(0x10).
-	Pub alg - DSA Digital Signature Standard(pub 17)
+	Pub alg - DSA Digital Signature Algorithm(pub 17)
 	Hash alg - SHA1(hash 2)
 	Hashed Sub: signature creation time(sub 2)(4 bytes)
 		Time - Fri Nov 27 02:18:58 JST 1998
@@ -57,7 +57,7 @@ Old: Signature Packet(tag 2)(63 bytes)
 		Sig type - Subkey Binding Signature(0x18).
 		Creation time - Thu Nov 26 22:49:00 JST 1998
 	Key ID - 0xA79778E247B63037
-	Pub alg - DSA Digital Signature Standard(pub 17)
+	Pub alg - DSA Digital Signature Algorithm(pub 17)
 	Hash alg - SHA1(hash 2)
 	Hash left 2 bytes - e8 41 
 	DSA r(160 bits) - ...

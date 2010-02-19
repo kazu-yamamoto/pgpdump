@@ -316,7 +316,7 @@ features(int len)
 }
 
 public void
-revocation_target(int len)
+signature_target(int len)
 {
 	printf("\t");
         pub_algs(Getc());

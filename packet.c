@@ -18,9 +18,8 @@ private int is_partial(int);
 #define OLD_TAG_SHIFT      2
 #define OLD_LEN_MASK    0x03
 
-#define TAG_NUM 64
 private char *
-TAG[TAG_NUM] = {
+TAG[] = {
 	"Reserved",
 	"Public-Key Encrypted Session Key Packet", 
 	"Signature Packet", 
@@ -86,6 +85,7 @@ TAG[TAG_NUM] = {
 	"Private",
 	"Private",	
 };
+#define TAG_NUM (sizeof(TAG) * sizeof(char *))
 
 private void
 (*tag_func[])() = {
@@ -156,9 +156,8 @@ private void
 	Private_Packet,
 };
 	
-#define SIGSUB_NUM 32
 private char *
-SIGSUB[SIGSUB_NUM] = {
+SIGSUB[] = {
 	"unknown(sub 0)",
 	"unknown(sub 1)",
 	"signature creation time(sub 2)",
@@ -190,8 +189,9 @@ SIGSUB[SIGSUB_NUM] = {
 	"signer's user id(sub 28)",
 	"reason for revocation(sub 29)",
         "features(sub 30)",
-        "revocation target(sub 31)",
+        "signature target(sub 31)",
 };
+#define SIGSUB_NUM (sizeof(SIGSUB) / sizeof(char *))
 
 private funcptr
 sigsub_func[] = {
@@ -226,15 +226,15 @@ sigsub_func[] = {
 	signer_user_id, 
 	reason_for_revocation, 
         features,
-        revocation_target,
+        signature_target,
 };
 
-#define UATSUB_NUM 2
 private char *
-UATSUB[UATSUB_NUM] = {
+UATSUB[] = {
 	"unknown(sub 0)",
 	"image attribute(sub 1)",
 };
+#define UATSUB_NUM (sizeof(UATSUB) / sizeof(char *))
 
 private funcptr
 uatsub_func[] = {

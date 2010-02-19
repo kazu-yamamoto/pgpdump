@@ -1,5 +1,14 @@
 			      Change Log
 
+0.18 2003/05/20
+
+* Supporting MacOS X.
+	"Stefan H. Holek" <stefan>
+* Catching up to 2440bis-07.
+	"Stefan H. Holek" <stefan>
+* A bug fix of old_Public_Key_Packet.
+	Shigeru NAKAMURA <s-nakamu>
+
 0.17 2002/06/28
 
 * Defining the SHA-1 hash for Secret Key Packet.

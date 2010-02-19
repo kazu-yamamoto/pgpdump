@@ -3,15 +3,14 @@
  */
 
 #include "pgpdump.h"
-#include <time.h>
+#include "autotime.h"
 
 private void time4_base(char *, time_t *);
 private time_t key_creation_time = 0;
 private time_t sig_creation_time = 0;
 
-#define PUB_ALGS_NUM 22
 private char *
-PUB_ALGS[PUB_ALGS_NUM] = {
+PUB_ALGS[] = {
 	"unknown(pub 0)", 
 	"RSA Encrypt or Sign(pub 1)",
 	"RSA Encrypt-Only(pub 2)",
@@ -29,12 +28,13 @@ PUB_ALGS[PUB_ALGS_NUM] = {
 	"unknown(pub 14)", 
 	"unknown(pub 15)", 
 	"ElGamal Encrypt-Only(pub 16)", 
-	"DSA Digital Signature Standard(pub 17)",
+	"DSA Digital Signature Algorithm(pub 17)",
 	"Reserved for Elliptic Curve(pub 18)", 
 	"Reserved for ECDSA(pub 19)", 
 	"ElGamal Encrypt or Sign (pub 20)", 
 	"X9.42 Diffie-Hellman (pub 21)", 
 };
+#define PUB_ALGS_NUM (sizeof(PUB_ALGS) / sizeof(char *))
 
 public void
 pub_algs(unsigned int type)
@@ -47,9 +47,8 @@ pub_algs(unsigned int type)
 	printf("\n");
 }
 
-#define SYM_ALGS_NUM 11
 private char *
-SYM_ALGS[SYM_ALGS_NUM] = {
+SYM_ALGS[] = {
 	"Plaintext or unencrypted data(sym 0)", 
 	"IDEA(sym 1)", 
 	"Triple-DES(sym 2)",
@@ -62,6 +61,7 @@ SYM_ALGS[SYM_ALGS_NUM] = {
 	"AES with 256-bit key(sym 9)",
 	"Twofish with 256-bit key(sym 10)",
 };
+#define SYM_ALGS_NUM (sizeof(SYM_ALGS) / sizeof(char *))
 
 public void
 sym_algs(unsigned int type)
@@ -84,7 +84,7 @@ sym_algs2(unsigned int type)
 }
 
 private int
-IV_LEN[SYM_ALGS_NUM] = {
+IV_LEN[] = {
 	0,      /* Plaintext */
 	8,	/* IDEA */
 	8,	/* Triple-DES */
@@ -107,13 +107,13 @@ iv_len(unsigned int type)
 		return 0;
 }
 
-#define COMP_ALGS_NUM 3
 private char *
 COMP_ALGS[] = {
 	"Uncompressed(comp 0)",
 	"ZIP <RFC1951>(comp 1)", 
 	"ZLIB <RFC1950>(comp 2)",
 };
+#define COMP_ALGS_NUM (sizeof(COMP_ALGS) / sizeof(char *))
 
 public void
 comp_algs(unsigned int type)
@@ -126,7 +126,6 @@ comp_algs(unsigned int type)
 	printf("\n");
 }
 
-#define HASH_ALGS_NUM 11
 private char *
 HASH_ALGS[] = {
 	"unknown(hash 0)",
@@ -141,6 +140,7 @@ HASH_ALGS[] = {
 	"SHA384(hash 9)",
 	"SHA512(hash 10)",
 };
+#define HASH_ALGS_NUM (sizeof(HASH_ALGS) / sizeof(char *))
 
 public void
 hash_algs(unsigned int type)
@@ -190,7 +190,7 @@ time4_base(char *str, time_t *pt)
 	if (uflag)
 		printf("\t%s - %s UTC %s", str, pat, pyr); 
 	else
-		printf("\t%s - %s %s %s", str, pat, tzname[ptm->tm_isdst], pyr); 
+		printf("\t%s - %s %s %s", str, pat, tm_zone(ptm), pyr); 
 }
 
 public void
@@ -281,13 +281,14 @@ string_to_key(void)
 {
 	int type = Getc();
 
-	printf("\tString-to-key(s2k %d):\n", type);
 	switch (type) {
 	case 0x00:
+		printf("\tSimple string-to-key(s2k %d):\n", type);
 		printf("\t");
 		hash_algs(Getc());
 		break;
 	case 0x01:
+		printf("\tSalted string-to-key(s2k %d):\n", type);
 		printf("\t");
 		hash_algs(Getc());
 		printf("\t\tSalt - ");
@@ -295,6 +296,7 @@ string_to_key(void)
 		printf("\n");
 		break;
 	case 0x03:
+		printf("\tIterated and salted string-to-key(s2k %d):\n", type);
 		printf("\t");
 		hash_algs(Getc());
 		printf("\t\tSalt - ");
@@ -307,7 +309,7 @@ string_to_key(void)
 		}
 		break;
 	default:
-		printf("\t\tunknown(s2k %d)\n", type);
+		printf("\tUnknown string-to-key(s2k %d)\n", type);
 	}
 }
 

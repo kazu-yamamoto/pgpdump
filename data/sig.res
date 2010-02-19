@@ -4,7 +4,7 @@ Old: Signature Packet(tag 2)(63 bytes)
 		Sig type - Signature of a binary document(0x00).
 		Creation time - Fri Nov 27 18:35:42 JST 1998
 	Key ID - 0xA79778E247B63037
-	Pub alg - DSA Digital Signature Standard(pub 17)
+	Pub alg - DSA Digital Signature Algorithm(pub 17)
 	Hash alg - SHA1(hash 2)
 	Hash left 2 bytes - 27 ae 
 	DSA r(159 bits) - ...

@@ -149,7 +149,7 @@ public void key_flags(int);
 public void signer_user_id(int);
 public void reason_for_revocation(int);
 public void features(int);
-public void revocation_target(int);
+public void signature_target(int);
 
 /*
  * uatfunc.c
