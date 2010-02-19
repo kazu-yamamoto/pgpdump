@@ -19,7 +19,7 @@ hash2(void)
 }
 
 private void
-signature_multi_precision_integer(int pub, int skip)
+signature_multi_precision_integer(int pub, int len)
 {
 	switch (pub) {
 	case 1:
@@ -40,7 +40,7 @@ signature_multi_precision_integer(int pub, int skip)
 		break;
 	default:
 		printf("\tUnknown signature(pub %d)\n", pub);
-		skip(skip);
+		skip(len);
 		break;
 	}
 }
@@ -165,10 +165,10 @@ new_Signature_Packet(int len)
 	hash_algs(Getc());
 	hsplen = Getc() * 256;
 	hsplen += Getc();
-	parse_subpacket("Hashed Sub", hsplen);
+	parse_subpacket("Hashed Sub", hsplen, 1);
 	usplen = Getc() * 256;
 	usplen += Getc();	
-	parse_subpacket("Sub", usplen);
+	parse_subpacket("Sub", usplen, 1);
 	hash2();
 	signature_multi_precision_integer(pub, len - 9 - hsplen - usplen);
 }

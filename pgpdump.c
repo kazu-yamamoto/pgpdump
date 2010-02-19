@@ -5,13 +5,15 @@
 #include "pgpdump.h"
 #include <stdarg.h>
 
+int aflag;
+int gflag;
 int iflag;
 int lflag;
 int mflag;
 int pflag;
 int uflag;
 
-private char *pgpdump_version = "0.16, Copyright (C) 1998-2001 Kazu Yamamoto";
+private char *pgpdump_version = "0.17, Copyright (C) 1998-2002 Kazu Yamamoto";
 private char *prog;
 
 private void usage(void);
@@ -21,12 +23,14 @@ private void
 usage(void)
 {
 	fprintf(stderr, "%s -h|-v\n", prog);	
-	fprintf(stderr, "%s [-i|-l|-m|-p|-u] [PGPfile]\n", prog);
+	fprintf(stderr, "%s [-agilmpu] [PGPfile]\n", prog);
 	fprintf(stderr, "\t -h -- displays this help\n");
 	fprintf(stderr, "\t -v -- displays version\n");
+	fprintf(stderr, "\t -a -- accepts ASCII input only\n");
+	fprintf(stderr, "\t -g -- selects alternate dump format\n");
 	fprintf(stderr, "\t -i -- dumps integer packets\n");
-	fprintf(stderr, "\t -l -- prints literal packets\n");
-	fprintf(stderr, "\t -m -- prints marker packets\n");
+	fprintf(stderr, "\t -l -- dumps literal packets\n");
+	fprintf(stderr, "\t -m -- dumps marker packets\n");
 	fprintf(stderr, "\t -p -- dumps private packets\n");
 	fprintf(stderr, "\t -u -- displays UTC time\n");
 	exit(SUCCESS);
@@ -72,8 +76,10 @@ version(void)
 int
 main(int argc, char *argv[])
 {
-	char *target = NULL;
+        int c;
 
+	aflag = 0;
+	gflag = 0;
 	iflag = 0;
 	lflag = 0;
 	mflag = 0;
@@ -84,14 +90,21 @@ main(int argc, char *argv[])
 		prog = argv[0];
 	else
 		prog++;
-	while (--argc > 0) {
-		if (**(++argv) == '-'){
-			switch (argv[0][1]){
+
+	while (--argc > 0 && (*++argv)[0] == '-') {
+                while (c = *++argv[0]) {
+			switch (c){
 			case 'h':
 				usage();
 				break;
 			case 'v':
 				version();
+				break;
+			case 'a':
+				aflag++;
+				break;
+			case 'g':
+				gflag++;
 				break;
 			case 'i':
 				iflag++;
@@ -111,18 +124,63 @@ main(int argc, char *argv[])
 			default:
 				usage();
 			}
-		} else {
-			target=argv[0];
-			break;
-		}
+	        }
 	}
 
-	if (target != NULL)
+        if (argc > 0) {
+	        char *target = argv[0];
 		if (freopen(target, "rb", stdin) == NULL)
 			warn_exit("can't open %s.", target); 
+        }
 	
 	parse_packet();
 	exit(SUCCESS);
+}
+
+public void skip(int len) 
+{
+        int i;
+        for (i = 0; i < len; i++)
+                Getc();
+}
+
+public void dump(int len) 
+{
+        if (gflag)
+                gdump(len);
+        else {
+                int i;
+                for (i = 0; i < len; i++)
+                        printf("%02x ", Getc());
+        }
+}
+
+public void pdump(int len) 
+{
+        if (gflag)
+                gdump(len);
+        else {
+                int i;
+                for (i = 0; i < len; i++) 
+                        printf("%c", Getc());
+        }
+}
+
+public void kdump(int len) 
+{
+        int i;
+        printf("0x");
+        for (i = 0; i < len; i++)
+                printf("%02X", Getc());
+}
+
+public void gdump(int len) /* mixed dump (like gnupg) */
+{       
+        int i;
+        for (i = 0; i < len; i++) {
+                int c = Getc();
+                printf(isprint(c)?"%c":"\\x%02x", c);
+        }
 }
 
 /* 

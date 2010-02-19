@@ -10,7 +10,8 @@ private int VERSION;
 private void old_Public_Key_Packet(void);
 private void new_Public_Key_Packet(int);
 private void IV(unsigned int);
-private void encrypted_Secret_Key(int);
+private void plain_Secret_Key(int);
+private void encrypted_Secret_Key(int, int);
 
 public void
 Public_Subkey_Packet(int len) 
@@ -34,8 +35,7 @@ Public_Key_Packet(int len)
 		new_Public_Key_Packet(len - 1);
 		break;
 	default:
-		printf("unknown ver(%d)\n", VERSION);
-		skip(len - 1);
+		warn_exit("unknown version (%d).", VERSION);
 		break;
 	}
 }
@@ -49,7 +49,7 @@ old_Public_Key_Packet(void)
 	days += Getc() * 256;
 	printf("\tValid days - %d[0 is forever]\n", days);
 	PUBLIC = Getc();
-	pub_algs(PUBLIC);
+	pub_algs(PUBLIC); /* PUBLIC should be 1 */
 	multi_precision_integer("RSA n");
 	multi_precision_integer("RSA e");
 }
@@ -110,7 +110,47 @@ Secret_Key_Packet(int len)
 	s2k = Getc();
 	switch (s2k) {
 	case 0:
-		/* not encrypted */
+		plain_Secret_Key(len - Getc_getlen());
+		break;
+	case 254:
+		sym = Getc();
+		sym_algs(sym);
+		string_to_key();
+		IV(iv_len(sym));
+		encrypted_Secret_Key(len - Getc_getlen(), YES);
+		break;
+	case 255:
+		sym = Getc();
+		sym_algs(sym);
+		string_to_key();
+		IV(iv_len(sym));
+		encrypted_Secret_Key(len - Getc_getlen(), NO);
+		break;
+	default:
+		sym = s2k;
+		sym_algs(sym);
+		IV(iv_len(sym));
+		encrypted_Secret_Key(len - Getc_getlen(), NO);
+		break;
+	}
+}
+
+private void
+plain_Secret_Key(int len)
+{
+	switch (VERSION) {
+	case 2:
+	case 3:
+		/* PUBLIC should be 1. */
+		multi_precision_integer("Encrypted RSA d");
+		multi_precision_integer("Encrypted RSA p");
+		multi_precision_integer("Encrypted RSA q");
+		multi_precision_integer("Encrypted RSA u");
+		printf("\tChecksum - ");
+		dump(2);
+		printf("\n");
+		break;
+	case 4:
 		switch (PUBLIC) {
 		case 1:
 		case 2:
@@ -129,53 +169,32 @@ Secret_Key_Packet(int len)
 			break;
 		default:
 			printf("\tUnknown secret key(pub %d)\n", PUBLIC);
-			skip(len - Getc_getlen());
+			skip(len - 2);
 			break;
-		}	
-		printf("\t\t-> m = sym alg(1 byte) + checksum(2 bytes) + PKCS-1 block type 02\n");
-		break;
-	case 255:
-		sym = Getc();
-		sym_algs(sym);
-		string_to_key();
-		IV(iv_len(sym));
-		encrypted_Secret_Key(len - Getc_getlen());
+		}
+		printf("\tChecksum - ");
+		dump(2);
+		printf("\n");
 		break;
 	default:
-		sym_algs(s2k);
-		IV(iv_len(s2k));
-		encrypted_Secret_Key(len - Getc_getlen());
+		printf("\tunknown version (%d)\n", VERSION);
+		skip(len);
 		break;
 	}
 }
 
 private void
-encrypted_Secret_Key(int len)
+encrypted_Secret_Key(int len, int sha1)
 {
 	switch (VERSION) {
 	case 2:
 	case 3:
-		switch (PUBLIC) {
-		case 1:
-		case 2:
-		case 3:
-			multi_precision_integer("Encrypted RSA d");
-			multi_precision_integer("Encrypted RSA p");
-			multi_precision_integer("Encrypted RSA q");
-			multi_precision_integer("Encrypted RSA u");
-			break;
-		case 16:
-		case 20:
-			multi_precision_integer("Encrypted ElGamal x");
-			break;
-		case 17:
-			multi_precision_integer("Encrypted DSA x");
-			break;
-		default:
-			printf("\t\tUnknown encrypted key(pub %d)\n", PUBLIC);
-			skip(len);
-			break;
-		}
+		/* PUBLIC should be 1.
+		   MPI prefix count is not encrypted. */
+		multi_precision_integer("Encrypted RSA d");
+		multi_precision_integer("Encrypted RSA p");
+		multi_precision_integer("Encrypted RSA q");
+		multi_precision_integer("Encrypted RSA u");
 		printf("\tChecksum - ");
 		dump(2);
 		printf("\n");
@@ -189,26 +208,26 @@ encrypted_Secret_Key(int len)
 			printf("\tEncrypted RSA p\n");
 			printf("\tEncrypted RSA q\n");
 			printf("\tEncrypted RSA u\n");
-			printf("\tEncrypted checksum\n");
 			break;
 		case 16:
 		case 20:
 			printf("\tEncrypted ElGamal x\n");
-			printf("\tEncrypted checksum\n");
 			break;
 		case 17:
 			printf("\tEncrypted DSA x\n");
-			printf("\tEncrypted checksum\n");
 			break;
 		default:
 			printf("\tUnknown encrypted key(pub %d)\n", PUBLIC);
-			printf("\tEncrypted checksum\n");
 			break;
 		}
+		if (sha1 == YES)
+			printf("\tEncrypted SHA1 hash\n");
+		else
+			printf("\tEncrypted checksum\n");
 		skip(len);
 		break;
 	default:
-		printf("\tUnknown encrypted key\n");
+		printf("\tunknown version (%d)\n", VERSION);
 		skip(len);
 		break;
 	}

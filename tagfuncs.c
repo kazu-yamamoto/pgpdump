@@ -32,13 +32,13 @@ get_sym_alg()
 }
 
 public void
-Reserved(int len) 
+Reserved(int len)
 {
 	skip(len);
 }
 
 public void
-Public_Key_Encrypted_Session_Key_Packet(int len) 
+Public_Key_Encrypted_Session_Key_Packet(int len)
 {
 	int pub;
 	ver(2, 3, Getc());
@@ -69,7 +69,7 @@ Public_Key_Encrypted_Session_Key_Packet(int len)
 }
 
 public void
-Symmetric_Key_Encrypted_Session_Key_Packet(int len) 
+Symmetric_Key_Encrypted_Session_Key_Packet(int len)
 {
 	int left = len, alg;
 	ver(NULL_VER, 4, Getc());
@@ -89,7 +89,7 @@ Symmetric_Key_Encrypted_Session_Key_Packet(int len)
 }
 
 public void
-Symmetrically_Encrypted_Data_Packet(int len) 
+Symmetrically_Encrypted_Data_Packet(int len)
 {
 	int alg = get_sym_alg();
 	switch (alg) {
@@ -109,7 +109,7 @@ Symmetrically_Encrypted_Data_Packet(int len)
 }
 
 public void
-Marker_Packet(int len) 
+Marker_Packet(int len)
 {
 	printf("\tString - ");
 	if (mflag) {
@@ -122,7 +122,7 @@ Marker_Packet(int len)
 }
 
 public void
-Literal_Data_Packet(int len) 
+Literal_Data_Packet(int len)
 {
 	int format, flen, blen;
 	
@@ -136,6 +136,7 @@ Literal_Data_Packet(int len)
 		printf("text");		
 		break;
 	case 'l':
+		/* RFC 1991 incorrectly define this as '1' */
 		printf("local");
 		break;
 	default:
@@ -159,7 +160,7 @@ Literal_Data_Packet(int len)
 }
 
 public void
-Trust_Packet(int len) 
+Trust_Packet(int len)
 {
 	printf("\tTrust - ");
 	dump(len);
@@ -167,11 +168,17 @@ Trust_Packet(int len)
 }
 
 public void
-User_ID_Packet(int len) 
+User_ID_Packet(int len)
 {
 	printf("\tUser ID - ");
 	pdump(len);
 	printf("\n");
+}
+
+public void
+User_Attribute_Packet(int len)
+{
+	parse_subpacket("Sub", len, 2);
 }
 
 public void
@@ -206,7 +213,7 @@ Modification_Detection_Code_Packet(int len)
 }
 
 public void
-Private_Packet(int len) 
+Private_Packet(int len)
 {
 	printf("\tPrivate - ");
 	if (pflag) {

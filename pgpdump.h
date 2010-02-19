@@ -29,6 +29,8 @@
  * Global
  */
 
+public int aflag;
+public int gflag;
 public int iflag;
 public int lflag;
 public int mflag;
@@ -41,6 +43,11 @@ public int uflag;
 
 public void warning(const char *, ...);
 public void warn_exit(const char *, ...);
+public void skip(int);
+public void dump(int);
+public void pdump(int);
+public void kdump(int);
+public void gdump(int);
 
 /*
  * buffer.c
@@ -56,30 +63,12 @@ public int Getc1(void);
 public int Getc_getlen(void);
 public void Getc_resetlen(void);
 
-#define skip(len) do {\
-		int i; for (i = 0; i < (len); i++) Getc();\
-	} while (0)
-
-#define pdump(len) do {\
-		int i; for (i = 0; i < (len); i++) printf("%c", Getc());\
-	} while (0)
-
-#define dump(len) do {\
-		int i; for (i = 0; i < (len); i++) printf("%02x ", Getc());\
-	} while (0)
-
-#define kdump(len) do {\
-		int i;\
-		printf("0x");\
-		for (i = 0; i < (len); i++) printf("%02X", Getc());\
-	} while (0)
-
 /*
  *  packet.c
  */
 
 public void parse_packet(void);
-public void parse_subpacket(char *, int);
+public void parse_subpacket(char *, int, int);
 
 /*
  * types.c
@@ -113,6 +102,7 @@ public void Marker_Packet(int);
 public void Literal_Data_Packet(int);
 public void Trust_Packet(int);
 public void User_ID_Packet(int);
+public void User_Attribute_Packet(int);
 public void Symmetrically_Encrypted_and_MDC_Packet(int);
 public void Modification_Detection_Code_Packet(int);
 public void Private_Packet(int);
@@ -158,6 +148,14 @@ public void policy_URL(int);
 public void key_flags(int);
 public void signer_user_id(int);
 public void reason_for_revocation(int);
+public void features(int);
+public void revocation_target(int);
+
+/*
+ * uatfunc.c
+ */
+
+public void image_attribute(int);
 
 #endif /* _PGP_DUMP_H_ */
 

@@ -4,6 +4,8 @@
 
 #include "pgpdump.h"
 
+typedef void (*funcptr)();
+
 private int get_new_len(int);
 private int is_partial(int);
 
@@ -36,7 +38,7 @@ TAG[TAG_NUM] = {
 	"Public Subkey Packet",
 	"unknown",
 	"unknown",
-	"unknown",
+	"User Attribute Packet",
 	"Symmetrically Encrypted and MDC Packet",
 	"Modification Detection Code Packet",
 	"unknown",
@@ -104,7 +106,7 @@ private void
 	Public_Subkey_Packet,
 	NULL,
 	NULL,
-	NULL,
+	User_Attribute_Packet,
 	Symmetrically_Encrypted_and_MDC_Packet,
 	Modification_Detection_Code_Packet,
 	NULL,
@@ -154,9 +156,9 @@ private void
 	Private_Packet,
 };
 	
-#define SUB_NUM 30
+#define SIGSUB_NUM 32
 private char *
-SUB[SUB_NUM] = {
+SIGSUB[SIGSUB_NUM] = {
 	"unknown(sub 0)",
 	"unknown(sub 1)",
 	"signature creation time(sub 2)",
@@ -187,10 +189,12 @@ SUB[SUB_NUM] = {
 	"key flags(sub 27)",
 	"signer's user id(sub 28)",
 	"reason for revocation(sub 29)",
+        "features(sub 30)",
+        "revocation target(sub 31)",
 };
 
-private void
-(*sub_func[])() = {
+private funcptr
+sigsub_func[] = {
 	NULL,
 	NULL,
 	signature_creation_time, 
@@ -221,6 +225,21 @@ private void
 	key_flags,
 	signer_user_id, 
 	reason_for_revocation, 
+        features,
+        revocation_target,
+};
+
+#define UATSUB_NUM 2
+private char *
+UATSUB[UATSUB_NUM] = {
+	"unknown(sub 0)",
+	"image attribute(sub 1)",
+};
+
+private funcptr
+uatsub_func[] = {
+	NULL,
+	image_attribute,
 };
 
 private int
@@ -266,9 +285,11 @@ parse_packet(void)
 	 * it is the binary raw form. Otherwise, let's assume
 	 * it is encoded with radix64.
 	 */
-	if (c & BINARY_TAG_FLAG)
+	if (c & BINARY_TAG_FLAG) {
+		if (aflag)
+			warn_exit("binary input is not allowed.");
 		set_binary();
-	else
+	} else
 		set_armor();
 	
 	while ((c = Getc1()) != EOF) {
@@ -345,9 +366,27 @@ parse_packet(void)
 }
 
 public void
-parse_subpacket(char *prefix, int tlen)
+parse_subpacket(char *prefix, int tlen, int type)
 {
-	int len, sub;
+	int len, sub, slen;
+	char **exptbl;
+	funcptr *sw;
+
+	switch (type) {
+	case 1:
+		slen = SIGSUB_NUM;
+		exptbl = SIGSUB;
+		sw = sigsub_func;
+		break;
+	case 2:
+		slen = UATSUB_NUM;
+		exptbl = UATSUB;
+		sw = uatsub_func;
+		break;
+	default:
+		warn_exit("unknown type (%d) for subpacket.", type);
+		break;
+	}
 	
 	while (tlen > 0) {
 		len = Getc();
@@ -366,18 +405,17 @@ parse_subpacket(char *prefix, int tlen)
 		tlen -= len;
 		sub = Getc(); /* len includes this field byte */
 		len --;
-		if (sub < SUB_NUM)
-			printf("\t%s: %s", prefix, SUB[sub]);
+		if (sub < slen)
+			printf("\t%s: %s", prefix, exptbl[sub]);
 		else
 			printf("\t%s: unknown(sub %d)", prefix, sub);
 		printf("(%d bytes)\n", len);
-		if (sub < SUB_NUM && sub_func[sub] != NULL)
-			(*sub_func[sub])(len);
+		if (sub < slen && sw[sub] != NULL)
+			(*sw[sub])(len);
 		else
 			skip(len);
 	}
 }
-
 
 /* 
  * Copyright (C) 1998 Kazuhiko Yamamoto

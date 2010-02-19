@@ -1,5 +1,15 @@
 			      Change Log
 
+0.17 2002/06/28
+
+* Defining the SHA-1 hash for Secret Key Packet.
+* Defining the -a and -g option.
+* Catching up to 2440bis-05.
+* Implementing User_Attribute_Packet.
+* Implementing features and revocation_target.
+* Removing macros to avoid side-effects.
+* Most modifications above come from:
+	"Stefan H. Holek" <stefan>
 
 0.16 2001/12/06
 
@@ -9,7 +19,7 @@
 0.15 2001/11/13
 
 * Old man style for pgpdump.1.
-* The symmetric encryption algorism is displayed more user-friendly.
+* The symmetric encryption algorithm is displayed more user-friendly.
 
 0.14 2001/11/09
 

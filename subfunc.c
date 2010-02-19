@@ -304,6 +304,27 @@ reason_for_revocation(int len)
 	printf("\n");
 }
 
+public void
+features(int len)
+{
+        int c = Getc();
+        if (c & 0x01)
+                printf("\t\tFlag - Modification detection (packets 18 and 19)\n"); 
+        if ((c & ~0xfe) == 0)
+                printf("\t\tFlag - undefined\n"); 
+        skip(len - 1);
+}
+
+public void
+revocation_target(int len)
+{
+	printf("\t");
+        pub_algs(Getc());
+	printf("\t");
+        hash_algs(Getc());
+	printf("\t\tTarget signature digest(%d bytes)\n", len - 2);
+        skip(len - 2);
+}
 
 /* 
  * Copyright (C) 1998 Kazuhiko Yamamoto
