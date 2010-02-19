@@ -2,7 +2,6 @@
  * keys.c
  */
 
-#include <stdio.h>
 #include "pgpdump.h"
 
 private int PUBLIC;

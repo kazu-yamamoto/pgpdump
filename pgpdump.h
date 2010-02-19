@@ -2,6 +2,18 @@
  * pgpdump.h
  */
 
+#ifndef _PGP_DUMP_H_
+#define _PGP_DUMP_H_
+
+#include "config.h"
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#ifdef HAVE_UNISTD_H
+# include <unistd.h>
+#endif /* HAVE_UNISTD_H */
+
 #define public extern
 #define private static
 
@@ -120,6 +132,8 @@ public void reason_for_revocation(int);
  */
 
 public void armor_decode(void);
+
+#endif /* _PGP_DUMP_H_ */
 
 /* 
  * Copyright (C) 1998 Kazuhiko Yamamoto

@@ -2,9 +2,6 @@
  * armor.c
  */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
 #include "pgpdump.h"
 
 #define YES 1

@@ -1,8 +1,10 @@
 		   pgpdump: a PGP packet visualizer
 
 		   Kazu Yamamoto <kazu@iijlab.net>
+			   October 18, 2000
 
-			   August 27, 1998
+
+			      <Overview>
 
 "pgpdump" is a PGP packet visualizer which displays the packet format
 of OpenPGP (RFC 2440) and PGP version 2 (RFC 1991).
@@ -32,6 +34,19 @@ Here is an example:
 	        DSA s(157 bits) - ...
 	                -> hash(160 bits)
 
+
+			    <Installation>
+
+Take the following steps to install "pgpdump".
+
+	% ./configure
+	% make
+	% su
+	# make install
+
+
+			       <Usage>
+
 To know how to use pgpdump, type "pgpdump -h". 
 
 Some examples are stored in the "data" directory. Also, you can
@@ -58,6 +73,8 @@ following options(see src/pgp/{keydb/pgpPrefs.c,utils/pgpConf.c}):
 Also, try GNUPG which is an excellent alternative of PGP version 5. 
 Its options are easy-to-understand.
 
-Bugs:
+
+				<Bugs>
+
 	- Some sub-packets for the signature packet have not been
 	  implemented yet.

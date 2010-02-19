@@ -2,9 +2,8 @@
  * types.c
  */
 
-#include <stdio.h>
 #include "pgpdump.h"
-#include "time.h"
+#include <time.h>
 
 #define PUB_ALGS_NUM 22
 private char *

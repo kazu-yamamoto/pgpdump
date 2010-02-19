@@ -2,7 +2,6 @@
  * packet.c
  */
 
-#include <stdio.h>
 #include "pgpdump.h"
 
 #define BINARY_TAG_FLAG 0x80

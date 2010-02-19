@@ -14,15 +14,16 @@
  *	inflateInit2_(strm, DEF_WBITS(15?), ZLIB_VERSION, sizeof(z_stream))
  */
 
-#include <stdio.h>
-#include <zlib.h>
-#include <unistd.h>
 #include "pgpdump.h"
+
+#ifdef HAVE_LIBZ
+# include <zlib.h>
+#endif /* HAVE_LIBZ */
 
 public void
 Compressed_Data_Packet(int len) 
 {
-#ifdef HAVE_ZLIB
+#ifdef HAVE_LIBZ
 	int alg = Getc();
 	int ilen = BUFSIZ, olen = BUFSIZ * 8;
 	int err = 0, inflated = 0;
@@ -94,10 +95,10 @@ Compressed_Data_Packet(int len)
 
 	Set_input_file(output);
 	unlink(outfile);
-#else /* HAVE_ZLIB */
+#else /* HAVE_LIBZ */
 	comp_algs(Getc());
 	error("Can't uncompress without zlib.");
-#endif /* HAVE_ZLIB */
+#endif /* HAVE_LIBZ */
 }
 
 /* 

@@ -2,7 +2,6 @@
  * signature.c
  */
 
-#include <stdio.h>
 #include "pgpdump.h"
 
 private void hash2(void);

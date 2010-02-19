@@ -2,7 +2,6 @@
  * subfunc.c
  */
 
-#include <stdio.h>
 #include "pgpdump.h"
 
 public void

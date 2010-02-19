@@ -2,14 +2,9 @@
  * pgpdump.c
  */
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <unistd.h>
-
 #include "pgpdump.h"
 
-private char *pgpdump_version = "0.03";
+private char *pgpdump_version = "0.04, Copyright (C) 1998-2000 Kazu Yamamoto";
 private char *prog;
 
 private void usage(void);

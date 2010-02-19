@@ -1,6 +1,11 @@
-# comment out unless you have zlib.
-DEFS = -DHAVE_ZLIB
-LIBS = -lz
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+bindir = @bindir@
+LIBS = @LIBS@
+
+CFLAGS = -O -Wall
+RM = rm -f
+INSTALL = install -c -m 555
 
 INCS = pgpdump.h
 SRCS = pgpdump.c types.c tagfuncs.c packet.c subfunc.c signature.c keys.c \
@@ -9,12 +14,11 @@ OBJS = pgpdump.o types.o tagfuncs.o packet.o subfunc.o signature.o keys.o \
        armor.o uncomp.o
 PROG = pgpdump
 
-CFLAGS = -O -Wall
-BINDIR = /usr/local/bin
-RM = rm -f
+CNF = config.h config.status config.cache config.log
+MKF = Makefile
 
 .c.o:
-	$(CC) -c $(CFLAGS) $(DEFS) $<
+	$(CC) -c $(CFLAGS) $<
 
 all: $(PROG)
 
@@ -24,5 +28,7 @@ $(PROG): $(OBJS)
 clean:
 	$(RM) $(OBJS) $(PROG)
 
+distclean:
+	$(RM) $(OBJS) $(PROG) $(CNF) $(MKF)
 install:
-	install -c -m 555 $(PROG) $(BINDIR)
+	$(INSTALL) $(PROG) $(bindir)
