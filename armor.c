@@ -3,6 +3,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include "pgpdump.h"
 
@@ -102,10 +103,10 @@ armor_decode(void)
 	FILE *output;
 	char buffer[BUFSIZ], outfile[BUFSIZ];
 
-	strcpy(outfile, "/tmp/pgpdump.XXXX");
+	strcpy(outfile, "/tmp/pgpdump.XXXXXX");
 
 	if (mktemp(outfile) == NULL)
-		error("can't open null stream.");
+		error("can't open a temporary file.");
 	output = fopen(outfile, "w");
 	if (output == NULL)
 		error("can't open the file."); 

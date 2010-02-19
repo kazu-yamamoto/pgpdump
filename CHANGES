@@ -1,0 +1,12 @@
+			      Change Log
+
+0.02 1998/12/25
+
+* Clean up the "data" directory.
+* Linux's mktemp(3) requires 6 "X"s.
+* Replace "uncompress.c" with "uncomp.c" due to the file length
+limitation of MS-DOS.
+
+0.01 1998/12/04
+
+* The first release
