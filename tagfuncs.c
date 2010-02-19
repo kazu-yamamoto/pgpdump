@@ -123,6 +123,33 @@ User_ID_Packet(int len)
 	printf("\n");
 }
 
+public void
+Symmetrically_Encrypted_and_MDC_Packet(int len)
+{
+	printf("\tVer %d\n", Getc());
+	printf("\tEncrypted data (plain text + MDC SHA1(20))\n");
+	skip(len - 1);
+}
+
+public void
+Modification_Detection_Code_Packet(int len)
+{
+	printf("\tMDC - SHA1(20)\n");
+	skip(len);
+}
+
+public void
+Private_Packet(int len) 
+{
+	printf("\tPrivate - ");
+	if (pflag) {
+		dump(len);
+	} else {
+		printf("...");
+		skip(len);
+	}
+	printf("\n");
+}
 
 /* 
  * Copyright (C) 1998 Kazuhiko Yamamoto

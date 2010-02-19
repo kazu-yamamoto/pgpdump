@@ -14,7 +14,7 @@
 #define OLD_TAG_SHIFT      2
 #define OLD_LEN_MASK    0x03
 
-#define TAG_NUM 15
+#define TAG_NUM 64
 private char *
 TAG[TAG_NUM] = {
 	"Reserved",
@@ -31,7 +31,56 @@ TAG[TAG_NUM] = {
 	"Literal Data Packet", 
 	"Trust Packet", 
 	"User ID Packet", 
-	"Public Subkey Packet", 
+	"Public Subkey Packet",
+	"Symmetrically Encrypted and MDC Packet",  /* xxx */
+	"Modification Detection Code Packet",  /* xxx */
+	"unknown", /* xxx PHOTO */
+	"Symmetrically Encrypted and MDC Packet", /* xxx GPG */
+	"Modification Detection Code Packet",     /* xxx GPG */
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"unknown",
+	"Private",	
+	"Private",
+	"Private",
+	"Private",	
 };
 
 private void
@@ -51,6 +100,56 @@ private void
 	Trust_Packet,
 	User_ID_Packet,
 	Public_Subkey_Packet,
+	NULL, /* xxx */
+	NULL, /* xxx */
+	NULL, /* xxx */
+	Symmetrically_Encrypted_and_MDC_Packet, /* xxx */
+	Modification_Detection_Code_Packet, /* xxx */
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	Private_Packet,
+	Private_Packet,
+	Private_Packet,
+	Private_Packet,
 };
 	
 #define SUB_NUM 30
@@ -142,7 +241,7 @@ parse_packet(void)
 	}
 	
 	partial = 0;
-	while ((c = Getc()) != EOF) {
+	while ((c = Getc1()) != EOF) {
 		if (partial)
 			tag = PARTIAL;
 		else
@@ -204,7 +303,7 @@ parse_packet(void)
 			if (tag < TAG_NUM && tag_func[tag] != NULL)
 				(*tag_func[tag])(len);
 			else {
-				printf("KNOWN TAG\n");
+				printf("\tUNKNOWN TAG\n");
 				skip(len);
 			}
 		}
@@ -239,7 +338,7 @@ parse_subpacket (char *prefix, int tlen)
 		if (sub < SUB_NUM && sub_func[sub] != NULL)
 			(*sub_func[sub])(len);
 		else {
-			printf("KNOWN SUB PARCKET\n");
+			printf("\tUNKNOWN SUB PARCKET\n");
 			skip(len);
 		}
 	}

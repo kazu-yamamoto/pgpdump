@@ -43,7 +43,7 @@ pub_algs(int type)
 	printf("\n");
 }
 
-#define SYM_ALGS_NUM 10
+#define SYM_ALGS_NUM 11
 private char *
 SYM_ALGS[SYM_ALGS_NUM] = {
 	"Plaintext or unencrypted data(sym 0)", 
@@ -55,7 +55,8 @@ SYM_ALGS[SYM_ALGS_NUM] = {
 	"DES/SK(sym 6)", 
 	"AES with 128-bit key(sym 7)", 
 	"AES with 192-bit key(sym 8)", 
-	"AES with 256-bit key(sym 9)", 
+	"AES with 256-bit key(sym 9)",
+	"Twofish with 256-bit key(sym 10)",
 };
 
 public void

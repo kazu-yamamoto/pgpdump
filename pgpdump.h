@@ -29,6 +29,7 @@
 int mflag;
 int lflag;
 int iflag;
+int pflag;
 
 /*
  * pgpdump.c
@@ -38,6 +39,7 @@ public void error(char *);
 public void Set_input_file(FILE *);
 public FILE *Get_input_file(void);
 public int Getc(void);
+public int Getc1(void);
 public int Getc_getlen(void);
 public void Getc_resetlen(void);
 public FILE * Get_temp_file(char **);
@@ -78,6 +80,9 @@ public void Marker_Packet(int);
 public void Literal_Data_Packet(int);
 public void Trust_Packet(int);
 public void User_ID_Packet(int);
+public void Symmetrically_Encrypted_and_MDC_Packet(int);
+public void Modification_Detection_Code_Packet(int);
+public void Private_Packet(int);
 
 /*
  * keys.c

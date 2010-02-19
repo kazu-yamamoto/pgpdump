@@ -4,7 +4,7 @@
 
 #include "pgpdump.h"
 
-private char *pgpdump_version = "0.04, Copyright (C) 1998-2000 Kazu Yamamoto";
+private char *pgpdump_version = "0.05, Copyright (C) 1998-2001 Kazu Yamamoto";
 private char *prog;
 
 private void usage(void);
@@ -13,10 +13,11 @@ private void version(void);
 private void
 usage(void)
 {
-	fprintf(stderr, "%s [-h|-m|-l|-i] PGPfile\n", prog);
+	fprintf(stderr, "%s [-h|-m|-l|-i|-p] PGPfile\n", prog);
 	fprintf(stderr, "\t -h -- displays this help\n");
 	fprintf(stderr, "\t -m -- prints marker\n");
 	fprintf(stderr, "\t -l -- prints literal\n");
+	fprintf(stderr, "\t -p -- dump private\n");
 	fprintf(stderr, "\t -i -- dump integer\n");
 	exit(ERROR);
 }
@@ -44,6 +45,7 @@ main (int argc, char *argv[])
 	iflag = 0;
 	mflag = 0;
 	lflag = 0;
+	pflag = 0;
 	
 	if ((prog = strrchr(argv[0], '/')) == NULL)
 		prog = argv[0];
@@ -67,6 +69,9 @@ main (int argc, char *argv[])
 			case 'm':
 				mflag++;
 				break;
+			case 'p':
+				pflag++;
+				break;
 			default:
 				usage();
 			}
@@ -77,7 +82,7 @@ main (int argc, char *argv[])
 	}
 
 	if (target == NULL)
-		error("can't open null stream.");
+		error("no file specified.");
 	if ((input_stream = fopen(target, "r")) == NULL)
 		error("can't open the file."); 
 	Set_input_file(input_stream);
@@ -103,6 +108,16 @@ Get_input_file(void)
 
 public int
 Getc(void)
+{
+	int c = getc(input);
+
+	MAGIC_COUNT++;
+	if (c == EOF) exit(ERROR);
+	return c;
+}
+
+public int
+Getc1(void)
 {
 	MAGIC_COUNT++;
 	return getc(input);

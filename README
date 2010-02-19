@@ -1,13 +1,13 @@
 		   pgpdump: a PGP packet visualizer
 
 		   Kazu Yamamoto <kazu@iijlab.net>
-			   October 18, 2000
+			    March 22, 2001
 
 
 			      <Overview>
 
 "pgpdump" is a PGP packet visualizer which displays the packet format
-of OpenPGP (RFC 2440) and PGP version 2 (RFC 1991).
+of OpenPGP (RFC 2440 + bis) and PGP version 2 (RFC 1991).
 
 Here is an example:
 
@@ -66,7 +66,7 @@ following options(see src/pgp/{keydb/pgpPrefs.c,utils/pgpConf.c}):
 	+hashnum
 		1 - MD5 (default)
 		2 - SHA-1
-		3 - PIPEMD160
+		3 - RIPEMD160
 
 	note : compress is 1 (RFC1950 ZIP ZEFLATE) only.
 

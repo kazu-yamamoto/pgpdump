@@ -7,8 +7,8 @@
 private int PUBLIC;
 private int VERSION;
 
+private void old_Public_Key_Packet(void);
 private void new_Public_Key_Packet(int);
-private void old_Public_Key_Packet(int);
 private void IV(void);
 private void encrypted_Secret_Key(int);
 
@@ -27,21 +27,21 @@ Public_Key_Packet(int len)
 	case 2:
 	case 3:
 		printf("old\n");
-		old_Public_Key_Packet(len);
+		old_Public_Key_Packet();
 		break;
 	case 4:
 		printf("new\n");
-		new_Public_Key_Packet(len);
+		new_Public_Key_Packet(len - 1);
 		break;
 	default:
-		printf("unknown\n");
+		printf("unknown ver(%d)\n", VERSION);
 		skip(len - 1);
 		break;
 	}
 }
 
 private void
-old_Public_Key_Packet(int len)
+old_Public_Key_Packet()
 {
 	time4("Public key creation time");
 	printf("\tValid days - %d[0 is forever]\n", Getc() * 256 + Getc());
@@ -59,10 +59,13 @@ new_Public_Key_Packet(int len)
 	pub_algs(PUBLIC);
 	switch (PUBLIC) {
 	case 1:
+	case 2:
+	case 3:
 		multi_precision_integer("RSA n");
 		multi_precision_integer("RSA e");
 		break;
 	case 16:
+	case 20:
 		multi_precision_integer("ElGamal p");
 		multi_precision_integer("ElGamal g");
 		multi_precision_integer("ElGamal y");
@@ -106,12 +109,15 @@ Secret_Key_Packet(int len)
 		/* not encrypted */
 		switch (PUBLIC) {
 		case 1:
+		case 2:
+		case 3:
 			multi_precision_integer("RSA d");
 			multi_precision_integer("RSA p");
 			multi_precision_integer("RSA q");
 			multi_precision_integer("RSA u");
 			break;
 		case 16:
+		case 20:
 			multi_precision_integer("ElGamal x");
 			break;
 		case 17:
@@ -119,7 +125,7 @@ Secret_Key_Packet(int len)
 			break;
 		default:
 			printf("\t\tunknown(%d)\n", PUBLIC);
-			skip(len - 5);
+			skip(len - Getc_getlen());
 		}	
 		printf("\t\t-> m = sym alg(1) + checksum(2) + PKCS-1 block type 02\n");
 		break;
@@ -144,12 +150,15 @@ encrypted_Secret_Key(int len)
 	case 3:
 		switch (PUBLIC) {
 		case 1:
+		case 2:
+		case 3:
 			multi_precision_integer("Encrypted RSA d");
 			multi_precision_integer("Encrypted RSA p");
 			multi_precision_integer("Encrypted RSA q");
 			multi_precision_integer("Encrypted RSA u");
 			break;
 		case 16:
+		case 20:
 			multi_precision_integer("Encrypted ElGamal x");
 			break;
 		case 17:
@@ -166,9 +175,12 @@ encrypted_Secret_Key(int len)
 	case 4:
 		switch (PUBLIC) {
 		case 1:
+		case 2:
+		case 3:
 			printf("\tEncrypted RSA d, p, q, u, checksum\n");
 			break;
 		case 16:
+		case 20:
 			printf("\tEncrypted ElGamal x, checksum\n");
 			break;
 		case 17:

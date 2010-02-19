@@ -1,5 +1,12 @@
 			      Change Log
 
+0.05 2001/03/22
+
+* Adding the "-p" option.
+* Adding some tags and algorithms.
+* A serious bug fix of Public_Key_Packet(). "len" was wrong.
+* A serious bug fix of Getc(). Defined Getc1().
+
 0.04 2000/10/18
 
 * configure support.
