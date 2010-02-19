@@ -1,8 +1,13 @@
 			      Change Log
 
+0.15 2001/11/13
+
+* Old man style for pgpdump.1.
+* The symmetric encryption algorism is displayed more user-friendly.
+
 0.14 2001/11/09
 
-* Catching up to 2290bis-03.
+* Catching up to 2440bis-03.
 
 0.13 2001/10/24
 

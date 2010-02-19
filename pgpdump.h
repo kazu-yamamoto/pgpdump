@@ -81,6 +81,7 @@ public void parse_subpacket(char *, int);
 
 public void pub_algs(unsigned int);
 public void sym_algs(unsigned int);
+public void sym_algs2(unsigned int);
 public int  iv_len(unsigned int);
 public void comp_algs(unsigned int);
 public void hash_algs(unsigned int);

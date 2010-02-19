@@ -4,6 +4,33 @@
 
 #include "pgpdump.h"
 
+#define SYM_ALG_DEFAULT     1
+#define SYM_ALG_SYM_ENC    -1
+#define SYM_ALG_PUB_ENC    -2
+
+private int sym_alg = SYM_ALG_DEFAULT;
+private void reset_sym_alg();
+private void set_sym_alg(int);
+private int get_sym_alg();
+
+private void
+reset_sym_alg()
+{
+	sym_alg = SYM_ALG_DEFAULT;
+}
+
+private void
+set_sym_alg(int alg)
+{
+	sym_alg = alg;
+}
+
+private int
+get_sym_alg()
+{
+	return sym_alg;
+}
+
 public void
 Reserved(int len) 
 {
@@ -38,14 +65,17 @@ Public_Key_Encrypted_Session_Key_Packet(int len)
 		skip(len - 10);
 	}
 	printf("\t\t-> m = sym alg(1 byte) + checksum(2 bytes) + PKCS-1 block type 02\n");
+	set_sym_alg(SYM_ALG_PUB_ENC);
 }
 
 public void
 Symmetric_Key_Encrypted_Session_Key_Packet(int len) 
 {
-	int left = len;
+	int left = len, alg;
 	ver(NULL_VER, 4, Getc());
-	sym_algs(Getc());
+	alg = Getc();
+	sym_algs(alg);
+	set_sym_alg(alg);
 	left -= 2;
 	Getc_resetlen();
 	string_to_key();
@@ -54,14 +84,28 @@ Symmetric_Key_Encrypted_Session_Key_Packet(int len)
 		printf("\tEncrypted session key\n");
 		printf("\t\t-> sym alg(1 bytes) + session key\n");
 		skip(left);
+		set_sym_alg(SYM_ALG_SYM_ENC);
 	}
 }
 
 public void
 Symmetrically_Encrypted_Data_Packet(int len) 
 {
-	printf("\tEncrypted data [if pub/sym session key not present, sym alg - IDEA]\n");
+	int alg = get_sym_alg();
+	switch (alg) {
+	case SYM_ALG_SYM_ENC:
+		printf("\tEncrypted data [sym alg is encrypted in the sym session key above]\n");
+		break;
+	case SYM_ALG_PUB_ENC:
+		printf("\tEncrypted data [sym alg is encrypted in the pub session key above]\n");
+		break;
+	default:
+		printf("\tEncrypted data [sym alg is ");
+		sym_algs2(alg);
+		printf("]\n");
+	}
 	skip(len);
+	reset_sym_alg();
 }
 
 public void
@@ -133,9 +177,23 @@ User_ID_Packet(int len)
 public void
 Symmetrically_Encrypted_and_MDC_Packet(int len)
 {
+	int alg = get_sym_alg();
 	printf("\tVer %d\n", Getc());
-	printf("\tEncrypted data (plain text + MDC SHA1(20 bytes))\n");
+	switch (alg) {
+	case SYM_ALG_SYM_ENC:
+		printf("\tEncrypted data [sym alg is encrypted in the sym session key above]\n");
+		break;
+	case SYM_ALG_PUB_ENC:
+		printf("\tEncrypted data [sym alg is encrypted in the pub session key above]\n");
+		break;
+	default:
+		printf("\tEncrypted data [sym alg is ");
+		sym_algs2(alg);
+		printf("]\n");
+	}
+	printf("\t\t(plain text + MDC SHA1(20 bytes))\n");
 	skip(len - 1);
+	reset_sym_alg();
 }
 
 /* this function is not used because this packet appears only

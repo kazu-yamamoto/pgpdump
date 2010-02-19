@@ -74,6 +74,15 @@ sym_algs(unsigned int type)
 	printf("\n");
 }
 
+public void
+sym_algs2(unsigned int type)
+{
+	if (type < SYM_ALGS_NUM)
+		printf(SYM_ALGS[type]);
+	else
+		printf("unknown(sym %d)", type);
+}
+
 private int
 IV_LEN[SYM_ALGS_NUM] = {
 	0,      /* Plaintext */
