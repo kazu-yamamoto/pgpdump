@@ -70,7 +70,7 @@ private int
 line_not_blank(byte *s)
 {
 	while (isspace(*s)) {
-	  	if (*s == CR || *s == LF)
+		if (*s == CR || *s == LF)
 			return NO;
 		s++;
 	}
