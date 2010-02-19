@@ -83,6 +83,9 @@ SYM_ALGS[] = {
 	"AES with 192-bit key(sym 8)",
 	"AES with 256-bit key(sym 9)",
 	"Twofish with 256-bit key(sym 10)",
+	"Camellia with 128-bit key(sym 11)",
+	"Camellia with 192-bit key(sym 12)",
+	"Camellia with 256-bit key(sym 13)",
 };
 #define SYM_ALGS_NUM (sizeof(SYM_ALGS) / sizeof(string))
 
@@ -116,6 +119,9 @@ IV_LEN[] = {
 	16,	/* AES-192 */
 	16,	/* AES-256 */
 	16,	/* Twofish */
+	16,	/* Camellia-128 */
+	16,	/* Camellia-192 */
+	16,	/* Camellia-256 */
 };
 
 public int
