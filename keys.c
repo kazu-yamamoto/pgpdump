@@ -129,6 +129,7 @@ Secret_Key_Packet(int len)
 	default:
 		sym = s2k;
 		sym_algs(sym);
+		printf("\tSimple string-to-key for IDEA\n");
 		IV(iv_len(sym));
 		encrypted_Secret_Key(len - Getc_getlen(), NO);
 		break;
@@ -142,10 +143,11 @@ plain_Secret_Key(int len)
 	case 2:
 	case 3:
 		/* PUBLIC should be 1. */
-		multi_precision_integer("Encrypted RSA d");
-		multi_precision_integer("Encrypted RSA p");
-		multi_precision_integer("Encrypted RSA q");
-		multi_precision_integer("Encrypted RSA u");
+		/* Tested by specifying a null passphrase. */
+		multi_precision_integer("RSA d");
+		multi_precision_integer("RSA p");
+		multi_precision_integer("RSA q");
+		multi_precision_integer("RSA u");
 		printf("\tChecksum - ");
 		dump(2);
 		printf("\n");
@@ -190,7 +192,7 @@ encrypted_Secret_Key(int len, int sha1)
 	case 2:
 	case 3:
 		/* PUBLIC should be 1.
-		   MPI prefix count is not encrypted. */
+		   Printable since an MPI prefix count is not encrypted. */
 		multi_precision_integer("Encrypted RSA d");
 		multi_precision_integer("Encrypted RSA p");
 		multi_precision_integer("Encrypted RSA q");
@@ -232,7 +234,6 @@ encrypted_Secret_Key(int len, int sha1)
 		break;
 	}
 }
-
 
 /* 
  * Copyright (C) 1998 Kazuhiko Yamamoto

@@ -12,4 +12,4 @@ Old: Public-Key Encrypted Session Key Packet(tag 1)(526 bytes)
 	ElGamal m * y^k mod p(2047 bits) - ...
 		-> m = sym alg(1 byte) + checksum(2 bytes) + PKCS-1 block type 02
 Old: Symmetrically Encrypted Data Packet(tag 9)(26 bytes)
-	Encrypted data [sym alg is encrypted in the pub session key above]
+	Encrypted data [sym alg is specified in pub-key encrypted session key]

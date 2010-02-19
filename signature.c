@@ -74,6 +74,9 @@ signature_type(int type)
 	case 0x18:
 		printf("Subkey Binding Signature(0x18).");
 		break;
+	case 0x19:
+		printf("Primary Key Binding Signature(0x19).");
+		break;
 	case 0x1f:
 		printf("Signature directly on a key(0x1f).");
 		break;

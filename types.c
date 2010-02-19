@@ -19,20 +19,20 @@
 # define tm_zone(tm) (tm->tm_zone)
 #elif HAVE_TZNAME
 # define tm_zone(tm) (tzname[tm->tm_isdst])
-#elif __MINGW32__ /* xxx For MINGW32 */
+#elif __MINGW32__
 # define tm_zone(tm) (tzname[tm->tm_isdst])
 #else
 # ifndef tzname  /* For SGI. */
-  extern char *tzname[]; /* RS6000 and others reject char **tzname. */
+  extern string tzname[]; /* RS6000 and others reject char **tzname. */
 # endif
 # define tm_zone(tm) (tzname[tm->tm_isdst])
 #endif
 
-private void time4_base(char *, time_t *);
+private void time4_base(string, time_t *);
 private time_t key_creation_time = 0;
 private time_t sig_creation_time = 0;
 
-private char *
+private string
 PUB_ALGS[] = {
 	"unknown(pub 0)", 
 	"RSA Encrypt or Sign(pub 1)",
@@ -57,7 +57,7 @@ PUB_ALGS[] = {
 	"ElGamal Encrypt or Sign (pub 20)", 
 	"Reserved for Diffie-Hellman (pub 21)", 
 };
-#define PUB_ALGS_NUM (sizeof(PUB_ALGS) / sizeof(char *))
+#define PUB_ALGS_NUM (sizeof(PUB_ALGS) / sizeof(string))
 
 public void
 pub_algs(unsigned int type)
@@ -70,7 +70,7 @@ pub_algs(unsigned int type)
 	printf("\n");
 }
 
-private char *
+private string
 SYM_ALGS[] = {
 	"Plaintext or unencrypted data(sym 0)", 
 	"IDEA(sym 1)", 
@@ -84,16 +84,13 @@ SYM_ALGS[] = {
 	"AES with 256-bit key(sym 9)",
 	"Twofish with 256-bit key(sym 10)",
 };
-#define SYM_ALGS_NUM (sizeof(SYM_ALGS) / sizeof(char *))
+#define SYM_ALGS_NUM (sizeof(SYM_ALGS) / sizeof(string))
 
 public void
 sym_algs(unsigned int type)
 {
 	printf("\tSym alg - ");
-	if (type < SYM_ALGS_NUM)
-		printf(SYM_ALGS[type]);
-	else
-		printf("unknown(sym %d)", type);
+	sym_algs2(type);
 	printf("\n");
 }
 
@@ -130,14 +127,14 @@ iv_len(unsigned int type)
 		return 0;
 }
 
-private char *
+private string
 COMP_ALGS[] = {
 	"Uncompressed(comp 0)",
 	"ZIP <RFC1951>(comp 1)", 
 	"ZLIB <RFC1950>(comp 2)",
 	"BZip2(comp 3)",
 };
-#define COMP_ALGS_NUM (sizeof(COMP_ALGS) / sizeof(char *))
+#define COMP_ALGS_NUM (sizeof(COMP_ALGS) / sizeof(string))
 
 public void
 comp_algs(unsigned int type)
@@ -150,7 +147,7 @@ comp_algs(unsigned int type)
 	printf("\n");
 }
 
-private char *
+private string
 HASH_ALGS[] = {
 	"unknown(hash 0)",
 	"MD5(hash 1)",
@@ -164,7 +161,7 @@ HASH_ALGS[] = {
 	"SHA384(hash 9)",
 	"SHA512(hash 10)",
 };
-#define HASH_ALGS_NUM (sizeof(HASH_ALGS) / sizeof(char *))
+#define HASH_ALGS_NUM (sizeof(HASH_ALGS) / sizeof(string))
 
 public void
 hash_algs(unsigned int type)
@@ -194,7 +191,7 @@ fingerprint(void)
 }
 
 private void
-time4_base(char *str, time_t *pt)
+time4_base(string str, time_t *pt)
 {
 	struct tm* ptm;
 	char* pat;
@@ -218,7 +215,7 @@ time4_base(char *str, time_t *pt)
 }
 
 public void
-time4(char *str)
+time4(string str)
 {
 	int i;
 	time_t t = 0;
@@ -230,7 +227,7 @@ time4(char *str)
 }
 
 public void
-sig_creation_time4(char *str)
+sig_creation_time4(string str)
 {
 	int i;
 	time_t t = 0;
@@ -244,7 +241,7 @@ sig_creation_time4(char *str)
 }
 
 public void
-sig_expiration_time4(char *str)
+sig_expiration_time4(string str)
 {
 	int i;
 	time_t t = 0;
@@ -258,7 +255,7 @@ sig_expiration_time4(char *str)
 }
 
 public void
-key_creation_time4(char *str)
+key_creation_time4(string str)
 {
 	int i;
 	time_t t = 0;
@@ -272,7 +269,7 @@ key_creation_time4(char *str)
 }
 
 public void
-key_expiration_time4(char *str)
+key_expiration_time4(string str)
 {
 	int i;
 	time_t t = 0;
@@ -338,7 +335,7 @@ string_to_key(void)
 }
 
 public void
-multi_precision_integer(char *str)
+multi_precision_integer(string str)
 {
         int bytes;
         int bits = Getc() * 256;

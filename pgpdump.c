@@ -6,6 +6,7 @@
 #include <stdarg.h>
 
 int aflag;
+int dflag;
 int gflag;
 int iflag;
 int lflag;
@@ -13,16 +14,16 @@ int mflag;
 int pflag;
 int uflag;
 
-private char *pgpdump_version = "0.22, Copyright (C) 1998-2004 Kazu Yamamoto";
-private char *prog;
+private string pgpdump_version = "0.23, Copyright (C) 1998-2004 Kazu Yamamoto";
+private string prog;
 
-private char *getprog(void);
-private void setprog(char *);
+private string getprog(void);
+private void setprog(string);
 
 private void usage(void);
 private void version(void);
 
-private char *
+private string
 getprog() {
 	return prog;
 }
@@ -36,7 +37,7 @@ int __riscosify_control = __RISCOSIFY_NO_PROCESS;
 #endif /* HAVE_UNIXLIB_LOCAL_H */
 
 private void
-setprog(char *p) {
+setprog(string p) {
 	if ((prog = strrchr(p, PATH_SEPC)) == NULL)
 		prog = p;
 	else
@@ -46,7 +47,7 @@ setprog(char *p) {
 private void
 usage(void)
 {
-	char *prog = getprog();
+	string prog = getprog();
 	fprintf(stderr, "%s -h|-v\n", prog);	
 	fprintf(stderr, "%s [-agilmpu] [PGPfile]\n", prog);
 	fprintf(stderr, "\t -h -- displays this help\n");
@@ -62,7 +63,7 @@ usage(void)
 }
 
 public void
-warning(const char *fmt, ...)
+warning(const string fmt, ...)
 {
 	va_list ap;
 
@@ -75,7 +76,7 @@ warning(const char *fmt, ...)
 }
 
 public void
-warn_exit(const char *fmt, ...)
+warn_exit(const string fmt, ...)
 {
 	va_list ap;
 
@@ -97,7 +98,7 @@ version(void)
 }
 
 int
-main(int argc, char *argv[])
+main(int argc, string argv[])
 {
         int c;
 	aflag = 0;
@@ -146,7 +147,7 @@ main(int argc, char *argv[])
 	argv += optind;
 
         if (argc > 0) {
-	        char *target = argv[0];
+	        string target = argv[0];
 		if (freopen(target, "rb", stdin) == NULL)
 			warn_exit("can't open %s.", target); 
         }
@@ -155,14 +156,16 @@ main(int argc, char *argv[])
 	exit(EXIT_SUCCESS);
 }
 
-public void skip(int len) 
+public void
+skip(int len) 
 {
         int i;
         for (i = 0; i < len; i++)
                 Getc();
 }
 
-public void dump(int len) 
+public void
+dump(int len) 
 {
         if (gflag)
                 gdump(len);
@@ -173,7 +176,8 @@ public void dump(int len)
         }
 }
 
-public void pdump(int len) 
+public void
+pdump(int len) 
 {
         if (gflag)
                 gdump(len);
@@ -184,7 +188,8 @@ public void pdump(int len)
         }
 }
 
-public void kdump(int len) 
+public void
+kdump(int len) 
 {
         int i;
         printf("0x");
@@ -192,7 +197,8 @@ public void kdump(int len)
                 printf("%02X", Getc());
 }
 
-public void gdump(int len) /* mixed dump (like gnupg) */
+public void
+gdump(int len) /* mixed dump (like gnupg) */
 {       
         int i;
         for (i = 0; i < len; i++) {

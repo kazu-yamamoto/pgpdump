@@ -3,11 +3,12 @@
  */
 
 #include <ctype.h>
+#include <strings.h>
 #include "pgpdump.h"
 
-typedef unsigned char byte;
+typedef char * cast_t;
 
-private int line_not_blank(char *);
+private int line_not_blank(byte *);
 private int read_binary(byte *, unsigned int);
 private int read_radix64(byte *, unsigned int);
 private int decode_radix64(byte *, unsigned int);
@@ -66,7 +67,7 @@ base256[] = {
 };
 
 private int
-line_not_blank(char *s) 
+line_not_blank(byte *s) 
 { 
 	while (isspace(*s)) {
 	  	if (*s == CR || *s == LF)
@@ -96,17 +97,17 @@ read_radix64(byte *p, unsigned int max)
 
 	again:
 		do {
-			if (fgets((char *) tmpbuf, BUFSIZ, stdin) == NULL)
+			if (fgets((cast_t)tmpbuf, BUFSIZ, stdin) == NULL)
 				warn_exit("can't find PGP armor boundary.");
-		} while (strncmp("-----BEGIN PGP", (char *) tmpbuf, 14) != 0);
+		} while (strncmp("-----BEGIN PGP", (cast_t)tmpbuf, 14) != 0);
 
-		if (strncmp("-----BEGIN PGP SIGNED", (char *) tmpbuf, 21) == 0)
+		if (strncmp("-----BEGIN PGP SIGNED", (cast_t)tmpbuf, 21) == 0)
 			goto again;
 
 		do {
-			if (fgets((char *) tmpbuf, BUFSIZ, stdin) == NULL)
+			if (fgets((cast_t)tmpbuf, BUFSIZ, stdin) == NULL)
 				warn_exit("can't find PGP armor.");
-		} while (line_not_blank((char *) tmpbuf) == YES);
+		} while (line_not_blank(tmpbuf) == YES);
 		found = YES;
 	}
 
@@ -254,13 +255,13 @@ inflate_bzip2(byte *p, unsigned int max)
 
 	if (done == YES) return 0;
 
-	bz.next_out = (char *)p;
+	bz.next_out = (cast_t)p;
 	bz.avail_out = max;
 
 	while (bz.avail_out != 0) {
 		if (bz.avail_in == 0) {
 			size = (*d_func2)(d_buf2, sizeof(d_buf2));
-			bz.next_in  = (char *)d_buf2;
+			bz.next_in  = (cast_t)d_buf2;
 			bz.avail_in = size;
 		}
 
@@ -411,7 +412,7 @@ Compressed_Data_Packet(int len)
 	z.avail_out = sizeof(d_buf2);
 #endif /* HAVE_LIBZ */
 #ifdef HAVE_LIBBZ2
-	bz.next_in  = (char *)d_buf2;
+	bz.next_in  = (cast_t)d_buf2;
 	bz.avail_in = AVAIL_COUNT;
 	bz.next_out = 0;
 	bz.avail_out = sizeof(d_buf2);

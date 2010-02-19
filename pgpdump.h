@@ -18,6 +18,9 @@
 #define public extern
 #define private static
 
+typedef char * string;
+typedef unsigned char byte;
+
 #define YES 1
 #define NO  0
 
@@ -39,8 +42,8 @@ public int uflag;
  * pgpdump.c
  */
 
-public void warning(const char *, ...);
-public void warn_exit(const char *, ...);
+public void warning(const string, ...);
+public void warn_exit(const string, ...);
 public void skip(int);
 public void dump(int);
 public void pdump(int);
@@ -66,8 +69,8 @@ public void Getc_resetlen(void);
  */
 
 public void parse_packet(void);
-public void parse_signature_subpacket(char *, int);
-public void parse_userattr_subpacket(char *, int);
+public void parse_signature_subpacket(string, int);
+public void parse_userattr_subpacket(string, int);
 
 /*
  * types.c
@@ -81,14 +84,14 @@ public void comp_algs(unsigned int);
 public void hash_algs(unsigned int);
 public void key_id(void);
 public void fingerprint(void);
-public void time4(char *);
-public void sig_creation_time4(char *);
-public void sig_expiration_time4(char *);
-public void key_creation_time4(char *);
-public void key_expiration_time4(char *);
+public void time4(string);
+public void sig_creation_time4(string);
+public void sig_expiration_time4(string);
+public void key_creation_time4(string);
+public void key_expiration_time4(string);
 public void ver(int, int, int);
 public void string_to_key(void);
-public void multi_precision_integer(char *);
+public void multi_precision_integer(string);
 	
 /*
  * tagfunc.c
@@ -149,6 +152,7 @@ public void signer_user_id(int);
 public void reason_for_revocation(int);
 public void features(int);
 public void signature_target(int);
+public void embedded_signature(int);
 
 /*
  * uatfunc.c

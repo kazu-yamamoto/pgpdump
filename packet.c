@@ -21,7 +21,7 @@ private int is_partial(int);
 #define CRITICAL_BIT	0x80
 #define CRITICAL_MASK	0x7f
 
-private char *
+private string
 TAG[] = {
 	"Reserved",
 	"Public-Key Encrypted Session Key Packet", 
@@ -88,7 +88,7 @@ TAG[] = {
 	"Private",
 	"Private",	
 };
-#define TAG_NUM (sizeof(TAG) * sizeof(char *))
+#define TAG_NUM (sizeof(TAG) * sizeof(string))
 
 private void
 (*tag_func[])() = {
@@ -159,7 +159,7 @@ private void
 	Private_Packet,
 };
 	
-private char *
+private string
 SIGSUB[] = {
 	"unknown(sub 0)",
 	"unknown(sub 1)",
@@ -193,8 +193,9 @@ SIGSUB[] = {
 	"reason for revocation(sub 29)",
         "features(sub 30)",
         "signature target(sub 31)",
+	"embedded signature(sub 32",
 };
-#define SIGSUB_NUM (sizeof(SIGSUB) / sizeof(char *))
+#define SIGSUB_NUM (sizeof(SIGSUB) / sizeof(string))
 
 private funcptr
 sigsub_func[] = {
@@ -230,14 +231,15 @@ sigsub_func[] = {
 	reason_for_revocation, 
         features,
         signature_target,
+	embedded_signature,
 };
 
-private char *
+private string
 UATSUB[] = {
 	"unknown(sub 0)",
 	"image attribute(sub 1)",
 };
-#define UATSUB_NUM (sizeof(UATSUB) / sizeof(char *))
+#define UATSUB_NUM (sizeof(UATSUB) / sizeof(string))
 
 private funcptr
 uatsub_func[] = {
@@ -369,7 +371,7 @@ parse_packet(void)
 }
 
 public void
-parse_signature_subpacket(char *prefix, int tlen)
+parse_signature_subpacket(string prefix, int tlen)
 {
 	int len, subtype, critical;
 
@@ -411,7 +413,7 @@ parse_signature_subpacket(char *prefix, int tlen)
 }
 
 public void
-parse_userattr_subpacket(char *prefix, int tlen)
+parse_userattr_subpacket(string prefix, int tlen)
 {
 	int len, subtype;
 

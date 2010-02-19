@@ -326,6 +326,12 @@ signature_target(int len)
         skip(len - 2);
 }
 
+public void
+embedded_signature(int len)
+{
+	Signature_Packet(len);
+}
+
 /* 
  * Copyright (C) 1998 Kazuhiko Yamamoto
  * All rights reserved.

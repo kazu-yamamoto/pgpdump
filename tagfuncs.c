@@ -4,31 +4,31 @@
 
 #include "pgpdump.h"
 
-#define SYM_ALG_DEFAULT     1
-#define SYM_ALG_SYM_ENC    -1
-#define SYM_ALG_PUB_ENC    -2
+#define SYM_ALG_MODE_NOT_SPECIFIED  1
+#define SYM_ALG_MODE_SYM_ENC        2
+#define SYM_ALG_MODE_PUB_ENC        3
 
-private int sym_alg = SYM_ALG_DEFAULT;
-private void reset_sym_alg();
-private void set_sym_alg(int);
-private int get_sym_alg();
+private int sym_alg_mode = SYM_ALG_MODE_NOT_SPECIFIED;
+private void reset_sym_alg_mode();
+private void set_sym_alg_mode(int);
+private int get_sym_alg_mode();
 
 private void
-reset_sym_alg()
+reset_sym_alg_mode()
 {
-	sym_alg = SYM_ALG_DEFAULT;
+	sym_alg_mode = SYM_ALG_MODE_NOT_SPECIFIED;
 }
 
 private void
-set_sym_alg(int alg)
+set_sym_alg_mode(int mode)
 {
-	sym_alg = alg;
+	sym_alg_mode = mode;
 }
 
 private int
-get_sym_alg()
+get_sym_alg_mode()
 {
-	return sym_alg;
+	return sym_alg_mode;
 }
 
 public void
@@ -65,7 +65,7 @@ Public_Key_Encrypted_Session_Key_Packet(int len)
 		skip(len - 10);
 	}
 	printf("\t\t-> m = sym alg(1 byte) + checksum(2 bytes) + PKCS-1 block type 02\n");
-	set_sym_alg(SYM_ALG_PUB_ENC);
+	set_sym_alg_mode(SYM_ALG_MODE_PUB_ENC);
 }
 
 public void
@@ -75,7 +75,6 @@ Symmetric_Key_Encrypted_Session_Key_Packet(int len)
 	ver(NULL_VER, 4, Getc());
 	alg = Getc();
 	sym_algs(alg);
-	set_sym_alg(alg);
 	left -= 2;
 	Getc_resetlen();
 	string_to_key();
@@ -84,28 +83,27 @@ Symmetric_Key_Encrypted_Session_Key_Packet(int len)
 		printf("\tEncrypted session key\n");
 		printf("\t\t-> sym alg(1 bytes) + session key\n");
 		skip(left);
-		set_sym_alg(SYM_ALG_SYM_ENC);
 	}
+	set_sym_alg_mode(SYM_ALG_MODE_SYM_ENC);
 }
 
 public void
 Symmetrically_Encrypted_Data_Packet(int len)
 {
-	int alg = get_sym_alg();
-	switch (alg) {
-	case SYM_ALG_SYM_ENC:
-		printf("\tEncrypted data [sym alg is encrypted in the sym session key above]\n");
+	int mode = get_sym_alg_mode();
+	switch (mode) {
+	case SYM_ALG_MODE_NOT_SPECIFIED:
+		printf("\tEncrypted data [sym alg is IDEA, simple string-to-key]\n");
 		break;
-	case SYM_ALG_PUB_ENC:
-		printf("\tEncrypted data [sym alg is encrypted in the pub session key above]\n");
+	case SYM_ALG_MODE_SYM_ENC:
+		printf("\tEncrypted data [sym alg is specified in sym-key encrypted session key]\n");
 		break;
-	default:
-		printf("\tEncrypted data [sym alg is ");
-		sym_algs2(alg);
-		printf("]\n");
+	case SYM_ALG_MODE_PUB_ENC:
+		printf("\tEncrypted data [sym alg is specified in pub-key encrypted session key]\n");
+		break;
 	}
 	skip(len);
-	reset_sym_alg();
+	reset_sym_alg_mode();
 }
 
 public void
@@ -133,7 +131,10 @@ Literal_Data_Packet(int len)
 		printf("binary");
 		break;
 	case 't':
-		printf("text");		
+		printf("text");
+		break;
+	case 'u':
+		printf("UTF-8 text");
 		break;
 	case 'l':
 		/* RFC 1991 incorrectly define this as '1' */
@@ -184,23 +185,19 @@ User_Attribute_Packet(int len)
 public void
 Symmetrically_Encrypted_and_MDC_Packet(int len)
 {
-	int alg = get_sym_alg();
+	int mode = get_sym_alg_mode();
 	printf("\tVer %d\n", Getc());
-	switch (alg) {
-	case SYM_ALG_SYM_ENC:
-		printf("\tEncrypted data [sym alg is encrypted in the sym session key above]\n");
+	switch (mode) {
+	case SYM_ALG_MODE_SYM_ENC:
+		printf("\tEncrypted data [sym alg is specified in sym-key encrypted session key]\n");
 		break;
-	case SYM_ALG_PUB_ENC:
-		printf("\tEncrypted data [sym alg is encrypted in the pub session key above]\n");
+	case SYM_ALG_MODE_PUB_ENC:
+		printf("\tEncrypted data [sym alg is specified in pub-key encrypted session key]\n");
 		break;
-	default:
-		printf("\tEncrypted data [sym alg is ");
-		sym_algs2(alg);
-		printf("]\n");
 	}
 	printf("\t\t(plain text + MDC SHA1(20 bytes))\n");
 	skip(len - 1);
-	reset_sym_alg();
+	reset_sym_alg_mode();
 }
 
 /* this function is not used because this packet appears only
