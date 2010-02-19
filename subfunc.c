@@ -280,20 +280,20 @@ reason_for_revocation(int len)
 	case 0:
 		printf("No reason specified");
 		break;
-	case 0x01:
+	case 1:
 		printf("Key is superceded");
 		break;
-	case 0x02:
+	case 2:
 		printf("Key material has been compromised");
 		break;
-	case 0x03:
+	case 3:
 		printf("Key is retired and no longer used");
 		break;
-	case 0x20:
+	case 32:
 		printf("User ID information is no longer valid");
 		break;
 	default:
-		printf("Unknown reason(%02x)", c);
+		printf("Unknown reason(%2d)", c);
 		break;
 	}
 	printf("\n");

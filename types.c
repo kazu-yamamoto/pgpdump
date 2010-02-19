@@ -54,7 +54,7 @@ PUB_ALGS[] = {
 	"DSA Digital Signature Algorithm(pub 17)",
 	"Reserved for Elliptic Curve(pub 18)", 
 	"Reserved for ECDSA(pub 19)", 
-	"ElGamal Encrypt or Sign (pub 20)", 
+	"Reserved formerly ElGamal Encrypt or Sign(pub 20)", 
 	"Reserved for Diffie-Hellman (pub 21)", 
 };
 #define PUB_ALGS_NUM (sizeof(PUB_ALGS) / sizeof(string))

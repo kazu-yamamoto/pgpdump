@@ -36,7 +36,7 @@ signature_multi_precision_integer(int pub, int len)
 	case 17:
 		multi_precision_integer("DSA r");
 		multi_precision_integer("DSA s");
-		printf("\t\t-> hash(160 bits)\n");		
+		printf("\t\t-> hash(DSA q bits)\n");
 		break;
 	default:
 		printf("\tUnknown signature(pub %d)\n", pub);
