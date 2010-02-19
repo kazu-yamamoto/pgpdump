@@ -4,7 +4,7 @@ bindir = @bindir@
 mandir = @mandir@/man1
 LIBS = @LIBS@
 
-CFLAGS = -O -Wall
+CFLAGS = -O
 RM = rm -f
 INSTALL  = install -c -m
 

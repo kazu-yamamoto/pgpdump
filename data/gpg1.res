@@ -6,7 +6,7 @@ Old: Signature Packet(tag 2)(70 bytes)
 	Hashed Sub: signature creation time(sub 2)(4 bytes)
 		Time - Sat Nov 28 00:59:17 JST 1998
 	Sub: issuer key ID(sub 16)(8 bytes)
-		Key ID - fd 90 da 97 32 d8 eb d2 
+		Key ID - 0xFD90DA9732D8EBD2
 	Hash left 2 bytes - 84 a8 
 	DSA r(160 bits) - ...
 	DSA s(160 bits) - ...

@@ -68,6 +68,12 @@ public void Getc_resetlen(void);
 		int i; for (i = 0; i < (len); i++) printf("%02x ", Getc());\
 	} while (0)
 
+#define kdump(len) do {\
+		int i;\
+		printf("0x");\
+		for (i = 0; i < (len); i++) printf("%02X", Getc());\
+	} while (0)
+
 /*
  *  packet.c
  */

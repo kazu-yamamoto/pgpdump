@@ -20,7 +20,7 @@ Old: Signature Packet(tag 2)(75 bytes)
 		Sym alg - IDEA(sym 1)
 		Sym alg - Triple-DES(sym 2)
 	Sub: issuer key ID(sub 16)(8 bytes)
-		Key ID - a7 97 78 e2 47 b6 30 37 
+		Key ID - 0xA79778E247B63037
 	Hash left 2 bytes - 7e 87 
 	DSA r(160 bits) - ...
 	DSA s(154 bits) - ...
@@ -39,7 +39,7 @@ Old: Signature Packet(tag 2)(75 bytes)
 		Sym alg - IDEA(sym 1)
 		Sym alg - Triple-DES(sym 2)
 	Sub: issuer key ID(sub 16)(8 bytes)
-		Key ID - a7 97 78 e2 47 b6 30 37 
+		Key ID - 0xA79778E247B63037
 	Hash left 2 bytes - ba ef 
 	DSA r(160 bits) - ...
 	DSA s(160 bits) - ...
@@ -56,7 +56,7 @@ Old: Signature Packet(tag 2)(63 bytes)
 	Hash material(5 bytes):
 		Sig type - Subkey Binding Signature(0x18).
 		Creation time - Thu Nov 26 22:49:00 JST 1998
-	Key ID - a7 97 78 e2 47 b6 30 37 
+	Key ID - 0xA79778E247B63037
 	Pub alg - DSA Digital Signature Standard(pub 17)
 	Hash alg - SHA1(hash 2)
 	Hash left 2 bytes - e8 41 

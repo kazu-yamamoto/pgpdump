@@ -29,7 +29,7 @@ Old: Signature Packet(tag 2)(87 bytes)
 	Hashed Sub: key server preferences(sub 23)(1 bytes)
 		Flag - No-modify
 	Sub: issuer key ID(sub 16)(8 bytes)
-		Key ID - fd 90 da 97 32 d8 eb d2 
+		Key ID - 0xFD90DA9732D8EBD2
 	Hash left 2 bytes - e2 cb 
 	DSA r(158 bits) - ...
 	DSA s(158 bits) - ...
@@ -49,7 +49,7 @@ Old: Signature Packet(tag 2)(70 bytes)
 	Hashed Sub: signature creation time(sub 2)(4 bytes)
 		Time - Sun Oct 11 23:29:23 JST 1998
 	Sub: issuer key ID(sub 16)(8 bytes)
-		Key ID - fd 90 da 97 32 d8 eb d2 
+		Key ID - 0xFD90DA9732D8EBD2
 	Hash left 2 bytes - 42 66 
 	DSA r(160 bits) - ...
 	DSA s(160 bits) - ...

@@ -157,7 +157,7 @@ public void
 key_id(void)
 {
 	printf("\tKey ID - ");
-	dump(8);
+	kdump(8);
 	printf("\n");
 }
 
