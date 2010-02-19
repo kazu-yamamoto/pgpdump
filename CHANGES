@@ -1,5 +1,9 @@
 			      Change Log
 
+0.06 2001/03/30
+
+* Supporting old-format packet length 3 ("until the end of the file").
+
 0.05 2001/03/22
 
 * Adding the "-p" option.

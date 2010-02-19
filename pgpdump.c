@@ -4,7 +4,7 @@
 
 #include "pgpdump.h"
 
-private char *pgpdump_version = "0.05, Copyright (C) 1998-2001 Kazu Yamamoto";
+private char *pgpdump_version = "0.06, Copyright (C) 1998-2001 Kazu Yamamoto";
 private char *prog;
 
 private void usage(void);
@@ -17,8 +17,8 @@ usage(void)
 	fprintf(stderr, "\t -h -- displays this help\n");
 	fprintf(stderr, "\t -m -- prints marker\n");
 	fprintf(stderr, "\t -l -- prints literal\n");
-	fprintf(stderr, "\t -p -- dump private\n");
 	fprintf(stderr, "\t -i -- dump integer\n");
+	fprintf(stderr, "\t -p -- dump private\n");
 	exit(ERROR);
 }
 

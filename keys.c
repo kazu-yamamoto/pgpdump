@@ -177,17 +177,24 @@ encrypted_Secret_Key(int len)
 		case 1:
 		case 2:
 		case 3:
-			printf("\tEncrypted RSA d, p, q, u, checksum\n");
+			printf("\tEncrypted RSA d\n");
+			printf("\tEncrypted RSA p\n");
+			printf("\tEncrypted RSA q\n");
+			printf("\tEncrypted RSA u\n");
+			printf("\tENcrypted checksum\n");
 			break;
 		case 16:
 		case 20:
-			printf("\tEncrypted ElGamal x, checksum\n");
+			printf("\tEncrypted ElGamal x\n");
+			printf("\tEncrypted checksum\n");
 			break;
 		case 17:
-			printf("\tEncrypted DSA x, checksum\n");
+			printf("\tEncrypted DSA x\n");
+			printf("\tEncrypted checksum\n");
 			break;
 		default:
 			printf("\tEncrypted unknown(pub %d)\n", PUBLIC);
+			printf("\tEncrypted checksum\n");
 		}
 		skip(len);
 		break;

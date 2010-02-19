@@ -282,7 +282,8 @@ parse_packet(void)
 					(Getc() << 8) | Getc ();
 				break;
 			case 3:
-				len = -1;
+				len = 0;
+				while (Getc1() != EOF) len++;
 				break;
 			}
 		}
