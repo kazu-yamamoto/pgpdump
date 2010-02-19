@@ -318,10 +318,8 @@ parse_packet(void)
 
 		if (tag < TAG_NUM && tag_func[tag] != NULL)
 			(*tag_func[tag])(len);
-		else {
-			printf("\tUNKNOWN TAG\n");
+		else
 			skip(len);
-		}
 		while (partial == YES) {
 			printf("New: ");
 			c = Getc();
@@ -364,10 +362,8 @@ parse_subpacket(char *prefix, int tlen)
 		printf("(%d bytes)\n", len);
 		if (sub < SUB_NUM && sub_func[sub] != NULL)
 			(*sub_func[sub])(len);
-		else {
-			printf("\tUNKNOWN SUB PARCKET\n");
+		else
 			skip(len);
-		}
 	}
 }
 

@@ -77,8 +77,9 @@ new_Public_Key_Packet(int len)
 		multi_precision_integer("DSA y");
 		break;
 	default:
-		printf("\t\tunknown(%d)\n", PUBLIC);
+		printf("\tUnknown public key(pub %d)\n", PUBLIC);
 		skip(len - 5);
+		break;
 	}
 }
 
@@ -124,8 +125,9 @@ Secret_Key_Packet(int len)
 			multi_precision_integer("DSA x");
 			break;
 		default:
-			printf("\t\tunknown(%d)\n", PUBLIC);
+			printf("\tUnknown secret key(pub %d)\n", PUBLIC);
 			skip(len - Getc_getlen());
+			break;
 		}	
 		printf("\t\t-> m = sym alg(1) + checksum(2) + PKCS-1 block type 02\n");
 		break;
@@ -140,6 +142,7 @@ Secret_Key_Packet(int len)
 		sym_algs(s2k);
 		IV(iv_len(s2k));
 		encrypted_Secret_Key(len - Getc_getlen());
+		break;
 	}
 }
 
@@ -166,8 +169,9 @@ encrypted_Secret_Key(int len)
 			multi_precision_integer("Encrypted DSA x");
 			break;
 		default:
-			printf("\t\tEncrypted unknown(pub %d)\n", PUBLIC);
+			printf("\t\tUnknown encrypted key(pub %d)\n", PUBLIC);
 			skip(len);
+			break;
 		}
 		printf("\tChecksum - ");
 		dump(2);
@@ -194,14 +198,16 @@ encrypted_Secret_Key(int len)
 			printf("\tEncrypted checksum\n");
 			break;
 		default:
-			printf("\tEncrypted unknown(pub %d)\n", PUBLIC);
+			printf("\tUnknown encrypted key(pub %d)\n", PUBLIC);
 			printf("\tEncrypted checksum\n");
+			break;
 		}
 		skip(len);
 		break;
 	default:
-		printf("unknown key\n");
+		printf("\tUnknown encrypted key\n");
 		skip(len);
+		break;
 	}
 }
 

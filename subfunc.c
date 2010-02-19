@@ -80,6 +80,7 @@ additional_decryption_key(int len)
 		break;
 	default:
 		printf("Unknown class(%02x)", c);
+		break;
 	}
 	printf("\n");
 	printf("\t");
@@ -113,6 +114,7 @@ revocation_key(int len)
 			break;
 		default:
 			printf("Unknown class(%02x)", c);
+			break;
 		}
 	else
 		printf("Unknown class(%02x)", c);
@@ -134,13 +136,28 @@ issuer_key_ID(int len)
 public void
 notation_data(int len)
 {
-	int nlen, vlen, human = 0;
+	int c, nlen, vlen, human = 0;
 	printf("\t\tFlag - ");
-	if (Getc() & 0x80)      {
-		printf("Human-readable\n");
+	c = Getc();
+	switch (c) {
+	case 0x80:
+		printf("Human-readable");
 		human = 1;
+		break;
+	case 0x0:
+		printf("Normal");
+		break;
+	default:
+		printf("Unknown flag1(%02x)", c);
+		break;
 	}
-	skip(3);
+	c = Getc();
+	if (c != 0) printf("Unknown flag2(%02x)", c);
+	c = Getc();
+	if (c != 0) printf("Unknown flag3(%02x)", c);
+	c = Getc();
+	if (c != 0) printf("Unknown flag4(%02x)", c);
+	printf("\n");
 	nlen = Getc() * 256 + Getc();
 	vlen = Getc() * 256 + Getc();
 	printf("\t\tName - ");
@@ -180,9 +197,20 @@ preferred_compression_algorithms(int len)
 public void
 key_server_preferences(int len)
 {
+	int c = Getc();
 	printf("\t\tFlag - ");
-	if (Getc() & 0x80)
-		printf("No-modify\n");
+	switch (c) {
+	case 0x80:
+		printf("No-modify");
+		break;
+	case 0x0:
+		printf("Normal");
+		break;
+	default:
+		printf("Unknown flag(%02x)", c);
+		break;
+	}
+	printf("\n");
 	skip(len - 1);
 }
 

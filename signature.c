@@ -23,8 +23,15 @@ signature_multi_precision_integer(int pub, int skip)
 {
 	switch (pub) {
 	case 1:
+	case 2:
+	case 3:
 		multi_precision_integer("RSA m^d mod n");
 		printf("\t\t-> PKCS-1\n");
+		break;
+	case 16:
+	case 20:
+		multi_precision_integer("ElGamal ?");
+		multi_precision_integer("ElGamal ?");
 		break;
 	case 17:
 		multi_precision_integer("DSA r");
@@ -32,8 +39,9 @@ signature_multi_precision_integer(int pub, int skip)
 		printf("\t\t-> hash(160 bits)\n");		
 		break;
 	default:
-		printf("\tunknown(pub %d)\n", pub);
+		printf("\tUnknown signature(pub %d)\n", pub);
 		skip(skip);
+		break;
 	}
 }
 
@@ -115,11 +123,11 @@ Signature_Packet(int len)
 	case 2:
 	case 3:
 		printf("old\n");
-		old_Signature_Packet(len);
+		old_Signature_Packet(len - 1);
 		break;
 	case 4:
 		printf("new\n");
-		new_Signature_Packet(len);
+		new_Signature_Packet(len - 1);
 		break;
 	default:
 		printf("unknown\n");

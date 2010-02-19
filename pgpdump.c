@@ -5,7 +5,7 @@
 #include "pgpdump.h"
 #include <stdarg.h>
 
-private char *pgpdump_version = "0.09, Copyright (C) 1998-2001 Kazu Yamamoto";
+private char *pgpdump_version = "0.10, Copyright (C) 1998-2001 Kazu Yamamoto";
 private char *prog;
 
 private void usage(void);
