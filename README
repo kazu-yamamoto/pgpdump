@@ -2,10 +2,10 @@
 
 		   Kazu Yamamoto <kazu@iijlab.net>
 
-			   December 4, 1998
+			   August 27, 1998
 
 "pgpdump" is a PGP packet visualizer which displays the packet format
-of OpenPGP (RFC2440) and PGP version 2 (RFC 1991).
+of OpenPGP (RFC 2440) and PGP version 2 (RFC 1991).
 
 Here is an example:
 
@@ -38,26 +38,26 @@ Some examples are stored in the "data" directory. Also, you can
 visualize your pubring and secring.
 
 You can create various packets by using PGP version 5 with the
-following options:
+following options(see src/pgp/{keydb/pgpPrefs.c,utils/pgpConf.c}):
 	
 	+version=num
-		3 - old
+		3 - old (default)
 		4 - new
 	+ciphernum
 		0 - null
-		1 - IDEA
+		1 - IDEA (default)
 		2 - Triple DES
 		3 - CAST5
 	+hashnum
-		1 - MD5
+		1 - MD5 (default)
 		2 - SHA-1
 		3 - PIPEMD160
+
+	note : compress is 1 (RFC1950 ZIP ZEFLATE) only.
 
 Also, try GNUPG which is an excellent alternative of PGP version 5. 
 Its options are easy-to-understand.
 
 Bugs:
-	- Uncompression has not been implemented yet.
-		Create PGP packets with the "+compress=off" option.
 	- Some sub-packets for the signature packet have not been
 	  implemented yet.

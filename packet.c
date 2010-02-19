@@ -5,10 +5,15 @@
 #include <stdio.h>
 #include "pgpdump.h"
 
-#define NEW_TAG_FLAG 0x40
-#define TAG_MASK 0x3f;
-#define OLD_TAG_SHIFT 2
-#define OLD_LEN_MASK 0x03;
+#define BINARY_TAG_FLAG 0x80
+#define NEW_TAG_FLAG    0x40
+#define TAG_MASK        0x3f
+#define PARTIAL_MASK    0x1f
+#define PARTIAL           -1
+#define TAG_COMPRESSED     8
+
+#define OLD_TAG_SHIFT      2
+#define OLD_LEN_MASK    0x03
 
 #define TAG_NUM 15
 private char *
@@ -62,7 +67,7 @@ SUB[SUB_NUM] = {
 	"revocable(sub 7)",
 	"unknown(sub 8)",
 	"key expiration time(sub 9)",
-	"placeholder for backward compatibility(sub 10)",
+	"additional description key(sub 10) WARNING: see CA-2000-18!!!",
 	"preferred symmetric algorithms(sub 11)", 
 	"revocation key(sub 12)", 
 	"unknown(sub 13)",
@@ -122,26 +127,44 @@ public void
 parse_packet(void)
 {
 	int c, tag, len = 0;
+	int partial;
 
 	c = Getc();
-	if (c & 0x80)
+	/* If the PGP packet is in the binary raw form, 7th bit of
+	 * the first byte is always 1. If it is set, let's assume
+	 * it is the binary raw form. Otherwise, let's assume
+	 * it is encoded with radix64.
+	 */
+	if (c & BINARY_TAG_FLAG)
 		ungetc(c, Get_input_file());
-	else
+	else {
+		ungetc(c, Get_input_file());
 		armor_decode();
+	}
 	
+	partial = 0;
 	while ((c = Getc()) != EOF) {
-		tag = c & TAG_MASK;
-		if (c & NEW_TAG_FLAG) {
+		if (partial)
+			tag = PARTIAL;
+		else
+			tag = c & TAG_MASK;
+		if (partial || (c & NEW_TAG_FLAG)) {
 			printf("New: ");
-			len = Getc();
+			if (partial || tag == TAG_COMPRESSED)
+				len = c;
+			else
+				len = Getc();
+			partial = 0;
 			if (len < 192)
 				;
 			else if (len < 223)
 				len = ((len - 192) << 8) + Getc() + 192;
-			else if (len == 255)
+			else if (len < 255) {
+				len = 1 << (len & PARTIAL_MASK);
+				partial++;
+			} else
 				len = (Getc() << 24) | (Getc () << 16) |
 					(Getc() << 8) | Getc ();
-			/* xxx partial */
 		} else {
 			int tlen;
 			
@@ -165,16 +188,26 @@ parse_packet(void)
 				break;
 			}
 		}
-		if (tag < TAG_NUM)
-			printf("%s(tag %d)", TAG[tag], tag);
-		else
-			printf("unknown(tag %d)", tag);
-		printf("(%d bytes)\n", len);
-		if (tag < TAG_NUM && tag_func[tag] != NULL) {
-			(*tag_func[tag])(len);
-		} else {
-			printf("XXX\n");
+		if (tag == PARTIAL) {
+			printf("Partial Body(%d bytes)\n", len);
 			skip(len);
+		} else {
+			if (tag < TAG_NUM)
+				printf("%s(tag %d)", TAG[tag], tag);
+			else
+				printf("unknown(tag %d)", tag);
+			if (partial)
+				printf(" Partial Body(%d bytes)\n", len);
+			else if (tag == TAG_COMPRESSED)
+				printf("\n");
+			else
+				printf("(%d bytes)\n", len);
+			if (tag < TAG_NUM && tag_func[tag] != NULL)
+				(*tag_func[tag])(len);
+			else {
+				printf("KNOWN TAG\n");
+				skip(len);
+			}
 		}
 	}
 }
@@ -204,10 +237,10 @@ parse_subpacket (char *prefix, int tlen)
 		else
 			printf("\t%s: unknown(sub %d)", prefix, sub);
 		printf("(%d bytes)\n", len);
-		if (sub < SUB_NUM && sub_func[sub] != NULL) {
+		if (sub < SUB_NUM && sub_func[sub] != NULL)
 			(*sub_func[sub])(len);
-		} else {
-			printf("XXX\n");
+		else {
+			printf("KNOWN SUB PARCKET\n");
 			skip(len);
 		}
 	}

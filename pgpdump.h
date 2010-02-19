@@ -23,12 +23,12 @@ int iflag;
  */
 
 public void error(char *);
-public void Set_input_file(char *);
+public void Set_input_file(FILE *);
 public FILE *Get_input_file(void);
 public int Getc(void);
 public int Getc_getlen(void);
 public void Getc_resetlen(void);
-
+public FILE * Get_temp_file(char **);
 
 #define skip(len) {int i; for (i = 0; i < (len); i++) Getc();}
 #define pdump(len) {int i; for (i = 0; i < (len); i++) putchar(Getc());}

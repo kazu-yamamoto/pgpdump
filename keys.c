@@ -181,7 +181,7 @@ encrypted_Secret_Key(int len)
 		skip(len);
 		break;
 	default:
-		printf("xxx\n");
+		printf("unknown key\n");
 		skip(len);
 	}
 }

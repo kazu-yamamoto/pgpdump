@@ -4,9 +4,12 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+
 #include "pgpdump.h"
 
-private char *pgpdump_version = "0.01";
+private char *pgpdump_version = "0.03";
 private char *prog;
 
 private void usage(void);
@@ -37,10 +40,11 @@ version(void)
 	exit(ERROR);
 }
 
-void
+int
 main (int argc, char *argv[])
 {
 	char *target = NULL;
+	FILE *input_stream;
 
 	iflag = 0;
 	mflag = 0;
@@ -77,7 +81,12 @@ main (int argc, char *argv[])
 		}
 	}
 
-	Set_input_file(target);
+	if (target == NULL)
+		error("can't open null stream.");
+	if ((input_stream = fopen(target, "r")) == NULL)
+		error("can't open the file."); 
+	Set_input_file(input_stream);
+	
 	parse_packet();
 	exit(SUCCESS);
 }
@@ -86,13 +95,9 @@ private FILE *input = NULL;
 private int MAGIC_COUNT = 0;
 
 public void
-Set_input_file(char *file)
+Set_input_file(FILE *file)
 {
-	if (file == NULL)
-		error("can't open null stream.");
-	input = fopen(file, "r");
-	if (input == NULL)
-		error("can't open the file."); 
+	input = file;
 }
 
 public FILE *
@@ -118,6 +123,27 @@ public void
 Getc_resetlen(void)
 {
 	MAGIC_COUNT = 0;
+}
+
+public FILE *
+Get_temp_file(char **file_name) {
+	int fd;
+	char *name = (char *)malloc(BUFSIZ);
+	FILE *stream;
+
+	if (name == NULL)
+		error("memory exhausted.");
+
+	strcpy(name, "/tmp/pgpdump.XXXXXX");
+
+	if ((fd = mkstemp(name)) == -1)
+		error("can't open a temporary file.");
+
+	if ((stream = fdopen(fd, "r+")) == NULL)
+		error("can't open a temporary file.");
+
+	*file_name = name;
+	return stream;
 }
 
 /* 

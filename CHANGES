@@ -1,5 +1,12 @@
 			      Change Log
 
+0.03 2000/08/27
+
+* Uncompress support.
+* Sophisticate armor support.
+* Partial Body Length
+	ARAI Shun-ichi <hermes>
+
 0.02 1998/12/25
 
 * Clean up the "data" directory.

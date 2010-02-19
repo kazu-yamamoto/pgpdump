@@ -3,12 +3,12 @@
  */
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 #include "pgpdump.h"
 
 #define YES 1
-#define NO  1
+#define NO  0
 
 #define ON  1
 #define OFF 0
@@ -64,6 +64,10 @@ GetChar(FILE *stream, int cannot_be_eof)
 		return(EOF);
 	}
 
+	/* PGP radix64 encoding is always followed by CRC which
+	 * starts with '='. So, this works even if there is no
+	 * padding character.
+	 */
 	if (c == PADDING)
 		return(EOP);
 	
@@ -98,28 +102,36 @@ base64_decode(FILE *infile, FILE *outfile)
 public void
 armor_decode(void)
 {
-
 	FILE *input = Get_input_file();
 	FILE *output;
-	char buffer[BUFSIZ], outfile[BUFSIZ];
-
-	strcpy(outfile, "/tmp/pgpdump.XXXXXX");
-
-	if (mktemp(outfile) == NULL)
-		error("can't open a temporary file.");
-	output = fopen(outfile, "w");
-	if (output == NULL)
-		error("can't open the file."); 
+	char buffer[BUFSIZ], *outfile;
 
 	do {
-		fgets(buffer, BUFSIZ, input);
+		if (fgets(buffer, BUFSIZ, input) == NULL)
+			error("can't find PGP armor boundary.");
+	} while (strncmp("-----BEGIN PGP", buffer, 14) != 0);
+
+	do {
+		if (fgets(buffer, BUFSIZ, input) == NULL)
+			error("can't find PGP armor.");
 	} while (buffer[0] != CR && buffer[0] != LF);
-	
-	base64_decode(input, output);
+
+	/*
+	 * The end of PGP data will detect by base64_decode().
+	 */
+
+	output = Get_temp_file(&outfile);
+
+	base64_decode(input, output); 
 
 	fclose(input);
 	fclose(output);
-	Set_input_file(outfile);
+	if ((output = fopen(outfile, "r")) == NULL) {
+		unlink(outfile);
+		error("can't reopen the stream.");
+	}
+
+	Set_input_file(output);
 	unlink(outfile);
 }
 

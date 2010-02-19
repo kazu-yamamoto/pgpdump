@@ -70,7 +70,7 @@ key_expiration_time(int len)
 public void
 placeholder_for_backward_compatibility(int len)
 {
-	printf("\t\tXXX\n");
+	printf("\t\txxx\n");
 	skip(len);
 	/* xxx */
 }
@@ -88,7 +88,7 @@ preferred_symmetric_algorithms(int len)
 public void
 revocation_key(int len)
 {
-	printf("\t\tXXX\n");
+	printf("\t\txxx\n");
 	skip(len);
 	/* xxx */
 }	
@@ -103,7 +103,7 @@ issuer_key_ID(int len)
 public void
 notation_data(int len)
 {
-	printf("\t\tXXX\n");
+	printf("\t\txxx\n");
 	skip(len);
 	/* xxx */
 }	
@@ -166,7 +166,7 @@ policy_URL(int len)
 public void
 key_flags(int len)
 {
-	printf("\t\tXXX\n");
+	printf("\t\txxx\n");
 	skip(len);
 	/* xxx */
 }
@@ -174,7 +174,7 @@ key_flags(int len)
 public void
 signer_user_id(int len)
 {
-	printf("\t\tXXX\n");
+	printf("\t\txxx\n");
 	skip(len);
 	/* xxx */
 }	
@@ -182,7 +182,7 @@ signer_user_id(int len)
 public void
 reason_for_revocation(int len)
 {
-	printf("\t\tXXX\n");
+	printf("\t\txxx\n");
 	skip(len);
 	/* xxx */
 }

@@ -74,7 +74,7 @@ sym_algs(int type)
 private char *
 COMP_ALGS[] = {
 	"Uncompressed(comp 0)",
-	"ZIP DEFLATE 13 <RFC1951>(comp 1)", 
+	"ZIP <RFC1951>(comp 1)", 
 	"ZLIB <RFC1950>(comp 2)",
 };
 
