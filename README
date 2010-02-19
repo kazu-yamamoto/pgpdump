@@ -1,0 +1,63 @@
+		   pgpdump: a PGP packet visualizer
+
+		   Kazu Yamamoto <kazu@iijlab.net>
+
+			   December 4, 1998
+
+"pgpdump" is a PGP packet visualizer which displays the packet format
+of OpenPGP (RFC2440) and PGP version 2 (RFC 1991).
+
+Here is an example:
+
+	% pgpdump sig.pgp
+		Old: Marker Packet(tag 10)(3 bytes)
+	        String - ...
+	New: One-Pass Signature Packet(tag 4)(13 bytes)
+	        New version(3)
+	        Sig type - Signature of a binary document(0x00).
+	        Hash alg - SHA1(hash 2)
+	        Pub alg - DSA Digital Signature Standard(pub 17)
+	        Key ID - a7 97 78 e2 47 b6 30 37 
+	        Next packet - other than one pass signature
+	New: Signature Packet(tag 2)(63 bytes)
+	        Ver 3 - old
+	        Hash material(5 bytes):
+	                Sig type - Signature of a binary document(0x00).
+	                Creation time - Fri Nov 27 22:35:02 1998
+	        Key ID - a7 97 78 e2 47 b6 30 37 
+	        Pub alg - DSA Digital Signature Standard(pub 17)
+	        Hash alg - SHA1(hash 2)
+	        Hash left 2 bytes - 8f 82 
+	        DSA r(160 bits) - ...
+	        DSA s(157 bits) - ...
+	                -> hash(160 bits)
+
+To know how to use pgpdump, type "pgpdump -h". 
+
+Some examples are stored in the "data" directory. Also, you can
+visualize your pubring and secring.
+
+You can create various packets by using PGP version 5 with the
+following options:
+	
+	+version=num
+		3 - old
+		4 - new
+	+ciphernum
+		0 - null
+		1 - IDEA
+		2 - Triple DES
+		3 - CAST5
+	+hashnum
+		1 - MD5
+		2 - SHA-1
+		3 - PIPEMD160
+
+Also, try GNUPG which is an excellent alternative of PGP version 5. 
+Its options are easy-to-understand.
+
+Bugs:
+	- Uncompression has not been implemented yet.
+		Create PGP packets with the "+compress=off" option.
+	- Some sub-packets for the signature packet have not been
+	  implemented yet.
