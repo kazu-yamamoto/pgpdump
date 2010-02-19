@@ -1,7 +1,12 @@
 			      Change Log
 
+0.08 2001/04/12
 
-
+* Fixing IV length.
+	Stefan H. Holek <stefan>
+	disastry
+* Skipping the tail of armor.
+	Stefan H. Holek <stefan>
 
 0.07 2001/04/05
 

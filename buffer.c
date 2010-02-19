@@ -119,6 +119,7 @@ read_radix64(byte *p, unsigned int max)
 	}
 	return out;
  skiptail:
+	while (getchar() != EOF);
 	done = YES;
 	return out;
 }
@@ -291,7 +292,7 @@ Compressed_Data_Packet(int len)
 {
 #ifdef HAVE_LIBZ
 	unsigned int alg = Getc();
-	int err;
+	int err = Z_OK;
 	
 	comp_algs(alg);
 

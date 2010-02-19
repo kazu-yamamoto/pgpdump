@@ -74,6 +74,30 @@ sym_algs(unsigned int type)
 	printf("\n");
 }
 
+private int
+IV_LEN[SYM_ALGS_NUM] = {
+	0,      /* Plaintext */
+	8,	/* IDEA */
+	8,	/* Triple-DES */
+	8,	/* CAST5 */
+	8,	/* Blowfish */
+	8,	/* SAFER-SK128 */
+	8,	/* Reserved for DES/SK (AES) */
+	16,	/* AES-128 */
+	16,	/* AES-192 */
+	16,	/* AES-256 */
+	16,	/* Twofish */
+};
+
+public int
+iv_len(unsigned int type)
+{
+	if (type < SYM_ALGS_NUM)
+		return IV_LEN[type];
+	else
+		return 0;
+}
+
 #define COMP_ALGS_NUM 3
 private char *
 COMP_ALGS[] = {
@@ -145,7 +169,7 @@ time4_base(char *str, time_t *pt)
 	pat = asctime(ptm);
 	pat[19] = 0;
 	pyr = pat + 20;
-       
+
 	if (uflag)
 		printf("\t%s - %s UTC %s", str, pat, pyr); 
 	else
@@ -279,7 +303,7 @@ multi_precision_integer(char *str)
 	printf("\t%s(%d bits) - ", str, bits);
 	if (iflag) {
 		dump(bytes);
-        } else {
+	} else {
 		printf("...");
 		skip(bytes);
 	}

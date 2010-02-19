@@ -9,7 +9,7 @@ private int VERSION;
 
 private void old_Public_Key_Packet(void);
 private void new_Public_Key_Packet(int);
-private void IV(void);
+private void IV(unsigned int);
 private void encrypted_Secret_Key(int);
 
 public void
@@ -83,10 +83,10 @@ new_Public_Key_Packet(int len)
 }
 
 private void
-IV(void)
+IV(unsigned int len)
 {
 	printf("\tIV - ");
-	dump(8);
+	dump(len);
 	printf("\n");
 }
 
@@ -99,7 +99,7 @@ Secret_Subkey_Packet(int len)
 public void
 Secret_Key_Packet(int len)
 {
-	int s2k;
+	int s2k, sym;
 
 	Getc_resetlen();
 	Public_Key_Packet(len);
@@ -130,14 +130,15 @@ Secret_Key_Packet(int len)
 		printf("\t\t-> m = sym alg(1) + checksum(2) + PKCS-1 block type 02\n");
 		break;
 	case 255:
-		sym_algs(Getc());
+		sym = Getc();
+		sym_algs(sym);
 		string_to_key();
-		IV();
+		IV(iv_len(sym));
 		encrypted_Secret_Key(len - Getc_getlen());
 		break;
 	default:
 		sym_algs(s2k);
-		IV();
+		IV(iv_len(s2k));
 		encrypted_Secret_Key(len - Getc_getlen());
 	}
 }

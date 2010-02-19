@@ -1,7 +1,7 @@
 		   pgpdump: a PGP packet visualizer
 
 		   Kazu Yamamoto <kazu@iijlab.net>
-			    April 5, 2001
+			    April 12, 2001
 
 
 			      <Overview>
@@ -73,6 +73,10 @@ following options(see src/pgp/{keydb/pgpPrefs.c,utils/pgpConf.c}):
 Also, try GNUPG which is an excellent alternative of PGP version 5. 
 Its options are easy-to-understand.
 
+			     <Home page>
+
+The official home page of pgpdump is:
+	http://pgp.iijlab.net/pgpdump.html
 
 				<Bugs>
 
