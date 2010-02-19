@@ -4,30 +4,28 @@
 
 /* Define if you don't have tm_zone but do have the external array
    tzname.  */
-#undef HAVE_TZNAME
+/* #undef HAVE_TZNAME */
 
 /* Define if you have the ANSI C header files.  */
-#undef STDC_HEADERS
+#define STDC_HEADERS 1
 
 /* Define if you have the <unistd.h> header file.  */
-#undef HAVE_UNISTD_H
+#define HAVE_UNISTD_H 1
 
 /* Define if you have the z library (-lz).  */
-#undef HAVE_LIBZ
+#define HAVE_LIBZ 1
 
 /* Define if you have the z library (-lbz2).  */
-#undef HAVE_LIBBZ2
+#define HAVE_LIBBZ2 1
 
 /* Define if you can safely include both <sys/time.h> and <time.h>.  */
-#undef TIME_WITH_SYS_TIME
+#define TIME_WITH_SYS_TIME 1
 
 /* Define if you have the <sys/time.h> header file.  */
-#undef HAVE_SYS_TIME_H
+#define HAVE_SYS_TIME_H 1
 
 /* Define if you have the <unixlib/local.h> header file.  */
-#undef HAVE_UNIXLIB_LOCAL_H
+#define HAVE_UNIXLIB_LOCAL_H 1
 
 /* Define if your struct tm has tm_zone.  */
-#undef HAVE_STRUCT_TM_TM_ZONE
-
-
+#define HAVE_STRUCT_TM_TM_ZONE 1

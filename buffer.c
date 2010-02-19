@@ -254,13 +254,13 @@ inflate_bzip2(byte *p, unsigned int max)
 
 	if (done == YES) return 0;
 
-	bz.next_out = p;
+	bz.next_out = (char *)p;
 	bz.avail_out = max;
 
 	while (bz.avail_out != 0) {
 		if (bz.avail_in == 0) {
 			size = (*d_func2)(d_buf2, sizeof(d_buf2));
-			bz.next_in  = d_buf2;
+			bz.next_in  = (char *)d_buf2;
 			bz.avail_in = size;
 		}
 
@@ -411,7 +411,7 @@ Compressed_Data_Packet(int len)
 	z.avail_out = sizeof(d_buf2);
 #endif /* HAVE_LIBZ */
 #ifdef HAVE_LIBBZ2
-	bz.next_in  = d_buf2;
+	bz.next_in  = (char *)d_buf2;
 	bz.avail_in = AVAIL_COUNT;
 	bz.next_out = 0;
 	bz.avail_out = sizeof(d_buf2);

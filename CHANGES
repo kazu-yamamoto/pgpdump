@@ -1,5 +1,17 @@
 			      Change Log
 
+0.21 2004/01/13
+
+* Removing compiler warnings.
+* Using getopt().
+* Supporting RISC OS.
+	Stefan Bellon <sbellon>
+* Correct casting for Bzip2.
+	Stefan Bellon <sbellon>
+* Prepared os/riscos/{config.h,Makefile} since "sh" does not exist on
+  RISC OS.
+	Stefan Bellon <sbellon>
+
 0.20 2003/12/08
 
 * Catching up to 2440bis-09. Bzip2 was supported.

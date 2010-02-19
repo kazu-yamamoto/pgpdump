@@ -10,15 +10,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>
 #endif /* HAVE_UNISTD_H */
 
 #define public extern
 #define private static
-
-#define SUCCESS 0
-#define ERROR 1
 
 #define YES 1
 #define NO  0

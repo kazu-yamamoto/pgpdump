@@ -13,15 +13,40 @@ int mflag;
 int pflag;
 int uflag;
 
-private char *pgpdump_version = "0.20, Copyright (C) 1998-2003 Kazu Yamamoto";
+private char *pgpdump_version = "0.21, Copyright (C) 1998-2004 Kazu Yamamoto";
 private char *prog;
+
+private char *getprog(void);
+private void setprog(char *);
 
 private void usage(void);
 private void version(void);
-	
+
+private char *
+getprog() {
+	return prog;
+}
+
+#ifdef HAVE_UNIXLIB_LOCAL_H
+#include <unixlib/local.h>
+int __riscosify_control = __RISCOSIFY_NO_PROCESS;
+#define PATH_SEPC '.'
+#else  /* HAVE_UNIXLIB_LOCAL_H */
+#define PATH_SEPC '/'
+#endif /* HAVE_UNIXLIB_LOCAL_H */
+
+private void
+setprog(char *p) {
+	if ((prog = strrchr(p, PATH_SEPC)) == NULL)
+		prog = p;
+	else
+		prog++;
+}
+
 private void
 usage(void)
 {
+	char *prog = getprog();
 	fprintf(stderr, "%s -h|-v\n", prog);	
 	fprintf(stderr, "%s [-agilmpu] [PGPfile]\n", prog);
 	fprintf(stderr, "\t -h -- displays this help\n");
@@ -33,7 +58,7 @@ usage(void)
 	fprintf(stderr, "\t -m -- dumps marker packets\n");
 	fprintf(stderr, "\t -p -- dumps private packets\n");
 	fprintf(stderr, "\t -u -- displays UTC time\n");
-	exit(SUCCESS);
+	exit(EXIT_SUCCESS);
 }
 
 public void
@@ -41,8 +66,7 @@ warning(const char *fmt, ...)
 {
 	va_list ap;
 
-	if (prog != NULL)
-		fprintf(stderr, "%s: ", prog);
+	fprintf(stderr, "%s: ", getprog());
 	va_start(ap, fmt);
 	if (fmt != NULL)
                 vfprintf(stderr, fmt, ap);
@@ -55,29 +79,27 @@ warn_exit(const char *fmt, ...)
 {
 	va_list ap;
 
-	if (prog != NULL)
-		fprintf(stderr, "%s: ", prog);
+	fprintf(stderr, "%s: ", getprog());
 	va_start(ap, fmt);
 	if (fmt != NULL)
                 vfprintf(stderr, fmt, ap);
 	va_end(ap);
 	fprintf(stderr, "\n");
 
-	exit(ERROR);
+	exit(EXIT_FAILURE);
 }
 
 private void
 version(void)
 {
-	fprintf(stderr, "%s version %s\n", prog, pgpdump_version);
-	exit(SUCCESS);
+	fprintf(stderr, "%s version %s\n", getprog(), pgpdump_version);
+	exit(EXIT_SUCCESS);
 }
 
 int
 main(int argc, char *argv[])
 {
         int c;
-
 	aflag = 0;
 	gflag = 0;
 	iflag = 0;
@@ -85,47 +107,43 @@ main(int argc, char *argv[])
 	mflag = 0;
 	pflag = 0;
 	uflag = 0;
-	
-	if ((prog = strrchr(argv[0], '/')) == NULL)
-		prog = argv[0];
-	else
-		prog++;
 
-	while (--argc > 0 && (*++argv)[0] == '-') {
-                while (c = *++argv[0]) {
-			switch (c){
-			case 'h':
-				usage();
-				break;
-			case 'v':
-				version();
-				break;
-			case 'a':
-				aflag++;
-				break;
-			case 'g':
-				gflag++;
-				break;
-			case 'i':
-				iflag++;
-				break;
-			case 'l':
-				lflag++;
-				break;
-			case 'm':
-				mflag++;
-				break;
-			case 'p':
-				pflag++;
-				break;
-			case 'u':
-				uflag++;
-				break;
-			default:
-				usage();
-			}
-	        }
-	}
+	setprog(argv[0]);
+
+	while ((c = getopt(argc, argv, "hvagilmpu")) != -1)
+		switch (c){
+		case 'h':
+			usage();
+			break;
+		case 'v':
+			version();
+			break;
+		case 'a':
+			aflag++;
+			break;
+		case 'g':
+			gflag++;
+			break;
+		case 'i':
+			iflag++;
+			break;
+		case 'l':
+			lflag++;
+			break;
+		case 'm':
+			mflag++;
+			break;
+		case 'p':
+			pflag++;
+			break;
+		case 'u':
+			uflag++;
+			break;
+		default:
+			usage();
+		}
+	argc -= optind;
+	argv += optind;
 
         if (argc > 0) {
 	        char *target = argv[0];
@@ -134,7 +152,7 @@ main(int argc, char *argv[])
         }
 	
 	parse_packet();
-	exit(SUCCESS);
+	exit(EXIT_SUCCESS);
 }
 
 public void skip(int len) 
