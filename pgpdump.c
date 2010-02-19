@@ -13,7 +13,7 @@ int mflag;
 int pflag;
 int uflag;
 
-private char *pgpdump_version = "0.21, Copyright (C) 1998-2004 Kazu Yamamoto";
+private char *pgpdump_version = "0.22, Copyright (C) 1998-2004 Kazu Yamamoto";
 private char *prog;
 
 private char *getprog(void);

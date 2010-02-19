@@ -178,7 +178,7 @@ User_ID_Packet(int len)
 public void
 User_Attribute_Packet(int len)
 {
-	parse_subpacket("Sub", len, 2);
+	parse_userattr_subpacket("Sub", len);
 }
 
 public void

@@ -15,7 +15,7 @@ image_attribute(int len)
 	if (hver == 1) {
 		int enc = Getc();
 		printf("\t\tImage encoding - %s(enc %d)\n",
-		       enc==1 ? "JPEG" : "Unknown",
+		       enc == 1 ? "JPEG" : "Unknown",
 		       enc);
 		printf("\t\tImage data(%d bytes)\n", len - hlen);
 		skip(len - 4);

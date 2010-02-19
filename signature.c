@@ -168,10 +168,10 @@ new_Signature_Packet(int len)
 	hash_algs(Getc());
 	hsplen = Getc() * 256;
 	hsplen += Getc();
-	parse_subpacket("Hashed Sub", hsplen, 1);
+	parse_signature_subpacket("Hashed Sub", hsplen);
 	usplen = Getc() * 256;
 	usplen += Getc();	
-	parse_subpacket("Sub", usplen, 1);
+	parse_signature_subpacket("Sub", usplen);
 	hash2();
 	signature_multi_precision_integer(pub, len - 9 - hsplen - usplen);
 }

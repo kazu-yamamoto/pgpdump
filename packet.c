@@ -18,6 +18,9 @@ private int is_partial(int);
 #define OLD_TAG_SHIFT      2
 #define OLD_LEN_MASK    0x03
 
+#define CRITICAL_BIT	0x80
+#define CRITICAL_MASK	0x7f
+
 private char *
 TAG[] = {
 	"Reserved",
@@ -366,33 +369,15 @@ parse_packet(void)
 }
 
 public void
-parse_subpacket(char *prefix, int tlen, int type)
+parse_signature_subpacket(char *prefix, int tlen)
 {
-	int len, sub, slen;
-	char **exptbl;
-	funcptr *sw;
+	int len, subtype, critical;
 
-	switch (type) {
-	case 1:
-		slen = SIGSUB_NUM;
-		exptbl = SIGSUB;
-		sw = sigsub_func;
-		break;
-	case 2:
-		slen = UATSUB_NUM;
-		exptbl = UATSUB;
-		sw = uatsub_func;
-		break;
-	default:
-		warn_exit("unknown type (%d) for subpacket.", type);
-		break;
-	}
-	
 	while (tlen > 0) {
 		len = Getc();
 		if (len < 192)
-			tlen --;
-		else if (len < 223) {
+			tlen--;
+		else if (len < 255) {
 			len = ((len - 192) << 8) + Getc() + 192;
 			tlen -= 2;
 		} else if (len == 255) {
@@ -403,15 +388,58 @@ parse_subpacket(char *prefix, int tlen, int type)
 			tlen -= 5;
 		}
 		tlen -= len;
-		sub = Getc(); /* len includes this field byte */
-		len --;
-		if (sub < slen)
-			printf("\t%s: %s", prefix, exptbl[sub]);
+		subtype = Getc(); /* len includes this field byte */
+		len--;
+
+		/* Handle critical bit of subpacket type */
+		critical = NO;
+		if (subtype & CRITICAL_BIT) {
+			critical = YES;
+			subtype &= CRITICAL_MASK;
+		}
+				
+		if (subtype < SIGSUB_NUM)
+			printf("\t%s: %s%s", prefix, SIGSUB[subtype], critical ? "(critical)" : "");
 		else
-			printf("\t%s: unknown(sub %d)", prefix, sub);
+			printf("\t%s: unknown(sub %d%s)", prefix, subtype, critical ? ", critical" : "");
 		printf("(%d bytes)\n", len);
-		if (sub < slen && sw[sub] != NULL)
-			(*sw[sub])(len);
+		if (subtype < SIGSUB_NUM && sigsub_func[subtype] != NULL)
+			(*sigsub_func[subtype])(len);
+		else
+			skip(len);
+	}
+}
+
+public void
+parse_userattr_subpacket(char *prefix, int tlen)
+{
+	int len, subtype;
+
+	while (tlen > 0) {
+		len = Getc();
+		if (len < 192)
+			tlen--;
+		else if (len < 255) {
+			len = ((len - 192) << 8) + Getc() + 192;
+			tlen -= 2;
+		} else if (len == 255) {
+		        len = Getc() << 24;
+		        len |= Getc() << 16;
+		        len |= Getc() << 8;
+		        len |= Getc();
+			tlen -= 5;
+		}
+		tlen -= len;
+		subtype = Getc();
+		len--;  /* len includes this field byte */
+
+		if (subtype < UATSUB_NUM)
+			printf("\t%s: %s", prefix, UATSUB[subtype]);
+		else
+			printf("\t%s: unknown(sub %d)", prefix, subtype);
+		printf("(%d bytes)\n", len);
+		if (subtype < UATSUB_NUM && uatsub_func[subtype] != NULL)
+			(*uatsub_func[subtype])(len);
 		else
 			skip(len);
 	}

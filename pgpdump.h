@@ -66,7 +66,8 @@ public void Getc_resetlen(void);
  */
 
 public void parse_packet(void);
-public void parse_subpacket(char *, int, int);
+public void parse_signature_subpacket(char *, int);
+public void parse_userattr_subpacket(char *, int);
 
 /*
  * types.c

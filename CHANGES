@@ -1,5 +1,12 @@
 			      Change Log
 
+0.22 2004/01/23
+
+* parse_subpacket() are split into parse_signature_subpacket() and
+  parse_userattr_subpacket(). A bug of length calculation is fixed.
+* The critical bit of the signature subpackets are supported.
+	Peter Palfrader <peter>
+
 0.21 2004/01/13
 
 * Removing compiler warnings.
