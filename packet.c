@@ -4,11 +4,13 @@
 
 #include "pgpdump.h"
 
+private int get_new_len(int);
+private int is_partial(int);
+
 #define BINARY_TAG_FLAG 0x80
 #define NEW_TAG_FLAG    0x40
 #define TAG_MASK        0x3f
 #define PARTIAL_MASK    0x1f
-#define PARTIAL           -1
 #define TAG_COMPRESSED     8
 
 #define OLD_TAG_SHIFT      2
@@ -221,51 +223,62 @@ private void
 	reason_for_revocation, 
 };
 
+private int
+get_new_len(int c)
+{
+	int len;
+
+	if (c < 192)
+		len = c;
+	else if (c < 224)
+		len = ((c - 192) << 8) + Getc() + 192;
+	else if (c == 255)
+		len = (Getc() << 24) | (Getc () << 16)
+			| (Getc() << 8) | Getc ();
+	else
+		len = 1 << (c & PARTIAL_MASK);
+	return len;
+}
+
+private int
+is_partial(int c)
+{
+	if (c < 224 || c == 255)
+		return NO;
+	else
+		return YES;
+}
+
 public void
 parse_packet(void)
 {
 	int c, tag, len = 0;
-	int partial;
+	int partial = NO;
 
-	c = Getc();
+	c = getchar();
+	ungetc(c, stdin);
+	
 	/* If the PGP packet is in the binary raw form, 7th bit of
 	 * the first byte is always 1. If it is set, let's assume
 	 * it is the binary raw form. Otherwise, let's assume
 	 * it is encoded with radix64.
 	 */
 	if (c & BINARY_TAG_FLAG)
-		ungetc(c, Get_input_file());
-	else {
-		ungetc(c, Get_input_file());
-		armor_decode();
-	}
+		set_binary();
+	else
+		set_armor();
 	
-	partial = 0;
 	while ((c = Getc1()) != EOF) {
-		if (partial)
-			tag = PARTIAL;
-		else
-			tag = c & TAG_MASK;
-		if (partial || (c & NEW_TAG_FLAG)) {
+		partial = NO;
+		tag = c & TAG_MASK;
+		if (c & NEW_TAG_FLAG) {
 			printf("New: ");
-			if (partial || tag == TAG_COMPRESSED)
-				len = c;
-			else
-				len = Getc();
-			partial = 0;
-			if (len < 192)
-				;
-			else if (len < 223)
-				len = ((len - 192) << 8) + Getc() + 192;
-			else if (len < 255) {
-				len = 1 << (len & PARTIAL_MASK);
-				partial++;
-			} else
-				len = (Getc() << 24) | (Getc () << 16) |
-					(Getc() << 8) | Getc ();
+			c = Getc();
+			len = get_new_len(c);
+			partial = is_partial(c);
 		} else {
 			int tlen;
-			
+
 			printf("Old: ");
 			tlen = c & OLD_LEN_MASK;
 			tag >>= OLD_TAG_SHIFT;
@@ -282,37 +295,50 @@ parse_packet(void)
 					(Getc() << 8) | Getc ();
 				break;
 			case 3:
-				len = 0;
-				while (Getc1() != EOF) len++;
+				if (tag == TAG_COMPRESSED)
+					len = 0;
+				else
+					len = EOF;
 				break;
 			}
 		}
-		if (tag == PARTIAL) {
-			printf("Partial Body(%d bytes)\n", len);
+		if (tag < TAG_NUM)
+			printf("%s(tag %d)", TAG[tag], tag);
+		else
+			printf("unknown(tag %d)", tag);
+
+		if (partial == YES)
+			printf("(%d bytes) partial start\n", len);
+		else if (tag == TAG_COMPRESSED)
+			printf("\n");
+		else if (len == EOF)
+			printf("(until eof)\n");
+		else
+			printf("(%d bytes)\n", len);
+
+		if (tag < TAG_NUM && tag_func[tag] != NULL)
+			(*tag_func[tag])(len);
+		else {
+			printf("\tUNKNOWN TAG\n");
 			skip(len);
-		} else {
-			if (tag < TAG_NUM)
-				printf("%s(tag %d)", TAG[tag], tag);
-			else
-				printf("unknown(tag %d)", tag);
-			if (partial)
-				printf(" Partial Body(%d bytes)\n", len);
-			else if (tag == TAG_COMPRESSED)
-				printf("\n");
-			else
-				printf("(%d bytes)\n", len);
-			if (tag < TAG_NUM && tag_func[tag] != NULL)
-				(*tag_func[tag])(len);
-			else {
-				printf("\tUNKNOWN TAG\n");
-				skip(len);
-			}
 		}
+		while (partial == YES) {
+			printf("New: ");
+			c = Getc();
+			len = get_new_len(c);
+			partial = is_partial(c);
+			if (partial == YES)
+				printf("\t(%d bytes) partial continue\n", len);
+			else
+				printf("\t(%d bytes) partial end\n", len);
+			skip(len);
+		}
+		if (len == EOF) return;
 	}
 }
 
 public void
-parse_subpacket (char *prefix, int tlen)
+parse_subpacket(char *prefix, int tlen)
 {
 	int len, sub;
 	

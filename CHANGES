@@ -1,5 +1,32 @@
 			      Change Log
 
+
+
+
+0.07 2001/04/05
+
+* New scheme to handle partial bodies.
+* Sophisticated buffering mechanism. No temporary files are created.
+* Creating pgpdump.1.
+
+Stefan H. Holek <stefan> kindly contributes the followings:
+
+* Fixed keyserver preferences (can be >1 octet)
+* Changed display of time fields to include timezone information
+* Added -u flag to display time fields in UTC instead of the local
+  timezone (PGP time fields == seconds since 00:00:00, January 1,
+  1970, UTC)
+* Fixed key and signature expiration time calculations
+  (expiration time == seconds since creation time)
+* Added capability to read from stdin when no file is specifed on the 
+  commandline
+* Implemented missing subpackets
+	- revocation_key
+	- reason_for_revocation
+	- key_flags
+	- signer_user_id (not tested)
+	- notation_data (not tested)
+
 0.06 2001/03/30
 
 * Supporting old-format packet length 3 ("until the end of the file").

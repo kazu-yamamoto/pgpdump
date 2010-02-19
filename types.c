@@ -5,6 +5,10 @@
 #include "pgpdump.h"
 #include <time.h>
 
+private void time4_base(char *, time_t *);
+private time_t key_creation_time = 0;
+private time_t sig_creation_time = 0;
+
 #define PUB_ALGS_NUM 22
 private char *
 PUB_ALGS[PUB_ALGS_NUM] = {
@@ -33,7 +37,7 @@ PUB_ALGS[PUB_ALGS_NUM] = {
 };
 
 public void
-pub_algs(int type)
+pub_algs(unsigned int type)
 {
 	printf("\tPub alg - ");
 	if (type < PUB_ALGS_NUM)
@@ -60,7 +64,7 @@ SYM_ALGS[SYM_ALGS_NUM] = {
 };
 
 public void
-sym_algs(int type)
+sym_algs(unsigned int type)
 {
 	printf("\tSym alg - ");
 	if (type < SYM_ALGS_NUM)
@@ -79,7 +83,7 @@ COMP_ALGS[] = {
 };
 
 public void
-comp_algs(int type)
+comp_algs(unsigned int type)
 {
 	printf("\tComp alg - ");
 	if (type < COMP_ALGS_NUM)
@@ -103,13 +107,13 @@ HASH_ALGS[] = {
 };
 
 public void
-hash_algs(int type)
+hash_algs(unsigned int type)
 {
 	printf("\tHash alg - ");
 	if (type < HASH_ALGS_NUM)
 		printf(HASH_ALGS[type]);
 	else
-		printf("unknown");
+		printf("unknown(hash %d)", type);
 	printf("\n");
 }
 
@@ -122,6 +126,33 @@ key_id(void)
 }
 
 public void
+fingerprint(void)
+{
+	printf("\tFingerprint - ");
+	dump(20);
+	printf("\n");
+}
+
+private void
+time4_base(char *str, time_t *pt)
+{
+	struct tm* ptm;
+	char* pat;
+	char* pyr;
+
+	ptm = uflag ? gmtime(pt) : localtime(pt);
+
+	pat = asctime(ptm);
+	pat[19] = 0;
+	pyr = pat + 20;
+       
+	if (uflag)
+		printf("\t%s - %s UTC %s", str, pat, pyr); 
+	else
+		printf("\t%s - %s %s %s", str, pat, tzname[ptm->tm_isdst], pyr); 
+}
+
+public void
 time4(char *str)
 {
 	int i;
@@ -130,7 +161,63 @@ time4(char *str)
 	for (i = 0; i < 4; i++)
 		t = t * 256 + Getc();
 			
-	printf("\t%s - %s", str, ctime(&t)); /* ctime is terminated by \n. */
+	time4_base(str, &t);
+}
+
+public void
+sig_creation_time4(char *str)
+{
+	int i;
+	time_t t = 0;
+
+	for (i = 0; i < 4; i++)
+		t = t * 256 + Getc();
+	
+	sig_creation_time = t;
+	
+	time4_base(str, &t);
+}
+
+public void
+sig_expiration_time4(char *str)
+{
+	int i;
+	time_t t = 0;
+
+	for (i = 0; i < 4; i++)
+		t = t * 256 + Getc();
+	
+	t += sig_creation_time;
+	
+	time4_base(str, &t);
+}
+
+public void
+key_creation_time4(char *str)
+{
+	int i;
+	time_t t = 0;
+
+	for (i = 0; i < 4; i++)
+		t = t * 256 + Getc();
+	
+	key_creation_time = t;
+	
+	time4_base(str, &t);
+}
+
+public void
+key_expiration_time4(char *str)
+{
+	int i;
+	time_t t = 0;
+
+	for (i = 0; i < 4; i++)
+		t = t * 256 + Getc();
+	
+	t += key_creation_time;
+	
+	time4_base(str, &t);
 }
 
 public void

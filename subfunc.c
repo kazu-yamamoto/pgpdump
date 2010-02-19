@@ -8,14 +8,14 @@ public void
 signature_creation_time(int len)
 {
 	printf("\t");	
-	time4("Time");
+	sig_creation_time4("Time");
 }
 
 public void
 signature_expiration_time(int len)
 {
 	printf("\t");	
-	time4("Time");
+	sig_expiration_time4("Time");
 }
 
 public void
@@ -32,10 +32,10 @@ exportable_certification(int len)
 public void
 trust_signature(int len)
 {
-	printf("\t\tlevel - ");
+	printf("\t\tLevel - ");
 	dump(1);
 	printf("\n");
-	printf("\t\tamount - ");		
+	printf("\t\tAmount - ");		
 	dump(1);
 	printf("\n");
 }
@@ -63,7 +63,7 @@ public void
 key_expiration_time(int len)
 {
 	printf("\t");	
-	time4("Time");
+	key_expiration_time4("Time");
 }	
 
 public void
@@ -87,9 +87,19 @@ preferred_symmetric_algorithms(int len)
 public void
 revocation_key(int len)
 {
-	printf("\t\txxx\n");
-	skip(len);
-	/* xxx */
+	int c = Getc();
+	printf("\t\tClass - ");
+	if (c == 0x80)
+		printf("Unrestricted");
+	else if (c == 0xc0)
+		printf("Sensitive");
+	else
+		printf("Unknown class(%02x)", c);
+	printf("\n");
+	printf("\t");
+	pub_algs(Getc());
+	printf("\t");
+	fingerprint();
 }	
 
 public void
@@ -102,9 +112,27 @@ issuer_key_ID(int len)
 public void
 notation_data(int len)
 {
-	printf("\t\txxx\n");
-	skip(len);
-	/* xxx */
+	int nlen, vlen, human = 0;
+	printf("\t\tFlag - ");
+	if (Getc() & 0x80)      {
+		printf("Human-readable\n");
+		human = 1;
+	}
+	skip(3);
+	nlen = Getc() * 256 + Getc();
+	vlen = Getc() * 256 + Getc();
+	printf("\t\tName - ");
+	if (human)
+		pdump(nlen);
+	else
+		dump(nlen);
+	printf("\n");
+	printf("\t\tValue - ");
+	if (human)
+		pdump(vlen);
+	else
+		dump(vlen);
+	printf("\n");
 }	
 
 public void
@@ -133,6 +161,7 @@ key_server_preferences(int len)
 	printf("\t\tFlag - ");
 	if (Getc() & 0x80)
 		printf("No-modify\n");
+	skip(len - 1);
 }
 
 public void
@@ -165,25 +194,54 @@ policy_URL(int len)
 public void
 key_flags(int len)
 {
-	printf("\t\txxx\n");
-	skip(len);
-	/* xxx */
+	int c = Getc();
+	if (c & 0x01)
+		printf("\t\tFlag - This key may be used to certify other keys\n");
+	if (c & 0x02)
+		printf("\t\tFlag - This key may be used to sign data\n");
+	if (c & 0x04)
+		printf("\t\tFlag - This key may be used to encrypt communications\n");
+	if (c & 0x08)
+		printf("\t\tFlag - This key may be used to encrypt storage\n");
+	if (c & 0x10)
+		printf("\t\tFlag - The private component of this key may have been split by "
+					"a secret-sharing mechanism\n");
+	if (c & 0x80)
+		printf("\t\tFlag - The private component of this key may be in the "
+					"possession of more than one person\n");
+	if ((c & ~0x60) == 0)
+		printf("\t\tFlag - \n");
+	skip(len-1);
 }
 
 public void
 signer_user_id(int len)
 {
-	printf("\t\txxx\n");
-	skip(len);
-	/* xxx */
+	printf("\t");
+	User_ID_Packet(len);
 }	
 
 public void
 reason_for_revocation(int len)
 {
-	printf("\t\txxx\n");
-	skip(len);
-	/* xxx */
+	int c = Getc();
+	printf("\t\tReason - ");
+	if (c == 0)
+		printf("No reason specified");
+	else if (c == 0x01)
+		printf("Key is superceded");
+	else if (c == 0x02)
+		printf("Key material has been compromised");
+	else if (c == 0x03)
+		printf("Key is retired and no longer used");
+	else if (c == 0x20)
+		printf("User ID information is no longer valid");
+	else
+		printf("Unknown reason(%02x)", c);
+	printf("\n");
+	printf("\t\tComment - ");
+	pdump(len - 1);
+	printf("\n");
 }
 
 

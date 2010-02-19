@@ -1,18 +1,21 @@
 prefix = @prefix@
 exec_prefix = @exec_prefix@
 bindir = @bindir@
+mandir = @mandir@/man1
 LIBS = @LIBS@
 
 CFLAGS = -O -Wall
 RM = rm -f
-INSTALL = install -c -m 555
+INSTALL  = install -c -m
 
 INCS = pgpdump.h
 SRCS = pgpdump.c types.c tagfuncs.c packet.c subfunc.c signature.c keys.c \
-       armor.c uncomp.c
+       buffer.c
 OBJS = pgpdump.o types.o tagfuncs.o packet.o subfunc.o signature.o keys.o \
-       armor.o uncomp.o
+       buffer.o
 PROG = pgpdump
+
+MAN  = pgpdump.1
 
 CNF = config.h config.status config.cache config.log
 MKF = Makefile
@@ -31,4 +34,5 @@ clean:
 distclean:
 	$(RM) $(OBJS) $(PROG) $(CNF) $(MKF)
 install:
-	$(INSTALL) $(PROG) $(bindir)
+	$(INSTALL) 555 $(PROG) $(bindir)
+	$(INSTALL) 444 $(MAN) $(mandir)

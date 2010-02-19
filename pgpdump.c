@@ -3,8 +3,9 @@
  */
 
 #include "pgpdump.h"
+#include <stdarg.h>
 
-private char *pgpdump_version = "0.06, Copyright (C) 1998-2001 Kazu Yamamoto";
+private char *pgpdump_version = "0.07, Copyright (C) 1998-2001 Kazu Yamamoto";
 private char *prog;
 
 private void usage(void);
@@ -13,19 +14,45 @@ private void version(void);
 private void
 usage(void)
 {
-	fprintf(stderr, "%s [-h|-m|-l|-i|-p] PGPfile\n", prog);
+	fprintf(stderr, "%s -h|-v\n", prog);	
+	fprintf(stderr, "%s [-i|-l|-m|-p|-u] [PGPfile]\n", prog);
 	fprintf(stderr, "\t -h -- displays this help\n");
-	fprintf(stderr, "\t -m -- prints marker\n");
-	fprintf(stderr, "\t -l -- prints literal\n");
-	fprintf(stderr, "\t -i -- dump integer\n");
-	fprintf(stderr, "\t -p -- dump private\n");
-	exit(ERROR);
+	fprintf(stderr, "\t -v -- displays version\n");
+	fprintf(stderr, "\t -i -- dumps integer packets\n");
+	fprintf(stderr, "\t -l -- prints literal packets\n");
+	fprintf(stderr, "\t -m -- prints marker packets\n");
+	fprintf(stderr, "\t -p -- dumps private packets\n");
+	fprintf(stderr, "\t -u -- displays UTC time\n");
+	exit(SUCCESS);
 }
 
 public void
-error(char *msg)
+warning(const char *fmt, ...)
 {
-	fprintf(stderr, "%s: %s\n", prog, msg);
+	va_list ap;
+
+	if (prog != NULL)
+		fprintf(stderr, "%s: ", prog);
+	va_start(ap, fmt);
+	if (fmt != NULL)
+                vfprintf(stderr, fmt, ap);
+	va_end(ap);
+	fprintf(stderr, "\n");
+}
+
+public void
+warn_exit(const char *fmt, ...)
+{
+	va_list ap;
+
+	if (prog != NULL)
+		fprintf(stderr, "%s: ", prog);
+	va_start(ap, fmt);
+	if (fmt != NULL)
+                vfprintf(stderr, fmt, ap);
+	va_end(ap);
+	fprintf(stderr, "\n");
+
 	exit(ERROR);
 }
 
@@ -33,19 +60,19 @@ private void
 version(void)
 {
 	fprintf(stderr, "%s version %s\n", prog, pgpdump_version);
-	exit(ERROR);
+	exit(SUCCESS);
 }
 
 int
-main (int argc, char *argv[])
+main(int argc, char *argv[])
 {
 	char *target = NULL;
-	FILE *input_stream;
 
 	iflag = 0;
-	mflag = 0;
 	lflag = 0;
+	mflag = 0;
 	pflag = 0;
+	uflag = 0;
 	
 	if ((prog = strrchr(argv[0], '/')) == NULL)
 		prog = argv[0];
@@ -72,6 +99,9 @@ main (int argc, char *argv[])
 			case 'p':
 				pflag++;
 				break;
+			case 'u':
+				uflag++;
+				break;
 			default:
 				usage();
 			}
@@ -81,79 +111,12 @@ main (int argc, char *argv[])
 		}
 	}
 
-	if (target == NULL)
-		error("no file specified.");
-	if ((input_stream = fopen(target, "r")) == NULL)
-		error("can't open the file."); 
-	Set_input_file(input_stream);
+	if (target != NULL)
+		if (freopen(target, "rb", stdin) == NULL)
+			warn_exit("can't open %s.", target); 
 	
 	parse_packet();
 	exit(SUCCESS);
-}
-
-private FILE *input = NULL;
-private int MAGIC_COUNT = 0;
-
-public void
-Set_input_file(FILE *file)
-{
-	input = file;
-}
-
-public FILE *
-Get_input_file(void)
-{
-	return input;
-}
-
-public int
-Getc(void)
-{
-	int c = getc(input);
-
-	MAGIC_COUNT++;
-	if (c == EOF) exit(ERROR);
-	return c;
-}
-
-public int
-Getc1(void)
-{
-	MAGIC_COUNT++;
-	return getc(input);
-}
-
-public int
-Getc_getlen(void)
-{
-	return MAGIC_COUNT;
-}
-
-public void
-Getc_resetlen(void)
-{
-	MAGIC_COUNT = 0;
-}
-
-public FILE *
-Get_temp_file(char **file_name) {
-	int fd;
-	char *name = (char *)malloc(BUFSIZ);
-	FILE *stream;
-
-	if (name == NULL)
-		error("memory exhausted.");
-
-	strcpy(name, "/tmp/pgpdump.XXXXXX");
-
-	if ((fd = mkstemp(name)) == -1)
-		error("can't open a temporary file.");
-
-	if ((stream = fdopen(fd, "r+")) == NULL)
-		error("can't open a temporary file.");
-
-	*file_name = name;
-	return stream;
 }
 
 /* 

@@ -129,7 +129,7 @@ Signature_Packet(int len)
 }
 
 private void
-old_Signature_Packet (int len)
+old_Signature_Packet(int len)
 {
 	int pub;
 	

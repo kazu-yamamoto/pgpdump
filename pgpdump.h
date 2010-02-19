@@ -20,33 +20,53 @@
 #define SUCCESS 0
 #define ERROR 1
 
+#define YES 1
+#define NO  0
+
 #define NULL_VER -1
 
 /*
  * Global
  */
 
-int mflag;
-int lflag;
 int iflag;
+int lflag;
+int mflag;
 int pflag;
+int uflag;
 
 /*
  * pgpdump.c
  */
 
-public void error(char *);
-public void Set_input_file(FILE *);
-public FILE *Get_input_file(void);
+public void warning(const char *, ...);
+public void warn_exit(const char *, ...);
+
+/*
+ * buffer.c
+ */
+
+public void Compressed_Data_Packet(int);
+
+public void set_armor(void);
+public void set_binary(void);
+
 public int Getc(void);
 public int Getc1(void);
 public int Getc_getlen(void);
 public void Getc_resetlen(void);
-public FILE * Get_temp_file(char **);
 
-#define skip(len) {int i; for (i = 0; i < (len); i++) Getc();}
-#define pdump(len) {int i; for (i = 0; i < (len); i++) putchar(Getc());}
-#define dump(len) {int i; for (i = 0; i < (len); i++) printf("%02x ", Getc());}
+#define skip(len) do {\
+		int i; for (i = 0; i < (len); i++) Getc();\
+	} while (0)
+
+#define pdump(len) do {\
+		int i; for (i = 0; i < (len); i++) putchar(Getc());\
+	} while (0)
+
+#define dump(len) do {\
+		int i; for (i = 0; i < (len); i++) printf("%02x ", Getc());\
+	} while (0)
 
 /*
  *  packet.c
@@ -59,12 +79,17 @@ public void parse_subpacket(char *, int);
  * types.c
  */
 
-public void pub_algs(int);
-public void sym_algs(int);
-public void comp_algs(int);
-public void hash_algs(int);
+public void pub_algs(unsigned int);
+public void sym_algs(unsigned int);
+public void comp_algs(unsigned int);
+public void hash_algs(unsigned int);
 public void key_id(void);
+public void fingerprint(void);
 public void time4(char *);
+public void sig_creation_time4(char *);
+public void sig_expiration_time4(char *);
+public void key_creation_time4(char *);
+public void key_expiration_time4(char *);
 public void ver(int, int, int);
 public void string_to_key(void);
 public void multi_precision_integer(char *);
@@ -92,12 +117,6 @@ public void Public_Key_Packet(int);
 public void Public_Subkey_Packet(int);
 public void Secret_Key_Packet(int);
 public void Secret_Subkey_Packet(int);
-
-/*
- * uncompress.c
- */
-
-public void Compressed_Data_Packet(int);
 
 /*
  * signature.c
@@ -131,12 +150,6 @@ public void policy_URL(int);
 public void key_flags(int);
 public void signer_user_id(int);
 public void reason_for_revocation(int);
-
-/*
- * armor.c
- */
-
-public void armor_decode(void);
 
 #endif /* _PGP_DUMP_H_ */
 

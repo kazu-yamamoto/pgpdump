@@ -41,7 +41,7 @@ Public_Key_Packet(int len)
 }
 
 private void
-old_Public_Key_Packet()
+old_Public_Key_Packet(void)
 {
 	time4("Public key creation time");
 	printf("\tValid days - %d[0 is forever]\n", Getc() * 256 + Getc());
@@ -54,7 +54,7 @@ old_Public_Key_Packet()
 private void
 new_Public_Key_Packet(int len)
 {
-	time4("Public key creation time");
+	key_creation_time4("Public key creation time");
 	PUBLIC = Getc();
 	pub_algs(PUBLIC);
 	switch (PUBLIC) {
@@ -83,7 +83,7 @@ new_Public_Key_Packet(int len)
 }
 
 private void
-IV (void)
+IV(void)
 {
 	printf("\tIV - ");
 	dump(8);
@@ -181,7 +181,7 @@ encrypted_Secret_Key(int len)
 			printf("\tEncrypted RSA p\n");
 			printf("\tEncrypted RSA q\n");
 			printf("\tEncrypted RSA u\n");
-			printf("\tENcrypted checksum\n");
+			printf("\tEncrypted checksum\n");
 			break;
 		case 16:
 		case 20:

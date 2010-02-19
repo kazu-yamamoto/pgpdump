@@ -1,7 +1,7 @@
 		   pgpdump: a PGP packet visualizer
 
 		   Kazu Yamamoto <kazu@iijlab.net>
-			    March 30, 2001
+			    April 5, 2001
 
 
 			      <Overview>
@@ -76,5 +76,5 @@ Its options are easy-to-understand.
 
 				<Bugs>
 
-	- Some sub-packets for the signature packet have not been
-	  implemented yet.
+	- pgpdump assumes that a compressed packet continues until
+	  the end of the specified file.
