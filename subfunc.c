@@ -163,10 +163,7 @@ notation_data(int len)
 	vlen = Getc() * 256;
 	vlen += Getc();
 	printf("\t\tName - ");
-	if (human)
-		pdump(nlen);
-	else
-		dump(nlen);
+	pdump(nlen);
 	printf("\n");
 	printf("\t\tValue - ");
 	if (human)

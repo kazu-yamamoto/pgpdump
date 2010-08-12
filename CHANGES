@@ -4,6 +4,8 @@
 
 * Adding Camellia defined in RFC 5581.
 	"Stefan H. Holek" <stefan>
+* Notation name is always text.
+	Risko Gergely <gergely>
 
 0.26 2007/09/06
 
