@@ -5,6 +5,7 @@ mandir = @mandir@/man1
 LIBS = @LIBS@
 CFLAGS  = @CFLAGS@ -O
 LDFLAGS = @LDFLAGS@
+VERSION = `git tag | tail -1 | sed -e 's/v//'`
 
 RM = rm -f
 INSTALL  = install -c -m
@@ -38,3 +39,6 @@ distclean:
 install: all
 	$(INSTALL) 555 $(PROG) $(bindir)
 	$(INSTALL) 444 $(MAN) $(mandir)
+
+archive:
+	git archive master -o ~/pgpdump-$(VERSION).tar.gz --prefix=pgpdump-$(VERSION)/
