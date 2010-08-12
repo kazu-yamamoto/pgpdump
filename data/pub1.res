@@ -33,7 +33,7 @@ Old: Signature Packet(tag 2)(87 bytes)
 	Hash left 2 bytes - e2 cb 
 	DSA r(158 bits) - ...
 	DSA s(158 bits) - ...
-		-> hash(160 bits)
+		-> hash(DSA q bits)
 Old: Public Subkey Packet(tag 14)(269 bytes)
 	Ver 4 - new
 	Public key creation time - Sun Oct 11 23:29:23 JST 1998
@@ -53,4 +53,4 @@ Old: Signature Packet(tag 2)(70 bytes)
 	Hash left 2 bytes - 42 66 
 	DSA r(160 bits) - ...
 	DSA s(160 bits) - ...
-		-> hash(160 bits)
+		-> hash(DSA q bits)

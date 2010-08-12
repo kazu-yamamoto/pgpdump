@@ -24,7 +24,7 @@ Old: Signature Packet(tag 2)(75 bytes)
 	Hash left 2 bytes - 7e 87 
 	DSA r(160 bits) - ...
 	DSA s(154 bits) - ...
-		-> hash(160 bits)
+		-> hash(DSA q bits)
 Old: User ID Packet(tag 13)(20 bytes)
 	User ID - robby@dd.iij4u.or.jp
 Old: Signature Packet(tag 2)(75 bytes)
@@ -43,7 +43,7 @@ Old: Signature Packet(tag 2)(75 bytes)
 	Hash left 2 bytes - ba ef 
 	DSA r(160 bits) - ...
 	DSA s(160 bits) - ...
-		-> hash(160 bits)
+		-> hash(DSA q bits)
 Old: Public Subkey Packet(tag 14)(525 bytes)
 	Ver 4 - new
 	Public key creation time - Thu Nov 26 22:49:00 JST 1998
@@ -62,4 +62,4 @@ Old: Signature Packet(tag 2)(63 bytes)
 	Hash left 2 bytes - e8 41 
 	DSA r(160 bits) - ...
 	DSA s(160 bits) - ...
-		-> hash(160 bits)
+		-> hash(DSA q bits)

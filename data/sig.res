@@ -9,7 +9,7 @@ Old: Signature Packet(tag 2)(63 bytes)
 	Hash left 2 bytes - 27 ae 
 	DSA r(159 bits) - ...
 	DSA s(159 bits) - ...
-		-> hash(160 bits)
+		-> hash(DSA q bits)
 Old: Literal Data Packet(tag 11)(45 bytes)
 	Format - binary
 	Filename - hoge
