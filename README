@@ -1,10 +1,9 @@
-		   pgpdump: a PGP packet visualizer
+# pgpdump: a PGP packet visualizer
 
-		    Kazu Yamamoto <kazu@iij.ad.jp>
-			     Feb 19, 2010
+Kazu Yamamoto <kazu@iij.ad.jp>
+August 16, 2010
 
-
-			      <Overview>
+## Overview
 
 "pgpdump" is a PGP packet visualizer which displays the packet format
 of OpenPGP (RFC 4880) and PGP version 2 (RFC 1991).
@@ -12,7 +11,6 @@ of OpenPGP (RFC 4880) and PGP version 2 (RFC 1991).
 Here is an example:
 
 	% pgpdump data/sig1
-
 	Old: Marker Packet(tag 10)(3 bytes)
 		String - ...
 	New: One-Pass Signature Packet(tag 4)(13 bytes)
@@ -35,7 +33,7 @@ Here is an example:
 		DSA s(157 bits) - ...
 			-> hash(DSA q bits)
 
-			    <Installation>
+## Installation
 
 Take the following steps to install "pgpdump".
 
@@ -45,19 +43,19 @@ Take the following steps to install "pgpdump".
 	# make install
 
 
-			       <Usage>
+## Usage
 
 To know how to use pgpdump, type "pgpdump -h".
 
 Some examples are stored in the "data" directory. Also, you can
 visualize your pubring and secring.
 
-			     <Home page>
+## Home page
 
 The official home page of pgpdump is:
 	http://www.mew.org/~kazu/proj/pgpdump/
 
-				<Bugs>
+## Bugs
 
-	- pgpdump assumes that a compressed packet continues until
-	  the end of the specified file.
+- pgpdump assumes that a compressed packet continues until the end of
+  the specified file.
