@@ -1,7 +1,7 @@
 # pgpdump: a PGP packet visualizer
 
-Kazu Yamamoto <kazu@iij.ad.jp>
-August 16, 2010
+- Kazu Yamamoto <kazu@iij.ad.jp>
+- August 16, 2010
 
 ## Overview
 
