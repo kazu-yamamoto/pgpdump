@@ -8,7 +8,7 @@ LDFLAGS = @LDFLAGS@
 VERSION = `git tag | tail -1 | sed -e 's/v//'`
 
 RM = rm -f
-INSTALL  = install -c -m
+INSTALL  = install -c
 
 INCS = pgpdump.h
 SRCS = pgpdump.c types.c tagfuncs.c packet.c subfunc.c signature.c keys.c \
@@ -37,8 +37,10 @@ distclean:
 	$(RM) $(OBJS) $(PROG) $(CNF) $(MKF)
 
 install: all
-	$(INSTALL) 555 $(PROG) $(bindir)
-	$(INSTALL) 444 $(MAN) $(mandir)
+	$(INSTALL) -d $(bindir)
+	$(INSTALL) -m 555 $(PROG) $(bindir)
+	$(INSTALL) -d $(mandir)
+	$(INSTALL) -m 444 $(MAN) $(mandir)
 
 archive:
 	git archive master -o ~/pgpdump-$(VERSION).tar --prefix=pgpdump-$(VERSION)/
