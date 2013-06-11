@@ -1,7 +1,7 @@
 prefix = @prefix@
 exec_prefix = @exec_prefix@
 bindir = @bindir@
-mandir = @mandir@/man1
+mandir = @mandir@
 LIBS = @LIBS@
 CFLAGS  = @CFLAGS@ -O
 LDFLAGS = @LDFLAGS@
@@ -39,8 +39,8 @@ distclean:
 install: all
 	$(INSTALL) -d $(bindir)
 	$(INSTALL) -m 555 $(PROG) $(bindir)
-	$(INSTALL) -d $(mandir)
-	$(INSTALL) -m 444 $(MAN) $(mandir)
+	$(INSTALL) -d $(mandir)/man1
+	$(INSTALL) -m 444 $(MAN) $(mandir)/man1
 
 archive:
 	git archive master -o ~/pgpdump-$(VERSION).tar --prefix=pgpdump-$(VERSION)/
