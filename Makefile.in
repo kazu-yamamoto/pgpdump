@@ -3,7 +3,7 @@ exec_prefix = @exec_prefix@
 bindir = @bindir@
 mandir = @mandir@
 LIBS = @LIBS@
-CFLAGS  = @CFLAGS@ -O
+CFLAGS  = @CFLAGS@ -O -Wall
 LDFLAGS = @LDFLAGS@
 VERSION = `git tag | tail -1 | sed -e 's/v//'`
 
