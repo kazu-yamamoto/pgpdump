@@ -33,6 +33,7 @@ private bz_stream bz;
 #define EOP -2
 #define ELF -3
 #define ECR -4
+#define SPC -5
 
 private unsigned int MAGIC_COUNT = 0;
 private unsigned int AVAIL_COUNT = 0;
@@ -49,11 +50,11 @@ private byte d_buf3[BUFSIZ];
 
 private signed char
 base256[] = {
-	OOB,OOB,OOB,OOB, OOB,OOB,OOB,OOB, OOB,OOB,ELF,OOB, OOB,ECR,OOB,OOB,
+	OOB,OOB,OOB,OOB, OOB,OOB,OOB,OOB, OOB,SPC,ELF,OOB, OOB,ECR,OOB,OOB,
 
 	OOB,OOB,OOB,OOB, OOB,OOB,OOB,OOB, OOB,OOB,OOB,OOB, OOB,OOB,OOB,OOB,
       /*                                                -                / */
-	OOB,OOB,OOB,OOB, OOB,OOB,OOB,OOB, OOB,OOB,OOB, 62, OOB,OOB,OOB, 63,
+	SPC,OOB,OOB,OOB, OOB,OOB,OOB,OOB, OOB,OOB,OOB, 62, OOB,OOB,OOB, 63,
       /*  0   1   2   3    4   5   6   7    8   9                =        */
 	 52, 53, 54, 55,  56, 57, 58, 59,  60, 61,OOB,OOB, OOB,EOP,OOB,OOB,
       /*      A   B   C    D   E   F   G    H   I   J   K    L   M   N   O*/
@@ -130,6 +131,8 @@ read_radix64(byte *p, unsigned int max)
 			continue;
 		case ECR:
 			if (++cr >= 2) goto skiptail;
+			continue;
+		case SPC:
 			continue;
 		}
 		lf = cr = 0;
