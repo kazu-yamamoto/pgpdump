@@ -309,17 +309,18 @@ string_to_key(void)
 {
 	int has_iv = YES;
 	int type = Getc();
+	int hash = Getc();
 
 	switch (type) {
 	case 0:
 		printf("\tSimple string-to-key(s2k %d):\n", type);
 		printf("\t");
-		hash_algs(Getc());
+		hash_algs(hash);
 		break;
 	case 1:
 		printf("\tSalted string-to-key(s2k %d):\n", type);
 		printf("\t");
-		hash_algs(Getc());
+		hash_algs(hash);
 		printf("\t\tSalt - ");
 		dump(8);
 		printf("\n");
@@ -330,7 +331,7 @@ string_to_key(void)
 	case 3:
 		printf("\tIterated and salted string-to-key(s2k %d):\n", type);
 		printf("\t");
-		hash_algs(Getc());
+		hash_algs(hash);
 		printf("\t\tSalt - ");
 		dump(8);
 		printf("\n");
@@ -341,9 +342,31 @@ string_to_key(void)
 		}
 		break;
 	case 101:
-		printf("\tGnuPG string-to-key(s2k %d)\n", type);
 		has_iv = NO;
-		skip(5);
+		{
+			char temp[4];
+			int j, snlen;
+			for (j = 0; j < 4; j++) temp[j] = Getc();
+			if (!memcmp(temp, "GNU", 3)) {
+				type = 1000 + temp[3];
+				switch (type) {
+					case 1001:
+						printf("\tGnuPG gnu-dummy (s2k %d)\n", type);
+						break;
+					case 1002:
+						snlen = Getc();
+						printf("\tGnuPG gnu-divert-to-card (s2k %d)\n\tSerial Number: ", type);
+						dump(snlen);
+						puts ("");
+						break;
+					default:
+						printf("\tGnuPG unknown extension (s2k %d)\n", type);
+						break;
+				}
+			} else {
+				printf("\tPrivate/experimental string-to-key(s2k %d)\n", type);
+			}
+		}
 		break;
 	default:
 		printf("\tUnknown string-to-key(s2k %d)\n", type);

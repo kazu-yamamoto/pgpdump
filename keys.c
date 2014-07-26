@@ -188,6 +188,9 @@ plain_Secret_Key(int len)
 private void
 encrypted_Secret_Key(int len, int sha1)
 {
+	if (len == 0)
+		return;
+
 	switch (VERSION) {
 	case 2:
 	case 3:
