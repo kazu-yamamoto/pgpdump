@@ -1,5 +1,11 @@
 			      Change Log
 
+0.29 2014/08/01
+
+* Adaption for Fedora packaging.
+* Ignore whitespace when decoding Radix-64 input.
+* Add support for GnuPG extensions in private subkeys.
+
 0.28 2013/06/21
 
 * No significant change. Maintenance purpose only.
