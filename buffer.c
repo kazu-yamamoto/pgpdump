@@ -357,7 +357,7 @@ Compressed_Data_Packet(int len)
 {
 #if defined(HAVE_LIBZ) || defined(HAVE_LIBBZ2)
 	unsigned int alg = Getc();
-	int err = Z_OK;
+	int err;
 	private int (*func)(byte *, unsigned int);
 	
 	comp_algs(alg);
