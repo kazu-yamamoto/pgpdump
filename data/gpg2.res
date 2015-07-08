@@ -8,7 +8,7 @@ Old: One-Pass Signature Packet(tag 4)(13 bytes)
 Old: Literal Data Packet(tag 11)(45 bytes)
 	Format - binary
 	Filename - hoge
-	File modified time - Sat Nov 28 01:11:39 JST 1998
+	File modified time - Fri Nov 27 16:11:39 UTC 1998
 	Literal - ...
 Old: Signature Packet(tag 2)(70 bytes)
 	Ver 4 - new
@@ -16,7 +16,7 @@ Old: Signature Packet(tag 2)(70 bytes)
 	Pub alg - DSA Digital Signature Algorithm(pub 17)
 	Hash alg - SHA1(hash 2)
 	Hashed Sub: signature creation time(sub 2)(4 bytes)
-		Time - Sat Nov 28 01:11:39 JST 1998
+		Time - Fri Nov 27 16:11:39 UTC 1998
 	Sub: issuer key ID(sub 16)(8 bytes)
 		Key ID - 0xFD90DA9732D8EBD2
 	Hash left 2 bytes - 0a 7d 
