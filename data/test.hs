@@ -27,7 +27,7 @@ test_data = do
   where
     compareThem (src,dst) = do
         putStrLn src
-        ss <- readProcess "../pgpdump" [src] ""
+        ss <- readProcess "../pgpdump" ["-u", src] ""
         ds <- readFile dst
         ss @?= ds
 
