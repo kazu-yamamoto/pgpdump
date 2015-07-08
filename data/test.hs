@@ -1,3 +1,6 @@
+-- % cabal install test-framework-hunit
+-- % runghc test.hs
+
 module Test where
 
 import Data.List
