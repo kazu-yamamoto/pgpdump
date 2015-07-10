@@ -59,3 +59,20 @@ The official home page of pgpdump is:
 
 - pgpdump assumes that a compressed packet continues until the end of
   the specified file.
+
+## Testing
+
+The test program is written in Haskell. I recommend to install 
+[Haskell Platform](https://www.haskell.org/platform/) if you want to test. After that, please install necessary libraries:
+
+```
+% cabal install test-framework-hunit
+```
+
+Now you can execute the test program:
+
+```
+% cd data
+% runghc test.hs
+```
+
