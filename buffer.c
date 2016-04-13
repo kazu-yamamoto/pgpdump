@@ -81,10 +81,16 @@ line_not_blank(byte *s)
 private int
 read_binary(byte *p, unsigned int max)
 {
-	size_t ret = fread(p, sizeof(byte), max, stdin);
-	if (feof(stdin) | ferror(stdin)) {
-		warn_exit("error in read_binary, maybe preliminary EOF?");
+	if (feof(stdin)) {
+		exit(EXIT_SUCCESS);
 	}
+
+	size_t ret = fread(p, sizeof(byte), max, stdin);
+
+	if (ferror(stdin)) {
+		warn_exit("error in read_binary");
+	}
+
 	return ret;
 }
 
