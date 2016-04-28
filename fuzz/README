@@ -1,0 +1,15 @@
+* American fuzzy lop
+
+	http://lcamtuf.coredump.cx/afl/
+
+Assuming we are in the top directory:
+
+	% cd fuzz
+	% wget http://lcamtuf.coredump.cx/afl/releases/afl-latest.tgz
+	% tar xvf afl-latest.tgz
+	% ln -s afl-[0-9]* afl-latest
+	% AFL_USE_ASAN=1 make
+	% cd ../..
+	% make clean
+	% make CC=fuzz/afl-latest/afl-clang CFLAGS="-O -g -fsanitize=address -fno-omit-frame-pointer"
+	% AFL_USE_ASAN=1 AFL_SKIP_CPUFREQ=1 fuzz/afl-latest/afl-fuzz -m none -i fuzz/seed -o fuzz/results ./pgpdump
