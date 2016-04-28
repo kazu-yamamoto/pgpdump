@@ -1,4 +1,4 @@
-* American fuzzy lop
+* American fuzzy lop with ASAN (AddressSanitizer)
 
 	http://lcamtuf.coredump.cx/afl/
 
@@ -13,3 +13,11 @@ Assuming we are in the top directory:
 	% make clean
 	% make CC=fuzz/afl-latest/afl-clang CFLAGS="-O -g -fsanitize=address -fno-omit-frame-pointer"
 	% AFL_USE_ASAN=1 AFL_SKIP_CPUFREQ=1 fuzz/afl-latest/afl-fuzz -m none -i fuzz/seed -o fuzz/results ./pgpdump
+	% ./pgpdump fuzz/results/crashes/id:000000*
+
+
+* ASAN (AddressSanitizer) only
+
+	% make clean
+	% make CC=clang CFLAGS="-O -g -fsanitize=address -fno-omit-frame-pointer"
+	% ./pgpdump fuzz/results/crashes/id:000000*
