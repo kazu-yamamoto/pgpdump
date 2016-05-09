@@ -127,6 +127,9 @@ read_radix64(byte *p, unsigned int max)
 			done = YES;
 			return out;
 		}
+		if (c >= 128) {
+		  continue;
+		}
 		d = base256[c];
 		switch (d) {
 		case OOB:
