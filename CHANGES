@@ -1,4 +1,8 @@
 			      Change Log
+0.31 2016/05/09
+
+* Fixing a buffer overrun.
+
 0.30 2016/04/13
 
 * Security fix: https://github.com/kazu-yamamoto/pgpdump/pull/16
