@@ -5,8 +5,7 @@
 
 ## Overview
 
-"pgpdump" is a PGP packet visualizer which displays the packet format
-of OpenPGP (RFC 4880) and PGP version 2 (RFC 1991).
+**pgpdump** is a PGP packet visualizer which displays the packet format of OpenPGP ([RFC 4880](http://tools.ietf.org/html/rfc4880)) and PGP version 2 ([RFC 1991](http://tools.ietf.org/html/rfc1991)).
 
 Here is an example:
 
@@ -35,44 +34,41 @@ Here is an example:
 
 ## Installation
 
-Take the following steps to install "pgpdump".
+Take the following steps to install **pgpdump**.
 
 	% ./configure
 	% make
 	% su
 	# make install
 
+Binaries are available for Mac OS X via Homebrew:
+
+	% brew install pgpdump
 
 ## Usage
 
-To know how to use pgpdump, type "pgpdump -h".
+To know how to use pgpdump, type `pgpdump -h`.
 
-Some examples are stored in the "data" directory. Also, you can
-visualize your pubring and secring.
+Some examples are stored in the `data` directory. Also, you can visualize your pubring and secring.
 
 ## Home page
 
 The official home page of pgpdump is:
-	http://www.mew.org/~kazu/proj/pgpdump/
+
+* http://www.mew.org/~kazu/proj/pgpdump/
 
 ## Bugs
 
-- pgpdump assumes that a compressed packet continues until the end of
-  the specified file.
+* pgpdump assumes that a compressed packet continues until the end of the specified file.
 
 ## Testing
 
-The test program is written in Haskell. I recommend to install 
-[Haskell Platform](https://www.haskell.org/platform/) if you want to test. After that, please install necessary libraries:
+The test program is written in Haskell. I recommend to install [Haskell Platform](https://www.haskell.org/platform/) if you want to test. After that, please install necessary libraries:
 
-```
-% cabal install test-framework-hunit
-```
+	% cabal install test-framework-hunit
+
 
 Now you can execute the test program:
 
-```
-% cd data
-% runghc test.hs
-```
-
+	% cd data
+	% runghc test.hs
