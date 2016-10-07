@@ -23,7 +23,7 @@ CNF = config.h config.status config.cache config.log
 MKF = Makefile
 
 .c.o:
-	$(CC) -c $(CFLAGS) $<
+	$(CC) -c $(CPPFLAGS) $(CFLAGS) $<
 
 all: $(PROG)
 
