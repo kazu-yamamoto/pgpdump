@@ -278,7 +278,7 @@ reason_for_revocation(int len)
 		printf("No reason specified");
 		break;
 	case 1:
-		printf("Key is superceded");
+		printf("Key is superseded");
 		break;
 	case 2:
 		printf("Key material has been compromised");

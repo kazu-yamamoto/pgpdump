@@ -26,11 +26,11 @@
 
 0.26 2007/09/06
 
-* Catching upto ID 22.
+* Catching up to ID 22.
 
 0.25 2006/10/02
 
-* Catching upto ID 18
+* Catching up to ID 18
 	- Adding SHA224.
 
 0.24 2004/12/24
@@ -167,7 +167,7 @@ Stefan H. Holek <stefan> kindly contributes the followings:
   1970, UTC)
 * Fixed key and signature expiration time calculations
   (expiration time == seconds since creation time)
-* Added capability to read from stdin when no file is specifed on the
+* Added capability to read from stdin when no file is specified on the
   commandline
 * Implemented missing subpackets
 	- revocation_key
