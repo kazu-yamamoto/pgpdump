@@ -21,4 +21,6 @@ AC_STRUCT_TIMEZONE
 
 dnl Checks for library functions.
 
+AC_SYS_LARGEFILE
+
 AC_OUTPUT(Makefile)
