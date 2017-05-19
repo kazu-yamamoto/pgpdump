@@ -153,6 +153,7 @@ public void reason_for_revocation(int);
 public void features(int);
 public void signature_target(int);
 public void embedded_signature(int);
+public void issuer_fingerprint(int);
 
 /*
  * uatfunc.c

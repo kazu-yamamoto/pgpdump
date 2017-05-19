@@ -194,6 +194,7 @@ SIGSUB[] = {
         "features(sub 30)",
         "signature target(sub 31)",
 	"embedded signature(sub 32)",
+	"issuer fingerprint(sub 33)",
 };
 #define SIGSUB_NUM (sizeof(SIGSUB) / sizeof(string))
 
@@ -232,6 +233,7 @@ sigsub_func[] = {
         features,
         signature_target,
 	embedded_signature,
+	issuer_fingerprint,
 };
 
 private string

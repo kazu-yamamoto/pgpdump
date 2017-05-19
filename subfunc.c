@@ -327,6 +327,25 @@ embedded_signature(int len)
 	Signature_Packet(len);
 }
 
+public void
+issuer_fingerprint(int len)
+{
+        int v = Getc();
+        len = len-1;
+	printf("\t v%d -", v);
+        if (v == 4) {
+          if (len != 20) {
+            printf(" had %d bytes, should have had 20\n", len);
+            skip(len);
+          } else {
+            fingerprint();
+          }
+        } else {
+          printf(" unknown version\n");
+          skip(len);
+        }
+}
+
 /*
  * Copyright (C) 1998 Kazuhiko Yamamoto
  * All rights reserved.
