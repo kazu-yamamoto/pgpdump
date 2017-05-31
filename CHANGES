@@ -1,4 +1,10 @@
 			      Change Log
+
+0.32 2017/05/31
+
+* Supporting "issuer fingerprint" subpackets.
+	Daniel Kahn Gillmor <dkg@fifthhorseman.net>
+
 0.31 2016/05/09
 
 * Fixing a buffer overrun.
