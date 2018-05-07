@@ -1,5 +1,10 @@
 			      Change Log
 
+0.33 2018/05/07
+
+* Added EdDSA and adjusted ECDSA.
+	https://github.com/kazu-yamamoto/pgpdump/pull/22
+
 0.32 2017/05/31
 
 * Supporting "issuer fingerprint" subpackets.
