@@ -276,6 +276,8 @@ inflate_bzip2(byte *p, unsigned int max)
 	while (bz.avail_out != 0) {
 		if (bz.avail_in == 0) {
 			size = (*d_func2)(d_buf2, sizeof(d_buf2));
+			if (size == 0)
+				warn_exit("bzip2 no data for BZ2_bzDecompress");
 			bz.next_in  = (cast_t)d_buf2;
 			bz.avail_in = size;
 		}
