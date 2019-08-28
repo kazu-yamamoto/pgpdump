@@ -96,7 +96,7 @@ signature_type(int type)
 		printf("Third-Party Confirmation signature(0x50).");
 		break;
 	default:
-		printf("unknown(%02x)", type);
+		printf("unknown(0x%02x)", type);
 		break;
 	}
 	printf("\n");
