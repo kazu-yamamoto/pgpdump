@@ -125,7 +125,7 @@ Literal_Data_Packet(int len)
 	int format, flen, blen;
 	
 	format = Getc();
-	printf("\tFormat - ");
+	printf("\tPacket data format - ");
 	switch (format) {
 	case 'b':
 		printf("binary");
@@ -148,7 +148,8 @@ Literal_Data_Packet(int len)
 	printf("\tFilename - ");
 	pdump(flen);
 	printf("\n");
-	time4("File modified time");
+	/* RFC 4880: modification date of a file or time the packet itself was created */
+	time4("Creation time");
 	blen = len - 6 - flen;
 	printf("\tLiteral - ");
 	if (lflag) {
