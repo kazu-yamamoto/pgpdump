@@ -6,9 +6,9 @@ Old: One-Pass Signature Packet(tag 4)(13 bytes)
 	Key ID - 0xFD90DA9732D8EBD2
 	Next packet - other than one pass signature
 Old: Literal Data Packet(tag 11)(45 bytes)
-	Format - binary
+	Packet data format - binary
 	Filename - hoge
-	File modified time - Fri Nov 27 16:11:39 UTC 1998
+	Creation time - Fri Nov 27 16:11:39 UTC 1998
 	Literal - ...
 Old: Signature Packet(tag 2)(70 bytes)
 	Ver 4 - new

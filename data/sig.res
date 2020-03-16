@@ -11,7 +11,7 @@ Old: Signature Packet(tag 2)(63 bytes)
 	DSA s(159 bits) - ...
 		-> hash(DSA q bits)
 Old: Literal Data Packet(tag 11)(45 bytes)
-	Format - binary
+	Packet data format - binary
 	Filename - hoge
-	File modified time - Sat Apr 26 19:41:04 UTC 1975
+	Creation time - Sat Apr 26 19:41:04 UTC 1975
 	Literal - ...

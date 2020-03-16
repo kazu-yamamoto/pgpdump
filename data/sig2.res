@@ -10,7 +10,7 @@ Old: Signature Packet(tag 2)(149 bytes)
 	RSA m^d mod n(1024 bits) - ...
 		-> PKCS-1
 Old: Literal Data Packet(tag 11)(45 bytes)
-	Format - binary
+	Packet data format - binary
 	Filename - hoge
-	File modified time - Sat Apr 26 19:41:04 UTC 1975
+	Creation time - Sat Apr 26 19:41:04 UTC 1975
 	Literal - ...
