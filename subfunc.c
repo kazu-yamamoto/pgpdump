@@ -99,6 +99,17 @@ preferred_symmetric_algorithms(int len)
 	}
 }
 
+
+public void
+preferred_aead_algorithms(int len)
+{
+	int i;
+	for (i = 0; i < len; i++) {
+		printf("\t");
+		aead_algs(Getc());
+	}
+}
+
 public void
 revocation_key(int len)
 {

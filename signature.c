@@ -17,7 +17,10 @@ hash2(void)
 	dump(2);
 	printf("\n");
 }
-
+/*
+ * (2021-11-25) Added code for signatures #18, #19, and #22
+ * Reference: https://www.ietf.org/archive/id/draft-ietf-openpgp-crypto-refresh-04.html
+ */
 private void
 signature_multi_precision_integer(int pub, int len)
 {
@@ -38,6 +41,17 @@ signature_multi_precision_integer(int pub, int len)
 		multi_precision_integer("DSA s");
 		printf("\t\t-> hash(DSA q bits)\n");
 		break;
+        case 18:
+		multi_precision_integer("ECDH G");
+                break;
+        case 19: 
+		multi_precision_integer("ECDSA r");
+		multi_precision_integer("ECDSA s");
+                break;
+        case 22:
+		multi_precision_integer("EdDSA R");
+		multi_precision_integer("EdDSA s");
+                break;
 	default:
 		printf("\tUnknown signature(pub %d)\n", pub);
 		skip(len);
@@ -96,7 +110,7 @@ signature_type(int type)
 		printf("Third-Party Confirmation signature(0x50).");
 		break;
 	default:
-		printf("unknown(0x%02x)", type);
+		printf("unknown(%02x)", type);
 		break;
 	}
 	printf("\n");

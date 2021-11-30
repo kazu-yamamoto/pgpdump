@@ -195,6 +195,7 @@ SIGSUB[] = {
         "signature target(sub 31)",
 	"embedded signature(sub 32)",
 	"issuer fingerprint(sub 33)",
+        "preferred_aead_algorithms(sub 34)",
 };
 #define SIGSUB_NUM (sizeof(SIGSUB) / sizeof(string))
 
@@ -234,6 +235,7 @@ sigsub_func[] = {
         signature_target,
 	embedded_signature,
 	issuer_fingerprint,
+	preferred_aead_algorithms,
 };
 
 private string
