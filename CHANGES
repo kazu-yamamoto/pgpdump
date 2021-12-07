@@ -1,5 +1,16 @@
 			      Change Log
 
+0.34 2021/12/07
+
+* Uploading modifications to support GnuPG-2.3.3 ECC curves, additional hash and algorithm names.
+	https://github.com/kazu-yamamoto/pgpdump/pull/32
+* Improved labels for Literal Data Packet fields.
+	https://github.com/kazu-yamamoto/pgpdump/pull/29
+* Indicate unknown sigtype value is displayed in hex.
+	https://github.com/kazu-yamamoto/pgpdump/pull/27
+* Fixing cross-building and avoiding infinite loop when invoking BZ2_bzDecompress.
+	https://github.com/kazu-yamamoto/pgpdump/pull/25
+
 0.33 2018/05/07
 
 * Added EdDSA and adjusted ECDSA.
