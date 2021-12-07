@@ -32,6 +32,10 @@ private void time4_base(string, time_t *);
 private time_t key_creation_time = 0;
 private time_t sig_creation_time = 0;
 
+/*
+ * 2021-11-02, "pub 18" description updated
+ * Reference: RFC 6637 (June 2012)
+ */
 private string
 PUB_ALGS[] = {
 	"unknown(pub 0)",
@@ -52,11 +56,13 @@ PUB_ALGS[] = {
 	"unknown(pub 15)",
 	"ElGamal Encrypt-Only(pub 16)",
 	"DSA Digital Signature Algorithm(pub 17)",
-	"Reserved for Elliptic Curve(pub 18)",
+	"ECDH Elliptic Curve Diffie-Hellman Algorithm(pub 18)",
 	"ECDSA Elliptic Curve Digital Signature Algorithm(pub 19)",
 	"Reserved formerly ElGamal Encrypt or Sign(pub 20)",
 	"Reserved for Diffie-Hellman (pub 21)",
 	"EdDSA Edwards-curve Digital Signature Algorithm(pub 22)",
+	"Reserved - AEDH",
+	"Reserved - AEDSA",
 };
 #define PUB_ALGS_NUM (sizeof(PUB_ALGS) / sizeof(string))
 
@@ -154,6 +160,30 @@ comp_algs(unsigned int type)
 	printf("\n");
 }
 
+/*
+ * Added: 2021-11-28
+ * Reference: https://datatracker.ietf.org/doc/html/draft-ietf-openpgp-rfc4880bis-10#section-9.6
+ * Section "9.6. AEAD Algorithms"
+ */
+private string
+AEAD_ALGS[] = {
+	"unknown(aead 0)",
+	"EAX(aead 1)",
+	"OCB(aead 2)",
+};
+#define AEAD_ALGS_NUM (sizeof(AEAD_ALGS) / sizeof(string))
+
+public void
+aead_algs(unsigned int type)
+{
+	printf("\tAEAD alg - ");
+	if (type < AEAD_ALGS_NUM)
+		printf("%s", AEAD_ALGS[type]);
+	else
+		printf("unknown(aead %d)", type);
+	printf("\n");
+}
+
 private string
 HASH_ALGS[] = {
 	"unknown(hash 0)",
@@ -168,6 +198,9 @@ HASH_ALGS[] = {
 	"SHA384(hash 9)",
 	"SHA512(hash 10)",
 	"SHA224(hash 11)",
+	"SHA3-256(hash 12)",
+	"Reserved(hash 13)",
+	"SHA3-512(hash 14)",
 };
 #define HASH_ALGS_NUM (sizeof(HASH_ALGS) / sizeof(string))
 
