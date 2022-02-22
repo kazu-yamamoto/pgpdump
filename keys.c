@@ -54,13 +54,15 @@ old_Public_Key_Packet(void)
 	multi_precision_integer("RSA e");
 }
 
-/* added: 2021-11-11
+/* added: 2021-11-11; extended: 2022-02-21 (BrainPool 384,512; RFC5639)
  * Reference: draft-ietf-openpgp-crypto-refresh-04 (10/2021);section 9.2 ECC Curves for OpenPGP
  * https://www.ietf.org/archive/id/draft-ietf-openpgp-crypto-refresh-04.html
  * Note (2021-11-25): actual ECC curve hex OID padded to 10 to match incoming oid array length
  *                    so that memcmp will work properly (compare two values of the same size)
  */
 private unsigned char BrainPool256r1_OID[10]={0x2B,0x24,0x3,0x3,0x2,0x8,0x1,0x1,0x7,0};
+private unsigned char BrainPool384r1_OID[10]={0x2B,0x24,0x3,0x3,0x2,0x8,0x1,0x1,0x0b,0};
+private unsigned char BrainPool512r1_OID[10]={0x2B,0x24,0x3,0x3,0x2,0x8,0x1,0x1,0x0d,0};
 private unsigned char NIST_P256_OID[10]={0x2A,0x86,0x48,0xCE,0x3D,0x3,0x1,0x7,0,0};
 private unsigned char NIST_P384_OID[10]={0x2B,0x81,0x04,0x00,0x22,0,0,0,0,0};
 private unsigned char NIST_P521_OID[10]={0x2B,0x81,0x04,0x00,0x23,0,0,0,0,0};
@@ -79,18 +81,19 @@ private struct {
   const unsigned char *oidhex;
   const char *name;
   const char *oidstring;
-  const int  expectedBits;
 } ELLIP_CURVES[] = {
-  {NIST_P256_OID,"NIST P-256","0x2A 86 48 CE 3D 03 01 07",515},
-  {NIST_P384_OID,"NIST P-384","0x2B 81 04 00 22",771},
-  {NIST_P521_OID,"NIST P-521","0x2B 81 04 00 23",1059},
-  {Ed25519_OID,"Ed25519","0x2B 06 01 04 01 DA 47 0F 01",263},
-  {Ed448_OID,"Ed448","0x2B 65 71",463},
-  {Curve25519_OID,"Curve25519","0x2B 06 01 04 01 97 55 01 05 01",263},
-  {X448_OID,"X448","0x2B 65 6F",445},
-  {BrainPool256r1_OID,"brainpoolP256r1","0x2B 24 03 03 02 08 01 01 07",515}
+  {NIST_P256_OID,"NIST P-256","0x2A 86 48 CE 3D 03 01 07"},
+  {NIST_P384_OID,"NIST P-384","0x2B 81 04 00 22"},
+  {NIST_P521_OID,"NIST P-521","0x2B 81 04 00 23"},
+  {Ed25519_OID,"Ed25519","0x2B 06 01 04 01 DA 47 0F 01"},
+  {Ed448_OID,"Ed448","0x2B 65 71"},
+  {Curve25519_OID,"Curve25519","0x2B 06 01 04 01 97 55 01 05 01"},
+  {X448_OID,"X448","0x2B 65 6F"},
+  {BrainPool256r1_OID,"brainpoolP256r1","0x2B 24 03 03 02 08 01 01 07"},
+  {BrainPool384r1_OID,"BrainPoolP384r1","0x2B 24 03 03 02 08 01 01 07 0b"},
+  {BrainPool512r1_OID,"BrainPoolP512r1","0x2B 24 03 03 02 08 01 01 07 0d"}
 };
-#define ELLIP_CURVES_NUM 8
+#define ELLIP_CURVES_NUM 10
 
 /* end 2021-11-11 */
 
