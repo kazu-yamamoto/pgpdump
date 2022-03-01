@@ -125,6 +125,7 @@ new_Public_Key_Packet(int len)
 		break;
 	case 18:/*ECDH*/
 		oidLEN = Getc();
+		memset(oid_input_HEX,0,10);
 		for(jj=0;jj<oidLEN;jj++){oid_input_HEX[jj]=Getc();}
 	        for(jj=0;jj<ELLIP_CURVES_NUM;jj++){
 		  if(memcmp(ELLIP_CURVES[jj].oidhex,oid_input_HEX,oid_input_HEX_size) == 0){
@@ -166,6 +167,7 @@ new_Public_Key_Packet(int len)
 		break;
 	case 19:/*ECDSA*/
 		oidLEN = Getc();
+		memset(oid_input_HEX,0,10);
 		for(jj=0;jj<oidLEN;jj++){oid_input_HEX[jj]=Getc();}
 	        for(jj=0;jj<ELLIP_CURVES_NUM;jj++){
 		  if(memcmp(ELLIP_CURVES[jj].oidhex,oid_input_HEX,oid_input_HEX_size) == 0){
@@ -188,6 +190,7 @@ new_Public_Key_Packet(int len)
 		break;
         case 22:/*EdDSA*/
 		oidLEN = Getc();
+		memset(oid_input_HEX,0,10);
 		for(jj=0;jj<oidLEN;jj++){oid_input_HEX[jj]=Getc();}
 	        for(jj=0;jj<ELLIP_CURVES_NUM;jj++){
 		  if(memcmp(ELLIP_CURVES[jj].oidhex,oid_input_HEX,oid_input_HEX_size) == 0){
@@ -304,6 +307,7 @@ plain_Secret_Key(int len)
 			break;
 	case 18:/*ECDH*/
 		oidLEN = Getc();
+		memset(oid_input_HEX,0,10);
 		for(jj=0;jj<oidLEN;jj++){oid_input_HEX[jj]=Getc();}
 	        for(jj=0;jj<ELLIP_CURVES_NUM;jj++){
 		  if(memcmp(ELLIP_CURVES[jj].oidhex,oid_input_HEX,oid_input_HEX_size) == 0){
@@ -345,6 +349,7 @@ plain_Secret_Key(int len)
 		break;
 	case 19:/*ECDSA*/
 		oidLEN = Getc();
+		memset(oid_input_HEX,0,10);
 		for(jj=0;jj<oidLEN;jj++){oid_input_HEX[jj]=Getc();}
 	        for(jj=0;jj<ELLIP_CURVES_NUM;jj++){
 		  if(memcmp(ELLIP_CURVES[jj].oidhex,oid_input_HEX,oid_input_HEX_size) == 0){
@@ -367,6 +372,7 @@ plain_Secret_Key(int len)
 		break;
         case 22:/*EdDSA*/
 		oidLEN = Getc();
+		memset(oid_input_HEX,0,10);
 		for(jj=0;jj<oidLEN;jj++){oid_input_HEX[jj]=Getc();}
 	        for(jj=0;jj<ELLIP_CURVES_NUM;jj++){
 		  if(memcmp(ELLIP_CURVES[jj].oidhex,oid_input_HEX,oid_input_HEX_size) == 0){
