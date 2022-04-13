@@ -61,8 +61,8 @@ old_Public_Key_Packet(void)
  *                    so that memcmp will work properly (compare two values of the same size)
  */
 private unsigned char BrainPool256r1_OID[10]={0x2B,0x24,0x3,0x3,0x2,0x8,0x1,0x1,0x7,0};
-private unsigned char BrainPool384r1_OID[10]={0x2B,0x24,0x3,0x3,0x2,0x8,0x1,0x1,0x0b,0};
-private unsigned char BrainPool512r1_OID[10]={0x2B,0x24,0x3,0x3,0x2,0x8,0x1,0x1,0x0d,0};
+private unsigned char BrainPool384r1_OID[10]={0x2B,0x24,0x3,0x3,0x2,0x8,0x1,0x1,0xb,0};
+private unsigned char BrainPool512r1_OID[10]={0x2B,0x24,0x3,0x3,0x2,0x8,0x1,0x1,0xd,0};
 private unsigned char NIST_P256_OID[10]={0x2A,0x86,0x48,0xCE,0x3D,0x3,0x1,0x7,0,0};
 private unsigned char NIST_P384_OID[10]={0x2B,0x81,0x04,0x00,0x22,0,0,0,0,0};
 private unsigned char NIST_P521_OID[10]={0x2B,0x81,0x04,0x00,0x23,0,0,0,0,0};
@@ -89,7 +89,7 @@ private struct {
   {Ed448_OID,"Ed448","0x2B 65 71"},
   {Curve25519_OID,"Curve25519","0x2B 06 01 04 01 97 55 01 05 01"},
   {X448_OID,"X448","0x2B 65 6F"},
-  {BrainPool256r1_OID,"brainpoolP256r1","0x2B 24 03 03 02 08 01 01 07"},
+  {BrainPool256r1_OID,"BrainPoolP256r1","0x2B 24 03 03 02 08 01 01 07"},
   {BrainPool384r1_OID,"BrainPoolP384r1","0x2B 24 03 03 02 08 01 01 07 0b"},
   {BrainPool512r1_OID,"BrainPoolP512r1","0x2B 24 03 03 02 08 01 01 07 0d"}
 };
@@ -125,7 +125,7 @@ new_Public_Key_Packet(int len)
 		break;
 	case 18:/*ECDH*/
 		oidLEN = Getc();
-		memset(oid_input_HEX,0,10);
+		memset(oid_input_HEX,0,oid_input_HEX_size);
 		for(jj=0;jj<oidLEN;jj++){oid_input_HEX[jj]=Getc();}
 	        for(jj=0;jj<ELLIP_CURVES_NUM;jj++){
 		  if(memcmp(ELLIP_CURVES[jj].oidhex,oid_input_HEX,oid_input_HEX_size) == 0){
@@ -167,7 +167,7 @@ new_Public_Key_Packet(int len)
 		break;
 	case 19:/*ECDSA*/
 		oidLEN = Getc();
-		memset(oid_input_HEX,0,10);
+		memset(oid_input_HEX,0,oid_input_HEX_size);
 		for(jj=0;jj<oidLEN;jj++){oid_input_HEX[jj]=Getc();}
 	        for(jj=0;jj<ELLIP_CURVES_NUM;jj++){
 		  if(memcmp(ELLIP_CURVES[jj].oidhex,oid_input_HEX,oid_input_HEX_size) == 0){
@@ -190,7 +190,7 @@ new_Public_Key_Packet(int len)
 		break;
         case 22:/*EdDSA*/
 		oidLEN = Getc();
-		memset(oid_input_HEX,0,10);
+		memset(oid_input_HEX,0,oid_input_HEX_size);
 		for(jj=0;jj<oidLEN;jj++){oid_input_HEX[jj]=Getc();}
 	        for(jj=0;jj<ELLIP_CURVES_NUM;jj++){
 		  if(memcmp(ELLIP_CURVES[jj].oidhex,oid_input_HEX,oid_input_HEX_size) == 0){
@@ -307,7 +307,7 @@ plain_Secret_Key(int len)
 			break;
 	case 18:/*ECDH*/
 		oidLEN = Getc();
-		memset(oid_input_HEX,0,10);
+		memset(oid_input_HEX,0,oid_input_HEX_size);
 		for(jj=0;jj<oidLEN;jj++){oid_input_HEX[jj]=Getc();}
 	        for(jj=0;jj<ELLIP_CURVES_NUM;jj++){
 		  if(memcmp(ELLIP_CURVES[jj].oidhex,oid_input_HEX,oid_input_HEX_size) == 0){
@@ -349,7 +349,7 @@ plain_Secret_Key(int len)
 		break;
 	case 19:/*ECDSA*/
 		oidLEN = Getc();
-		memset(oid_input_HEX,0,10);
+		memset(oid_input_HEX,0,oid_input_HEX_size);
 		for(jj=0;jj<oidLEN;jj++){oid_input_HEX[jj]=Getc();}
 	        for(jj=0;jj<ELLIP_CURVES_NUM;jj++){
 		  if(memcmp(ELLIP_CURVES[jj].oidhex,oid_input_HEX,oid_input_HEX_size) == 0){
@@ -372,7 +372,7 @@ plain_Secret_Key(int len)
 		break;
         case 22:/*EdDSA*/
 		oidLEN = Getc();
-		memset(oid_input_HEX,0,10);
+		memset(oid_input_HEX,0,oid_input_HEX_size);
 		for(jj=0;jj<oidLEN;jj++){oid_input_HEX[jj]=Getc();}
 	        for(jj=0;jj<ELLIP_CURVES_NUM;jj++){
 		  if(memcmp(ELLIP_CURVES[jj].oidhex,oid_input_HEX,oid_input_HEX_size) == 0){
