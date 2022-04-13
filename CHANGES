@@ -1,5 +1,10 @@
 			      Change Log
 
+0.35 2022/02/28
+
+* Adding BrainPool-384/512 curve definitions.
+	https://github.com/kazu-yamamoto/pgpdump/pull/33
+
 0.34 2021/12/07
 
 * Uploading modifications to support GnuPG-2.3.3 ECC curves, additional hash and algorithm names.
