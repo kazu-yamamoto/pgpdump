@@ -55,7 +55,7 @@ Some examples are stored in the `data` directory. Also, you can visualize your p
 
 The official home page of pgpdump is:
 
-* http://www.mew.org/~kazu/proj/pgpdump/
+* https://www.mew.org/~kazu/proj/pgpdump/
 
 ## Bugs
 
