@@ -44,7 +44,7 @@ signature_multi_precision_integer(int pub, int len)
         case 18:
 		multi_precision_integer("ECDH G");
                 break;
-        case 19: 
+        case 19:
 		multi_precision_integer("ECDSA r");
 		multi_precision_integer("ECDSA s");
                 break;
@@ -160,11 +160,11 @@ private void
 old_Signature_Packet(int len)
 {
 	int pub;
-	
+
 	printf("\tHash material(%d bytes):\n", Getc());
 	printf("\t");
 	signature_type(Getc());
-	printf("\t");	
+	printf("\t");
 	time4("Creation time");
 	key_id();
 	pub = Getc();
@@ -187,7 +187,7 @@ new_Signature_Packet(int len)
 	hsplen += Getc();
 	parse_signature_subpacket("Hashed Sub", hsplen);
 	usplen = Getc() * 256;
-	usplen += Getc();	
+	usplen += Getc();
 	parse_signature_subpacket("Sub", usplen);
 	hash2();
 	signature_multi_precision_integer(pub, len - 9 - hsplen - usplen);

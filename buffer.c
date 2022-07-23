@@ -100,7 +100,7 @@ read_radix64(byte *p, unsigned int max)
 	static int done = NO, found = NO;
 	int c, d, out = 0, lf = 0, cr = 0;
 	byte *lim = p + max;
-	
+
 	if (done == YES) return 0;
 
 	if (found == NO) {
@@ -243,7 +243,7 @@ inflate_gzip(byte *p, unsigned int max)
 		if (err != Z_OK && err != Z_STREAM_END)
 			warn_exit("zlib inflate error (%d).", err);
 
-		inflated = max - z.avail_out;		
+		inflated = max - z.avail_out;
 
 		if (old == z.avail_out && z.avail_in != 0)
 			break;
@@ -288,7 +288,7 @@ inflate_bzip2(byte *p, unsigned int max)
 		if (err != BZ_OK && err != BZ_STREAM_END)
 			warn_exit("bzip2 BZ2_bzDecompress error (%d).", err);
 
-		inflated = max - bz.avail_out;		
+		inflated = max - bz.avail_out;
 
 		if (old == bz.avail_out && bz.avail_in != 0)
 			break;
@@ -373,7 +373,7 @@ Compressed_Data_Packet(int len)
 	unsigned int alg = Getc();
 	int err;
 	private int (*func)(byte *, unsigned int);
-	
+
 	comp_algs(alg);
 
 #ifdef HAVE_LIBZ
