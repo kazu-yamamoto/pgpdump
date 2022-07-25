@@ -263,7 +263,7 @@ time4(string str)
 
 	for (i = 0; i < 4; i++)
 		t = t * 256 + Getc();
-			
+
 	time4_base(str, &t);
 }
 
@@ -275,9 +275,9 @@ sig_creation_time4(string str)
 
 	for (i = 0; i < 4; i++)
 		t = t * 256 + Getc();
-	
+
 	sig_creation_time = t;
-	
+
 	time4_base(str, &t);
 }
 
@@ -289,9 +289,9 @@ sig_expiration_time4(string str)
 
 	for (i = 0; i < 4; i++)
 		t = t * 256 + Getc();
-	
+
 	t += sig_creation_time;
-	
+
 	time4_base(str, &t);
 }
 
@@ -303,9 +303,9 @@ key_creation_time4(string str)
 
 	for (i = 0; i < 4; i++)
 		t = t * 256 + Getc();
-	
+
 	key_creation_time = t;
-	
+
 	time4_base(str, &t);
 }
 
@@ -317,9 +317,9 @@ key_expiration_time4(string str)
 
 	for (i = 0; i < 4; i++)
 		t = t * 256 + Getc();
-	
+
 	t += key_creation_time;
-	
+
 	time4_base(str, &t);
 }
 
@@ -415,7 +415,7 @@ multi_precision_integer(string str)
         int bits = Getc() * 256;
         bits += Getc();
         bytes = (bits + 7) / 8;
-		
+
 	printf("\t%s(%d bits) - ", str, bits);
 	if (iflag) {
 		dump(bytes);

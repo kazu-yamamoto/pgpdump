@@ -83,10 +83,10 @@ TAG[] = {
 	"unknown",
 	"unknown",
 	"unknown",
-	"Private",	
 	"Private",
 	"Private",
-	"Private",	
+	"Private",
+	"Private",
 };
 #define TAG_NUM (sizeof(TAG) * sizeof(string))
 
@@ -158,7 +158,7 @@ private void
 	Private_Packet,
 	Private_Packet,
 };
-	
+
 private string
 SIGSUB[] = {
 	"reserved(sub 0)",
@@ -288,7 +288,7 @@ parse_packet(void)
 
 	c = getchar();
 	ungetc(c, stdin);
-	
+
 	/* If the PGP packet is in the binary raw form, 7th bit of
 	 * the first byte is always 1. If it is set, let's assume
 	 * it is the binary raw form. Otherwise, let's assume
@@ -300,7 +300,7 @@ parse_packet(void)
 		set_binary();
 	} else
 		set_armor();
-	
+
 	while ((c = Getc1()) != EOF) {
 		have_packet = YES;
 		partial = NO;
@@ -403,7 +403,7 @@ parse_signature_subpacket(string prefix, int tlen)
 			critical = YES;
 			subtype &= CRITICAL_MASK;
 		}
-				
+
 		if (subtype < SIGSUB_NUM)
 			printf("\t%s: %s%s", prefix, SIGSUB[subtype], critical ? "(critical)" : "");
 		else

@@ -5,7 +5,7 @@
 
 ## Overview
 
-**pgpdump** is a PGP packet visualizer which displays the packet format of OpenPGP ([RFC 4880](http://tools.ietf.org/html/rfc4880)) and PGP version 2 ([RFC 1991](http://tools.ietf.org/html/rfc1991)).
+**pgpdump** is a PGP packet visualizer which displays the packet format of OpenPGP ([RFC 4880](https://datatracker.ietf.org/doc/html/rfc4880)) and PGP version 2 ([RFC 1991](https://datatracker.ietf.org/doc/html/rfc1991)).
 
 Here is an example:
 
@@ -55,7 +55,7 @@ Some examples are stored in the `data` directory. Also, you can visualize your p
 
 The official home page of pgpdump is:
 
-* http://www.mew.org/~kazu/proj/pgpdump/
+* https://www.mew.org/~kazu/proj/pgpdump/
 
 ## Bugs
 

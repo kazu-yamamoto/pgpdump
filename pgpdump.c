@@ -48,7 +48,7 @@ private void
 usage(void)
 {
 	string prog = getprog();
-	fprintf(stderr, "%s -h|-v\n", prog);	
+	fprintf(stderr, "%s -h|-v\n", prog);
 	fprintf(stderr, "%s [-agilmpu] [PGPfile]\n", prog);
 	fprintf(stderr, "\t -h -- displays this help\n");
 	fprintf(stderr, "\t -v -- displays version\n");
@@ -151,7 +151,7 @@ main(int argc, string argv[])
 		if (freopen(target, "rb", stdin) == NULL)
 			warn_exit("can't open %s.", target);
         }
-	
+
 	parse_packet();
 	exit(EXIT_SUCCESS);
 }
