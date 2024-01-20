@@ -123,7 +123,7 @@ public void
 Literal_Data_Packet(int len)
 {
 	int format, flen, blen;
-	
+
 	format = Getc();
 	printf("\tPacket data format - ");
 	switch (format) {

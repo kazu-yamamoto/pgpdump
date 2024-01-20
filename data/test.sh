@@ -1,6 +1,6 @@
 #!/bin/sh
 
-cd "$(dirname "$0")"
+cd "$(dirname "$0")" || exit 1
 
 [ X"$1" = X-v ] && verbose=true || verbose=false
 status=0
@@ -17,4 +17,4 @@ for out in *.res; do
 	fi
 done
 
-exit $status
+exit "$status"

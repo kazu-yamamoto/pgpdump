@@ -7,14 +7,14 @@
 public void
 signature_creation_time(int len)
 {
-	printf("\t");	
+	printf("\t");
 	sig_creation_time4("Time");
 }
 
 public void
 signature_expiration_time(int len)
 {
-	printf("\t");	
+	printf("\t");
 	sig_expiration_time4("Time");
 }
 
@@ -35,7 +35,7 @@ trust_signature(int len)
 	printf("\t\tLevel - ");
 	dump(1);
 	printf("\n");
-	printf("\t\tAmount - ");		
+	printf("\t\tAmount - ");
 	dump(1);
 	printf("\n");
 }
@@ -46,7 +46,7 @@ regular_expression(int len)
 	printf("\t\tRegex - ");
 	pdump(len);
 	printf("\n");
-}	
+}
 
 public void
 revocable(int len)
@@ -62,9 +62,9 @@ revocable(int len)
 public void
 key_expiration_time(int len)
 {
-	printf("\t");	
+	printf("\t");
 	key_expiration_time4("Time");
-}	
+}
 
 public void
 additional_decryption_key(int len)
@@ -135,7 +135,7 @@ revocation_key(int len)
 	pub_algs(Getc());
 	printf("\t");
 	fingerprint();
-}	
+}
 
 public void
 issuer_key_ID(int len)
@@ -182,7 +182,7 @@ notation_data(int len)
 	else
 		dump(vlen);
 	printf("\n");
-}	
+}
 
 public void
 preferred_hash_algorithms(int len)
@@ -277,7 +277,7 @@ signer_user_id(int len)
 {
 	printf("\t");
 	User_ID_Packet(len);
-}	
+}
 
 public void
 reason_for_revocation(int len)
