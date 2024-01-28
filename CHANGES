@@ -1,5 +1,12 @@
 			      Change Log
 
+0.36 2024/01/29
+
+* Skipping file to process when first/CTB is zero
+	https://github.com/kazu-yamamoto/pgpdump/pull/42
+* Inserting "memset" for ELLIP_CURVES
+	https://github.com/kazu-yamamoto/pgpdump/pull/34
+
 0.35 2022/02/28
 
 * Adding BrainPool-384/512 curve definitions.
