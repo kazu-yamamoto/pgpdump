@@ -2,7 +2,7 @@ Old: Public Key Packet(tag 6)(83 bytes)
 	Ver 4 - new
 	Public key creation time - Mon Nov 29 09:27:41 UTC 2021
 	Pub alg - ECDSA Elliptic Curve Digital Signature Algorithm(pub 19)
-	Elliptic Curve - brainpoolP256r1 (0x2B 24 03 03 02 08 01 01 07)
+	Elliptic Curve - BrainPoolP256r1 (0x2B 24 03 03 02 08 01 01 07)
 	ECDSA Q(515 bits) - ...
 Old: User ID Packet(tag 13)(51 bytes)
 	User ID -  (gpg233_ecc_sign_encrypt_Brainpool_P-256_test-key)
@@ -48,7 +48,7 @@ Old: Public Subkey Packet(tag 14)(87 bytes)
 	Ver 4 - new
 	Public key creation time - Mon Nov 29 09:27:41 UTC 2021
 	Pub alg - ECDH Elliptic Curve Diffie-Hellman Algorithm(pub 18)
-	Elliptic Curve - brainpoolP256r1 (0x2B 24 03 03 02 08 01 01 07)
+	Elliptic Curve - BrainPoolP256r1 (0x2B 24 03 03 02 08 01 01 07)
 	ECDH Q(515 bits) - ...
 	ECDH KDF params(32 bits) - ...
 		KDFhashID:  	Hash alg - SHA256(hash 8)

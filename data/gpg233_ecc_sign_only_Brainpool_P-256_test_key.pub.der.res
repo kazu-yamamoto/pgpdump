@@ -2,7 +2,7 @@ Old: Public Key Packet(tag 6)(83 bytes)
 	Ver 4 - new
 	Public key creation time - Mon Nov 29 09:38:45 UTC 2021
 	Pub alg - ECDSA Elliptic Curve Digital Signature Algorithm(pub 19)
-	Elliptic Curve - brainpoolP256r1 (0x2B 24 03 03 02 08 01 01 07)
+	Elliptic Curve - BrainPoolP256r1 (0x2B 24 03 03 02 08 01 01 07)
 	ECDSA Q(515 bits) - ...
 Old: User ID Packet(tag 13)(48 bytes)
 	User ID -  (gpg233_ecc_sign_only_Brainpool_P-256_test_key)
