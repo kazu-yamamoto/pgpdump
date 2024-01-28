@@ -289,6 +289,14 @@ parse_packet(void)
 	c = getchar();
 	ungetc(c, stdin);
 
+	/* 2024-01-20 If the first byte is all zeros, then whatever
+	 * file is being examined is more than likely not an OpenPGP
+	 * key file. If it is/was a valid key file, then it has been
+	 * corrupted in some way where the first/CTB byte is not valid.
+	 */
+	if (c == 0)
+		warn_exit("Not a valid OpenPGP key file");
+
 	/* If the PGP packet is in the binary raw form, 7th bit of
 	 * the first byte is always 1. If it is set, let's assume
 	 * it is the binary raw form. Otherwise, let's assume
