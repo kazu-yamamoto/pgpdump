@@ -9,6 +9,8 @@ AC_INIT([pgpdump],
   [],
   [https://www.mew.org/~kazu/proj/pgpdump/])
 AC_CONFIG_SRCDIR([pgpdump.c])
+AC_CONFIG_AUX_DIR([build-aux])
+AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects no-define])
 
 dnl Checks for programs.
 dnl AC_PROG_INSTALL
