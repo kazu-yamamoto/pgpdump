@@ -6,8 +6,8 @@ dnl Checks for programs.
 dnl AC_PROG_INSTALL
 
 dnl Checks for libraries.
-AC_CHECK_LIB(z, inflate)
-AC_CHECK_LIB(bz2, BZ2_bzBuffToBuffDecompress)
+AC_CHECK_LIB([z], [inflate])
+AC_CHECK_LIB([bz2], [BZ2_bzBuffToBuffDecompress])
 
 dnl Checks for header files.
 AC_CONFIG_HEADERS([config.h])
@@ -20,9 +20,9 @@ m4_warn([obsolete],
 AC_CHECK_INCLUDES_DEFAULT
 AC_PROG_EGREP
 
-AC_CHECK_HEADERS(unistd.h)
-AC_CHECK_HEADERS(sys/time.h)
-AC_CHECK_HEADERS(unixlib/local.h)
+AC_CHECK_HEADERS([unistd.h])
+AC_CHECK_HEADERS([sys/time.h])
+AC_CHECK_HEADERS([unixlib/local.h])
 m4_warn([obsolete],
 [Update your code to rely only on HAVE_SYS_TIME_H,
 then remove this warning and the obsolete code below it.
