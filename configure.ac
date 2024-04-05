@@ -4,7 +4,7 @@ AC_INIT([pgpdump],
   dnl command is only run once.  The command itself outputs m4 quotes to prevent incidental
   dnl expansion (the m4_esyscmd macro does not quote the command output itself, so the command
   dnl output is subject to expansion).
-  m4_dquote(m4_esyscmd([printf "[%s]" "$(git tag | tail -1 | sed -e 's/v//')"])),
+  m4_dquote(m4_esyscmd([printf "[%s]" "$(build-aux/git-version-gen .dist-version)"])),
   [https://github.com/kazu-yamamoto/pgpdump/issues],
   [],
   [https://www.mew.org/~kazu/proj/pgpdump/])
