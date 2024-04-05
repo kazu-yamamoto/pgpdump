@@ -34,12 +34,14 @@ Here is an example:
 
 ## Installation
 
-Take the following steps to install **pgpdump**.
+Take the following steps to install **pgpdump** from a release tarball:
 
 	% ./configure
 	% make
 	% su
 	# make install
+
+To build from Git, run `autoreconf -fviW all` before running the above commands.
 
 Binaries are available for Mac OS X via Homebrew:
 

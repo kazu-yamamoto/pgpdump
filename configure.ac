@@ -1,4 +1,4 @@
-dnl Process this file with autoconf to produce a configure script.
+dnl Process this file with `autoreconf -fviW all` to produce a configure script.
 AC_INIT([pgpdump],
   dnl Get the version from Git.  The m4_dquote macro is used instead of quotes to ensure that the
   dnl command is only run once.  The command itself outputs m4 quotes to prevent incidental

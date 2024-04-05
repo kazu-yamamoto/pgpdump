@@ -1,4 +1,6 @@
 /autom4te.cache/
+/config.h.in
+/configure
 /pgpdump-*.tar.gz
 Makefile
 config.h

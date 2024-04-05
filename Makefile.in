@@ -48,4 +48,4 @@ install: all
 
 dist: .dist-version
 	git archive HEAD -o pgpdump-$(VERSION).tar.gz --prefix=pgpdump-$(VERSION)/ \
-		--add-file=.dist-version
+		--add-file=.dist-version --add-file=config.h.in --add-file=configure
