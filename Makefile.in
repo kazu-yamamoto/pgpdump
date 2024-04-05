@@ -6,7 +6,7 @@ LIBS = @LIBS@
 CFLAGS  = @CFLAGS@ -O -Wall
 LDFLAGS = @LDFLAGS@
 CC = @CC@
-VERSION = `git tag | tail -1 | sed -e 's/v//'`
+VERSION = @PACKAGE_VERSION@
 
 RM = rm -f
 INSTALL  = install

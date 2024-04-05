@@ -1,5 +1,13 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT
+AC_INIT([pgpdump],
+  dnl Get the version from Git.  The m4_dquote macro is used instead of quotes to ensure that the
+  dnl command is only run once.  The command itself outputs m4 quotes to prevent incidental
+  dnl expansion (the m4_esyscmd macro does not quote the command output itself, so the command
+  dnl output is subject to expansion).
+  m4_dquote(m4_esyscmd([printf "[%s]" "$(git tag | tail -1 | sed -e 's/v//')"])),
+  [https://github.com/kazu-yamamoto/pgpdump/issues],
+  [],
+  [https://www.mew.org/~kazu/proj/pgpdump/])
 AC_CONFIG_SRCDIR([pgpdump.c])
 
 dnl Checks for programs.
