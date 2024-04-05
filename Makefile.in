@@ -43,5 +43,5 @@ install: all
 	$(INSTALL) -d $(DESTDIR)$(mandir)/man1
 	$(INSTALL) -cp -pm644 $(MAN) $(DESTDIR)$(mandir)/man1
 
-archive:
+dist:
 	git archive HEAD -o pgpdump-$(VERSION).tar.gz --prefix=pgpdump-$(VERSION)/
