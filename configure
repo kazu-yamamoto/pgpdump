@@ -2340,6 +2340,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
+
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
@@ -3416,6 +3417,8 @@ fi
 
 ac_config_headers="$ac_config_headers config.h"
 
+# Autoupdate added the next two lines to ensure that your configure
+# script's behavior did not change.  They are probably safe to remove.
 ac_header= ac_cache=
 for ac_item in $ac_header_c_list
 do
@@ -3513,9 +3516,6 @@ fi
 printf "%s\n" "$ac_cv_path_GREP" >&6; }
  GREP="$ac_cv_path_GREP"
 
-
-# Autoupdate added the next two lines to ensure that your configure
-# script's behavior did not change.  They are probably safe to remove.
 
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for egrep" >&5
 printf %s "checking for egrep... " >&6; }
