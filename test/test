@@ -5,6 +5,7 @@
 
 pecho() ( unset IFS; printf %s\\n "$*"; )
 log() { pecho "# $@"; }
+bailout() { pecho "Bail out! $@"; exit 1; }
 
 mydir=${0%/*}
 : "${PGPDUMP=${mydir}/../pgpdump}"
@@ -29,6 +30,7 @@ EOF
 
 pecho "TAP version 14"
 pecho "1..$#"
+[ -x "${PGPDUMP}" ] || bailout "${PGPDUMP} is not executable"
 for want in "$@"; do
 	i=$((i+1))
 	if do_test "${want}"; then
