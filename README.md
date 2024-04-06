@@ -9,7 +9,7 @@
 
 Here is an example:
 
-	% pgpdump data/sig1
+	% pgpdump test/sig1
 	Old: Marker Packet(tag 10)(3 bytes)
 		String - ...
 	New: One-Pass Signature Packet(tag 4)(13 bytes)
@@ -51,7 +51,8 @@ Binaries are available for Mac OS X via Homebrew:
 
 To know how to use pgpdump, type `pgpdump -h`.
 
-Some examples are stored in the `data` directory. Also, you can visualize your pubring and secring.
+Some examples are stored in the `test` directory. Also, you can visualize your
+pubring and secring.
 
 ## Home page
 
@@ -72,5 +73,5 @@ The test program is written in Haskell. I recommend to install [Haskell Platform
 
 Now you can execute the test program:
 
-	% cd data
+	% cd test
 	% runghc test.hs
