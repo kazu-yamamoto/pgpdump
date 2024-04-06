@@ -66,10 +66,20 @@ The official home page of pgpdump is:
 
 ## Testing
 
-To run the tests, first build `pgpdump` then run:
+To run all of the tests:
 
+	% make check
+
+or:
+
+	% make
 	% ./test/test
 
-To run specific tests, pass the desired `*.res` files as command-line arguments:
+To run specific tests:
 
+	% make check TESTS="test/pub.res test/sig.res"
+
+or:
+
+	% make
 	% ./test/test test/pub.res test/sig.res

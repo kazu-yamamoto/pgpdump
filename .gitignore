@@ -8,6 +8,9 @@
 /configure
 /pgpdump-*.tar.gz
 /stamp-h1
+/test-suite.log
+/test/*.log
+/test/*.trs
 Makefile
 config.h
 config.log
