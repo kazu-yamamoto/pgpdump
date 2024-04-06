@@ -69,3 +69,7 @@ The official home page of pgpdump is:
 To run the tests, first build `pgpdump` then run:
 
 	% ./test/test.sh
+
+To run specific tests, pass the desired `*.res` files as command-line arguments:
+
+	% ./test/test.sh test/pub.res test/sig.res

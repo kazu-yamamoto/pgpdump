@@ -1,13 +1,14 @@
 #!/bin/sh
 
-cd "$(dirname "$0")" || exit 1
+mydir=${0%/*}
 
-[ X"$1" = X-v ] && verbose=true || verbose=false
+[ X"$1" = X-v ] && { verbose=true; shift; } || verbose=false
+[ "$#" -gt 0 ] || set -- "$mydir"/*.res
 status=0
 
-for out in *.res; do
+for out in "$@"; do
 	in=${out%.res}
-	diff=$(../pgpdump -u < "$in" | diff -au "$out" -)
+	diff=$("${mydir}"/../pgpdump -u < "$in" | diff -au "$out" -)
 	if [ -n "$diff" ]; then
 		status=1
 		echo "$in FAIL"
