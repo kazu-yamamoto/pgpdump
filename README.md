@@ -66,12 +66,6 @@ The official home page of pgpdump is:
 
 ## Testing
 
-The test program is written in Haskell. I recommend to install [Haskell Platform](https://www.haskell.org/platform/) if you want to test. After that, please install necessary libraries:
+To run the tests, first build `pgpdump` then run:
 
-	% cabal install test-framework-hunit
-
-
-Now you can execute the test program:
-
-	% cd test
-	% runghc test.hs
+	% ./test/test.sh
