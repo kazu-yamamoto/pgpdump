@@ -1,6 +1,7 @@
 #!/bin/sh
 
 mydir=${0%/*}
+: "${PGPDUMP=${mydir}/../pgpdump}"
 
 [ X"$1" = X-v ] && { verbose=true; shift; } || verbose=false
 [ "$#" -gt 0 ] || set -- "$mydir"/*.res
@@ -8,7 +9,7 @@ status=0
 
 for out in "$@"; do
 	in=${out%.res}
-	diff=$("${mydir}"/../pgpdump -u < "$in" | diff -au "$out" -)
+	diff=$("${PGPDUMP}" -u < "$in" | diff -au "$out" -)
 	if [ -n "$diff" ]; then
 		status=1
 		echo "$in FAIL"
