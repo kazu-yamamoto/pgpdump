@@ -1,21 +1,41 @@
 #!/bin/sh
 
+# The output of this script is intended to follow the Test Anything Protocol (TAP):
+# https://testanything.org
+
+pecho() ( unset IFS; printf %s\\n "$*"; )
+log() { pecho "# $@"; }
+
 mydir=${0%/*}
 : "${PGPDUMP=${mydir}/../pgpdump}"
-
-[ X"$1" = X-v ] && { verbose=true; shift; } || verbose=false
 [ "$#" -gt 0 ] || set -- "$mydir"/*.res
 status=0
+i=0
 
-for out in "$@"; do
-	in=${out%.res}
-	diff=$("${PGPDUMP}" -u < "$in" | diff -au "$out" -)
-	if [ -n "$diff" ]; then
-		status=1
-		echo "$in FAIL"
-		$verbose && echo "$diff"
+do_test() {
+	want=$1
+	in=${want%.res}
+	diff=$("${PGPDUMP}" -u <${in} | diff -au "${want}" -)
+	[ -z "${diff}" ] || {
+		log "unexpected stdout; diff from want to got:"
+		while IFS= read -r line; do
+			log "$line"
+		done <<EOF
+$diff
+EOF
+		return 1
+	}
+}
+
+pecho "TAP version 14"
+pecho "1..$#"
+for want in "$@"; do
+	i=$((i+1))
+	if do_test "${want}"; then
+		pecho "ok ${i} - ${want}"
 	else
-		$verbose && echo "$in PASS"
+		status=1
+		pecho "not ok ${i} - ${want}"
 	fi
 done
 
