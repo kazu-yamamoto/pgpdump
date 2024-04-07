@@ -16,11 +16,14 @@ i=0
 do_test() {
 	want=$1
 	in=${want%.res}
-	got=$("${PGPDUMP}" -u <${in}) || {
+	# Command substitution strips all trailing newlines.  Echo a character to be stripped later
+	# so that all trailing newlines are preserved for accurate stdout comparison.
+	got=$("${PGPDUMP}" -u <${in} && pecho x) || {
 		log "pgpdump exited with non-zero status $?"
 		return 1
 	}
-	diff=$(pecho "${got}" | diff -au "${want}" -)
+	got=${got%x}
+	diff=$(printf %s "${got}" | diff -au "${want}" -)
 	[ -z "${diff}" ] || {
 		log "unexpected stdout; diff from want to got:"
 		while IFS= read -r line; do
