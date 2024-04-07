@@ -16,7 +16,11 @@ i=0
 do_test() {
 	want=$1
 	in=${want%.res}
-	diff=$("${PGPDUMP}" -u <${in} | diff -au "${want}" -)
+	got=$("${PGPDUMP}" -u <${in}) || {
+		log "pgpdump exited with non-zero status $?"
+		return 1
+	}
+	diff=$(pecho "${got}" | diff -au "${want}" -)
 	[ -z "${diff}" ] || {
 		log "unexpected stdout; diff from want to got:"
 		while IFS= read -r line; do
