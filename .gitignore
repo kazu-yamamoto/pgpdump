@@ -1,3 +1,13 @@
+.deps/
+.dirstamp
+/Makefile.in
+/aclocal.m4
+/autom4te.cache/
+/build-aux/
+/config.h.in
+/configure
+/pgpdump-*.tar.gz
+/stamp-h1
 Makefile
 config.h
 config.log
