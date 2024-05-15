@@ -1,0 +1,22 @@
+name: make distcheck
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+  workflow_dispatch:
+jobs:
+  distcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Fetch tags so that Autoconf can discover the version.
+          fetch-depth: 0
+      - run: autoreconf -fviW all,error
+      - run: ./configure
+      - run: make distcheck
+      - uses: actions/upload-artifact@v4
+        with:
+          name: distribution-tarball
+          path: pgpdump-*.tar.gz

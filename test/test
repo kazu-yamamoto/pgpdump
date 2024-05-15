@@ -1,0 +1,51 @@
+#!/bin/sh
+
+# The output of this script is intended to follow the Test Anything Protocol (TAP):
+# https://testanything.org
+
+pecho() ( unset IFS; printf %s\\n "$*"; )
+log() { pecho "# $@"; }
+bailout() { pecho "Bail out! $@"; exit 1; }
+
+mydir=${0%/*}
+: "${PGPDUMP=${mydir}/../pgpdump}"
+[ "$#" -gt 0 ] || set -- "$mydir"/*.res
+status=0
+i=0
+
+do_test() {
+	want=$1
+	in=${want%.res}
+	# Command substitution strips all trailing newlines.  Echo a character to be stripped later
+	# so that all trailing newlines are preserved for accurate stdout comparison.
+	got=$("${PGPDUMP}" -u <${in} && pecho x) || {
+		log "pgpdump exited with non-zero status $?"
+		return 1
+	}
+	got=${got%x}
+	diff=$(printf %s "${got}" | diff -au "${want}" -)
+	[ -z "${diff}" ] || {
+		log "unexpected stdout; diff from want to got:"
+		while IFS= read -r line; do
+			log "$line"
+		done <<EOF
+$diff
+EOF
+		return 1
+	}
+}
+
+pecho "TAP version 14"
+pecho "1..$#"
+[ -x "${PGPDUMP}" ] || bailout "${PGPDUMP} is not executable"
+for want in "$@"; do
+	i=$((i+1))
+	if do_test "${want}"; then
+		pecho "ok ${i} - ${want}"
+	else
+		status=1
+		pecho "not ok ${i} - ${want}"
+	fi
+done
+
+exit "$status"
