@@ -4,7 +4,7 @@
 
 #include "pgpdump.h"
 
-typedef void (*funcptr)();
+typedef void (*funcptr)(int);
 
 private int get_new_len(int);
 private int is_partial(int);
@@ -91,7 +91,7 @@ TAG[] = {
 #define TAG_NUM (sizeof(TAG) * sizeof(string))
 
 private void
-(*tag_func[])() = {
+(*tag_func[])(int) = {
 	Reserved,
 	Public_Key_Encrypted_Session_Key_Packet,
 	Signature_Packet,
