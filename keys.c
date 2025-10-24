@@ -7,8 +7,8 @@
 private int PUBLIC;
 private int VERSION;
 
-private void old_Public_Key_Packet(void);
-private void new_Public_Key_Packet(int);
+private void v3_Public_Key_Packet(void);
+private void v4_Public_Key_Packet(int, int);
 private void IV(unsigned int);
 private void plain_Secret_Key(int);
 private void encrypted_Secret_Key(int, int);
@@ -28,11 +28,15 @@ Public_Key_Packet(int len)
 	case 2:
 	case 3:
 		printf("old\n");
-		old_Public_Key_Packet();
+		v3_Public_Key_Packet();
 		break;
 	case 4:
 		printf("new\n");
-		new_Public_Key_Packet(len - 1);
+		v4_Public_Key_Packet(len - 1, NO);
+		break;
+	case 6:
+		printf("latest\n");
+		v4_Public_Key_Packet(len - 1, YES);
 		break;
 	default:
 		warn_exit("unknown version (%d).", VERSION);
@@ -41,7 +45,7 @@ Public_Key_Packet(int len)
 }
 
 private void
-old_Public_Key_Packet(void)
+v3_Public_Key_Packet(void)
 {
 	int days;
 	time4("Public key creation time");
@@ -99,11 +103,18 @@ private struct {
 
 
 private void
-new_Public_Key_Packet(int len)
+v4_Public_Key_Packet(int len, int v6)
 {
 	key_creation_time4("Public key creation time");
 	PUBLIC = Getc();
 	pub_algs(PUBLIC);
+	/* A 4-octet scalar octet count for the public key material specified in the next field */
+	if (!v6) {
+	  Getc(); /* fixme */
+	  Getc();
+	  Getc();
+	  Getc();
+	}
 	switch (PUBLIC) {
 	case 1:
 	case 2:
@@ -240,6 +251,7 @@ Secret_Key_Packet(int len)
 	Getc_resetlen();
 	Public_Key_Packet(len);
 	s2k = Getc();
+	if (VERSION == 6) { Getc(); } /* fixme */
 	switch (s2k) {
 	case 0:
 		plain_Secret_Key(len - Getc_getlen());
@@ -433,6 +445,7 @@ encrypted_Secret_Key(int len, int sha1)
 		printf("\n");
 		break;
 	case 4:
+	case 6:
 		switch (PUBLIC) {
 		case 1:
 		case 2:

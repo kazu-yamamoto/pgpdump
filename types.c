@@ -218,10 +218,10 @@ key_id(void)
 }
 
 public void
-fingerprint(void)
+fingerprint(int len)
 {
 	printf("\tFingerprint - ");
-	dump(20);
+	dump(len);
 	printf("\n");
 }
 

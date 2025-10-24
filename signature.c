@@ -7,8 +7,8 @@
 private void hash2(void);
 private void signature_multi_precision_integer(int, int);
 private void signature_type(int);
-private void new_Signature_Packet(int);
-private void old_Signature_Packet(int);
+private void v4_Signature_Packet(int,int);
+private void v3_Signature_Packet(int);
 
 private void
 hash2(void)
@@ -143,11 +143,15 @@ Signature_Packet(int len)
 	case 2:
 	case 3:
 		printf("old\n");
-		old_Signature_Packet(len - 1);
+		v3_Signature_Packet(len - 1);
 		break;
 	case 4:
 		printf("new\n");
-		new_Signature_Packet(len - 1);
+		v4_Signature_Packet(len - 1, NO);
+		break;
+	case 6:
+		printf("latest\n");
+		v4_Signature_Packet(len - 1, YES);
 		break;
 	default:
 		printf("unknown\n");
@@ -157,7 +161,7 @@ Signature_Packet(int len)
 }
 
 private void
-old_Signature_Packet(int len)
+v3_Signature_Packet(int len)
 {
 	int pub;
 
@@ -175,21 +179,32 @@ old_Signature_Packet(int len)
 }
 
 private void
-new_Signature_Packet(int len)
+v4_Signature_Packet(int len, int v6)
 {
-	int pub, hsplen, usplen;
+	int pub, hsplen, usplen, lim, i;
 
 	signature_type(Getc());
 	pub = Getc();
 	pub_algs(pub);
 	hash_algs(Getc());
-	hsplen = Getc() * 256;
-	hsplen += Getc();
+	lim = v6 ? 4 : 2;
+        hsplen = 0;
+	for (i = 0; i < lim; i++) {
+	  hsplen = hsplen * 256 + Getc();
+	}
 	parse_signature_subpacket("Hashed Sub", hsplen);
-	usplen = Getc() * 256;
-	usplen += Getc();
+        usplen = 0;
+	for (i = 0; i < lim; i++) {
+	  usplen = usplen * 256 + Getc();
+	}
 	parse_signature_subpacket("Sub", usplen);
 	hash2();
+	lim = Getc();
+	if (v6) {
+	  for (i = 0; i < lim; i++) {
+	    Getc(); /* fixme */
+	  }
+	}
 	signature_multi_precision_integer(pub, len - 9 - hsplen - usplen);
 }
 
