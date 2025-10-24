@@ -86,7 +86,7 @@ additional_decryption_key(int len)
 	printf("\t");
 	pub_algs(Getc());
 	printf("\t");
-	fingerprint();
+	fingerprint(20);
 }
 
 public void
@@ -134,7 +134,7 @@ revocation_key(int len)
 	printf("\t");
 	pub_algs(Getc());
 	printf("\t");
-	fingerprint();
+	fingerprint(20);
 }
 
 public void
@@ -343,17 +343,29 @@ issuer_fingerprint(int len)
 {
         int v = Getc();
         len = len-1;
-	printf("\t v%d -", v);
-        if (v == 4) {
-          if (len != 20) {
-            printf(" had %d bytes, should have had 20\n", len);
-            skip(len);
-          } else {
-            fingerprint();
-          }
-        } else {
-          printf(" unknown version\n");
-          skip(len);
+//	printf("\t\tv%d -", v);
+	printf("\t");
+	switch (v) {
+	  case 4:
+	    if (len != 20) {
+	      printf(" had %d bytes, should have had 20\n", len);
+	      skip(len);
+	    } else {
+	      fingerprint(len);
+	    }
+	    break;
+	  case 6:
+	    if (len != 32) {
+	      printf(" had %d bytes, should have had 32\n", len);
+	      skip(len);
+	    } else {
+	      fingerprint(len);
+	    }
+	    break;
+	  default:
+	    printf(" unknown version\n");
+	    skip(len);
+	    break;
         }
 }
 

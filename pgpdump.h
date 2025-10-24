@@ -84,7 +84,7 @@ public void comp_algs(unsigned int);
 public void hash_algs(unsigned int);
 public void aead_algs(unsigned int);
 public void key_id(void);
-public void fingerprint(void);
+public void fingerprint(int);
 public void time4(string);
 public void sig_creation_time4(string);
 public void sig_expiration_time4(string);
