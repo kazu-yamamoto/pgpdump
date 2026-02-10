@@ -88,7 +88,7 @@ TAG[] = {
 	"Private",
 	"Private",
 };
-#define TAG_NUM (sizeof(TAG) * sizeof(string))
+#define TAG_NUM (sizeof(TAG) / sizeof(string))
 
 private void
 (*tag_func[])(int) = {
