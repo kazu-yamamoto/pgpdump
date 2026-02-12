@@ -8,7 +8,7 @@ AC_INIT([pgpdump],
   [https://github.com/kazu-yamamoto/pgpdump/issues],
   [],
   [https://www.mew.org/~kazu/proj/pgpdump/])
-AC_CONFIG_SRCDIR([pgpdump.c])
+AC_CONFIG_SRCDIR([src])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_REQUIRE_AUX_FILE([tap-driver.sh])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects no-define])

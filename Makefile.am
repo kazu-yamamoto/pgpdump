@@ -3,16 +3,16 @@ EXTRA_DIST =
 
 bin_PROGRAMS = pgpdump
 pgpdump_SOURCES = \
-	buffer.c \
-	keys.c \
-	packet.c \
-	pgpdump.c \
-	pgpdump.h \
-	signature.c \
-	subfunc.c \
-	tagfuncs.c \
-	types.c \
-	uatfunc.c
+	src/buffer.c \
+	src/keys.c \
+	src/packet.c \
+	src/pgpdump.c \
+	src/pgpdump.h \
+	src/signature.c \
+	src/subfunc.c \
+	src/tagfuncs.c \
+	src/types.c \
+	src/uatfunc.c
 dist_man1_MANS = pgpdump.1
 
 AM_TESTS_ENVIRONMENT = PGPDUMP='$(builddir)/pgpdump'
