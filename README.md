@@ -1,3 +1,5 @@
+![GitHub Actions status][https://github.com/kazu-yamamoto/pgpdump/workflows/make%20distcheck/badge.svg]
+
 # pgpdump: a PGP packet visualizer
 
 - Kazu Yamamoto <kazu@iij.ad.jp>
