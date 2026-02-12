@@ -1,5 +1,17 @@
 # Change Log for pgpdump
 
+## 0.37 2027/02/12
+
+* Fix incorrect TAG_NUM macro causing out-of-bounds access.
+  [#48](https://github.com/kazu-yamamoto/pgpdump/pull/48)
+* Fix C23 compatibility.
+  [#45](https://github.com/kazu-yamamoto/pgpdump/pull/45)
+* Use Automake to run tests, and other test improvements.
+  [#44](https://github.com/kazu-yamamoto/pgpdump/pull/44)
+* Use Automake, and other build improvements.
+  [#43](https://github.com/kazu-yamamoto/pgpdump/pull/43)
+* *.c and *.h is now in src/.
+
 ## 0.36 2024/01/29
 
 * Skipping file to process when first/CTB is zero
