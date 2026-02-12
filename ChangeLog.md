@@ -1,127 +1,127 @@
-			      Change Log
+# Change Log for pgpdump
 
-0.36 2024/01/29
+## 0.36 2024/01/29
 
 * Skipping file to process when first/CTB is zero
-	https://github.com/kazu-yamamoto/pgpdump/pull/42
+  [#42](https://github.com/kazu-yamamoto/pgpdump/pull/42)
 * Inserting "memset" for ELLIP_CURVES
-	https://github.com/kazu-yamamoto/pgpdump/pull/34
+  [#34](https://github.com/kazu-yamamoto/pgpdump/pull/34)
 
-0.35 2022/02/28
+## 0.35 2022/02/28
 
 * Adding BrainPool-384/512 curve definitions.
-	https://github.com/kazu-yamamoto/pgpdump/pull/33
+  [#33](https://github.com/kazu-yamamoto/pgpdump/pull/33)
 
-0.34 2021/12/07
+## 0.34 2021/12/07
 
 * Uploading modifications to support GnuPG-2.3.3 ECC curves, additional hash and algorithm names.
-	https://github.com/kazu-yamamoto/pgpdump/pull/32
+  [#32](https://github.com/kazu-yamamoto/pgpdump/pull/32)
 * Improved labels for Literal Data Packet fields.
-	https://github.com/kazu-yamamoto/pgpdump/pull/29
+  [#29](https://github.com/kazu-yamamoto/pgpdump/pull/29)
 * Indicate unknown sigtype value is displayed in hex.
-	https://github.com/kazu-yamamoto/pgpdump/pull/27
+  [#27](https://github.com/kazu-yamamoto/pgpdump/pull/27)
 * Fixing cross-building and avoiding infinite loop when invoking BZ2_bzDecompress.
-	https://github.com/kazu-yamamoto/pgpdump/pull/25
+  [#25](https://github.com/kazu-yamamoto/pgpdump/pull/25)
 
-0.33 2018/05/07
+## 0.33 2018/05/07
 
 * Added EdDSA and adjusted ECDSA.
-	https://github.com/kazu-yamamoto/pgpdump/pull/22
+  [#22](https://github.com/kazu-yamamoto/pgpdump/pull/22)
 
-0.32 2017/05/31
+## 0.32 2017/05/31
 
 * Supporting "issuer fingerprint" subpackets.
-	Daniel Kahn Gillmor <dkg@fifthhorseman.net>
+  Daniel Kahn Gillmor <dkg@fifthhorseman.net>
 
-0.31 2016/05/09
+## 0.31 2016/05/09
 
 * Fixing a buffer overrun.
 
-0.30 2016/04/13
+## 0.30 2016/04/13
 
 * Security fix: https://github.com/kazu-yamamoto/pgpdump/pull/16
 
-0.29 2014/08/01
+## 0.29 2014/08/01
 
 * Adaption for Fedora packaging.
 * Ignore whitespace when decoding Radix-64 input.
 * Add support for GnuPG extensions in private subkeys.
 
-0.28 2013/06/21
+## 0.28 2013/06/21
 
 * No significant change. Maintenance purpose only.
 
-0.27 2010/08/12
+## 0.27 2010/08/12
 
 * Adding Camellia defined in RFC 5581.
-	"Stefan H. Holek" <stefan>
+  "Stefan H. Holek" <stefan>
 * Notation name is always text.
-	Risko Gergely <gergely>
+  Risko Gergely <gergely>
 
-0.26 2007/09/06
+## 0.26 2007/09/06
 
 * Catching up to ID 22.
 
-0.25 2006/10/02
+## 0.25 2006/10/02
 
 * Catching up to ID 18
-	- Adding SHA224.
+    - Adding SHA224.
 
-0.24 2004/12/24
+## 0.24 2004/12/24
 
 * More secure programming style.
 * Adding GnuPG string-to-key.
 * Adding a missing key flag.
 
-0.23 2004/10/27
+## 0.23 2004/10/27
 
 * Catching up to 2440bis-10/11.
-	- 'u' for Literal Data
-	- embedded signature
-	- Primary Key Binding Signature
+    - 'u' for Literal Data
+    - embedded signature
+    - Primary Key Binding Signature
 * Bug fix for plain_Secret_Key().
 * Fixing Symmetrically_Encrypted_Data_Packet() and Secret_Key_Packet()
   especially for IDEA.
 
-0.22 2004/01/23
+## 0.22 2004/01/23
 
 * parse_subpacket() are split into parse_signature_subpacket() and
   parse_userattr_subpacket(). A bug of length calculation is fixed.
 * The critical bit of the signature subpackets are supported.
-	Peter Palfrader <peter>
+  Peter Palfrader <peter>
 
-0.21 2004/01/13
+## 0.21 2004/01/13
 
 * Removing compiler warnings.
 * Using getopt().
 * Supporting RISC OS.
-	Stefan Bellon <sbellon>
+  Stefan Bellon <sbellon>
 * Correct casting for Bzip2.
-	Stefan Bellon <sbellon>
+  Stefan Bellon <sbellon>
 * Prepared os/riscos/{config.h,Makefile} since "sh" does not exist on
   RISC OS.
-	Stefan Bellon <sbellon>
+  Stefan Bellon <sbellon>
 
-0.20 2003/12/08
+## 0.20 2003/12/08
 
 * Catching up to 2440bis-09. Bzip2 was supported.
 
-0.19 2003/06/06
+## 0.19 2003/06/06
 
 * Catching up to 2440bis-08.
 * Supporting MINGW32. This is dirty and needs to be refined.
 * autotime.h -> types.c
 
-0.18 2003/05/20
+## 0.18 2003/05/20
 
 * Supporting MacOS X.
-	"Stefan H. Holek" <stefan>
+  "Stefan H. Holek" <stefan>
 * Catching up to 2440bis-07.
-	"Stefan H. Holek" <stefan>
+  "Stefan H. Holek" <stefan>
 * A bug fix of old_Public_Key_Packet.
-	Shigeru NAKAMURA <s-nakamu>
+  Shigeru NAKAMURA <s-nakamu>
 
-0.17 2002/06/28
+## 0.17 2002/06/28
 
 * Defining the SHA-1 hash for Secret Key Packet.
 * Defining the -a and -g option.
@@ -130,63 +130,63 @@
 * Implementing features and revocation_target.
 * Removing macros to avoid side-effects.
 * Most modifications above come from:
-	"Stefan H. Holek" <stefan>
+  "Stefan H. Holek" <stefan>
 
-0.16 2001/12/06
+## 0.16 2001/12/06
 
 * Key ID hack.
-	Jason Harris <jharris>
+  Jason Harris <jharris>
 
-0.15 2001/11/13
+## 0.15 2001/11/13
 
 * Old man style for pgpdump.1.
 * The symmetric encryption algorithm is displayed more user-friendly.
 
-0.14 2001/11/09
+## 0.14 2001/11/09
 
 * Catching up to 2440bis-03.
 
-0.13 2001/10/24
+## 0.13 2001/10/24
 
 * Workaround for minus date.
-	"Stefan H. Holek" <stefan>
+  "Stefan H. Holek" <stefan>
 * No-libz hack.
-	"Bruce Kroeze" <bkroeze>
+  "Bruce Kroeze" <bkroeze>
 * Small fixes.
-	"Stefan H. Holek" <stefan>
+  "Stefan H. Holek" <stefan>
 
-0.12 2001/08/14
+## 0.12 2001/08/14
 
 * Portability hack.
-	Stefan Bellon <sbellon>
+  Stefan Bellon <sbellon>
 
-0.11 2001/05/20
+## 0.11 2001/05/20
 
 * Defining line_not_blank().
-	Stefan H. Holek <stefan>
+  Stefan H. Holek <stefan>
 * Enhancing Public_Key_Encrypted_Session_Key_Packet().
-	Stefan H. Holek <stefan>
-	Brian M. Carlson <karlsson>
+  Stefan H. Holek <stefan>
+  Brian M. Carlson <karlsson>
 
-0.10 2001/05/08
+## 0.10 2001/05/08
 
 * Fixing key_server_preferences().
 * Fixing signature_multi_precision_integer().
 
-0.09 2001/05/05
+## 0.09 2001/05/05
 
 * Implementing additional_decryption_key() like revocation_key().
-	Stefan H. Holek <stefan>
+  Stefan H. Holek <stefan>
 
-0.08 2001/04/12
+## 0.08 2001/04/12
 
 * Fixing IV length.
-	Stefan H. Holek <stefan>
-	disastry
+  Stefan H. Holek <stefan>
+  disastry
 * Skipping the tail of armor.
-	Stefan H. Holek <stefan>
+  Stefan H. Holek <stefan>
 
-0.07 2001/04/05
+## 0.07 2001/04/05
 
 * New scheme to handle partial bodies.
 * Sophisticated buffering mechanism. No temporary files are created.
@@ -204,41 +204,41 @@ Stefan H. Holek <stefan> kindly contributes the followings:
 * Added capability to read from stdin when no file is specified on the
   commandline
 * Implemented missing subpackets
-	- revocation_key
-	- reason_for_revocation
-	- key_flags
-	- signer_user_id (not tested)
-	- notation_data (not tested)
+    - revocation_key
+    - reason_for_revocation
+    - key_flags
+    - signer_user_id (not tested)
+    - notation_data (not tested)
 
-0.06 2001/03/30
+## 0.06 2001/03/30
 
 * Supporting old-format packet length 3 ("until the end of the file").
 
-0.05 2001/03/22
+## 0.05 2001/03/22
 
 * Adding the "-p" option.
 * Adding some tags and algorithms.
 * A serious bug fix of Public_Key_Packet(). "len" was wrong.
 * A serious bug fix of Getc(). Defined Getc1().
 
-0.04 2000/10/18
+## 0.04 2000/10/18
 
 * configure support.
 
-0.03 2000/08/27
+## 0.03 2000/08/27
 
 * Uncompress support.
 * Sophisticate armor support.
 * Partial Body Length
-	ARAI Shun-ichi <hermes>
+  ARAI Shun-ichi <hermes>
 
-0.02 1998/12/25
+## 0.02 1998/12/25
 
 * Clean up the "data" directory.
 * Linux's mktemp(3) requires 6 "X"s.
 * Replace "uncompress.c" with "uncomp.c" due to the file length
 limitation of MS-DOS.
 
-0.01 1998/12/04
+## 0.01 1998/12/04
 
 * The first release
