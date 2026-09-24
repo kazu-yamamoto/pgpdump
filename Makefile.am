@@ -59,6 +59,7 @@ TESTS = \
 	test/rfc9580-v6-seckey.res \
 	test/rfc9580-x25519-ocb.res \
 	test/sig1.res \
+	test/sig-ecdh-invalid.res \
 	test/sig2.res \
 	test/sig3.res \
 	test/sig.res

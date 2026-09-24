@@ -53,9 +53,6 @@ signature_multi_precision_integer(int pub, int len)
 		multi_precision_integer("DSA s");
 		printf("\t\t-> hash(DSA q bits)\n");
 		break;
-        case 18:
-		multi_precision_integer("ECDH G");
-                break;
         case 19:
 		multi_precision_integer("ECDSA r");
 		multi_precision_integer("ECDSA s");
