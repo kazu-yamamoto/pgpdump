@@ -1,5 +1,22 @@
 # Change Log for pgpdump
 
+## 0.38 2026/09/24
+
+* Support RFC 9580 (OpenPGP v6): v6 keys, signatures, and one-pass
+  signatures, X25519/X448/Ed25519/Ed448, PKESK/SKESK v6, SEIPD v2,
+  AEAD (EAX, OCB, GCM), Argon2 S2K, Padding packet, and new
+  subpackets. Armor without CRC24 is also accepted.
+  [#50](https://github.com/kazu-yamamoto/pgpdump/pull/50)
+* Fix parsing of unencrypted v4 ECDH/ECDSA/EdDSA secret keys.
+  [#26](https://github.com/kazu-yamamoto/pgpdump/issues/26)
+  [#50](https://github.com/kazu-yamamoto/pgpdump/pull/50)
+* Document how to read the output in README and the manual.
+  [#51](https://github.com/kazu-yamamoto/pgpdump/pull/51)
+* Run CI on macOS as well and treat compiler warnings as errors.
+  [#52](https://github.com/kazu-yamamoto/pgpdump/pull/52)
+* Include COPYRIGHT in the distribution tarball.
+  [#49](https://github.com/kazu-yamamoto/pgpdump/pull/49)
+
 ## 0.37 2026/02/12
 
 * Fix incorrect TAG_NUM macro causing out-of-bounds access.
