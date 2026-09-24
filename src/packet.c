@@ -323,6 +323,8 @@ parse_packet(void)
 	} else
 		set_armor();
 
+	/* for each ASCII armor block (or once for binary input) */
+	do {
 	while ((c = Getc1()) != EOF) {
 		have_packet = YES;
 		partial = NO;
@@ -392,6 +394,7 @@ parse_packet(void)
 		}
 		if (len == EOF) return;
 	}
+	} while (next_armor() == YES);
 	if ( have_packet == NO )
 		warn_exit("unexpected end of file.");
 }

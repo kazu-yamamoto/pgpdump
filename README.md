@@ -114,7 +114,6 @@ The official home page of pgpdump is:
 ## Bugs
 
 * pgpdump assumes that a compressed packet continues until the end of the specified file.
-* pgpdump reads only the first ASCII armored block of a file.
 * pgpdump does not decrypt encrypted packets.
 
 ## Testing
