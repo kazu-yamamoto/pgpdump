@@ -111,6 +111,7 @@ public void User_ID_Packet(int);
 public void User_Attribute_Packet(int);
 public void Symmetrically_Encrypted_and_MDC_Packet(int);
 public void Modification_Detection_Code_Packet(int);
+public void OCB_Encrypted_Data_Packet(int);
 public void Padding_Packet(int);
 public void Private_Packet(int);
 
