@@ -1,7 +1,7 @@
 Old: Signature Packet(tag 2)(164 bytes)
 	Ver 5 - librepgp
 	Sig type - Signature of a binary document(0x00).
-	Pub alg - EdDSA Edwards-curve Digital Signature Algorithm(pub 22)
+	Pub alg - EdDSALegacy Edwards-curve Digital Signature Algorithm(pub 22)
 	Hash alg - SHA512(hash 10)
 	Hashed Sub: issuer fingerprint(sub 33)(33 bytes)
 	 v5 -	Fingerprint - b2 78 1d 25 c0 fd 39 ab d1 bd 48 0e fa eb 24 9d 39 7d d3 11 1e c4 da 09 b9 6d 17 8e 68 fa 9b cd 

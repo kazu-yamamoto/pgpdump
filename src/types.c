@@ -54,7 +54,7 @@ PUB_ALGS[] = {
 	"ECDSA Elliptic Curve Digital Signature Algorithm(pub 19)",
 	"Reserved formerly ElGamal Encrypt or Sign(pub 20)",
 	"Reserved for Diffie-Hellman (pub 21)",
-	"EdDSA Edwards-curve Digital Signature Algorithm(pub 22)",
+	"EdDSALegacy Edwards-curve Digital Signature Algorithm(pub 22)",
 	"Reserved - AEDH",
 	"Reserved - AEDSA",
 	"X25519(pub 25)",

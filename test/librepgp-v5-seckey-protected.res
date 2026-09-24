@@ -1,8 +1,8 @@
 Old: Secret Key Packet(tag 5)(143 bytes)
 	Ver 5 - librepgp
 	Public key creation time - Thu Sep 24 21:25:17 UTC 2026
-	Pub alg - EdDSA Edwards-curve Digital Signature Algorithm(pub 22)
-	Elliptic Curve - Ed25519 (0x2B 06 01 04 01 DA 47 0F 01)
+	Pub alg - EdDSALegacy Edwards-curve Digital Signature Algorithm(pub 22)
+	Elliptic Curve - Ed25519Legacy (0x2B 06 01 04 01 DA 47 0F 01)
 	EdDSA Q(263 bits) - ...
 	Sym alg - AES with 128-bit key(sym 7)
 	Iterated and salted string-to-key(s2k 3):
@@ -17,7 +17,7 @@ Old: User ID Packet(tag 13)(23 bytes)
 Old: Signature Packet(tag 2)(177 bytes)
 	Ver 5 - librepgp
 	Sig type - Positive certification of a User ID and Public Key packet(0x13).
-	Pub alg - EdDSA Edwards-curve Digital Signature Algorithm(pub 22)
+	Pub alg - EdDSALegacy Edwards-curve Digital Signature Algorithm(pub 22)
 	Hash alg - SHA512(hash 10)
 	Hashed Sub: issuer fingerprint(sub 33)(33 bytes)
 	 v5 -	Fingerprint - b2 78 1d 25 c0 fd 39 ab d1 bd 48 0e fa eb 24 9d 39 7d d3 11 1e c4 da 09 b9 6d 17 8e 68 fa 9b cd 
