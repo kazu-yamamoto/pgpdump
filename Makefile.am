@@ -60,6 +60,16 @@ TESTS = \
 	test/rfc9580-v6-rsa-cert-padding.res \
 	test/rfc9580-v6-seckey.res \
 	test/rfc9580-x25519-ocb.res \
+	test/rfc9980-mldsa65-ed25519-seckey.res \
+	test/rfc9980-mldsa65-ed25519-sig.res \
+	test/rfc9980-mldsa87-ed448-seckey.res \
+	test/rfc9980-mlkem1024-x448-message.res \
+	test/rfc9980-slhdsa128f-sig.res \
+	test/rfc9980-slhdsa128s-seckey.res \
+	test/rfc9980-slhdsa256s-sig.res \
+	test/rfc9980-v4-mlkem768-x25519-seckey.res \
+	test/rfc9980-v4-mlkem768-x25519-seipdv1.res \
+	test/rfc9980-v6-mlkem768-x25519-message.res \
 	test/sig1.res \
 	test/sig-ecdh-invalid.res \
 	test/sig2.res \

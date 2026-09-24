@@ -61,6 +61,15 @@ PUB_ALGS[] = {
 	"X448(pub 26)",
 	"Ed25519(pub 27)",
 	"Ed448(pub 28)",
+	"unknown(pub 29)",
+	/* RFC 9980 */
+	"ML-DSA-65+Ed25519(pub 30)",
+	"ML-DSA-87+Ed448(pub 31)",
+	"SLH-DSA-SHAKE-128s(pub 32)",
+	"SLH-DSA-SHAKE-128f(pub 33)",
+	"SLH-DSA-SHAKE-256s(pub 34)",
+	"ML-KEM-768+X25519(pub 35)",
+	"ML-KEM-1024+X448(pub 36)",
 };
 #define PUB_ALGS_NUM (sizeof(PUB_ALGS) / sizeof(string))
 

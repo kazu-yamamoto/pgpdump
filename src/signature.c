@@ -67,6 +67,24 @@ signature_multi_precision_integer(int pub, int len)
 	case 28:
 		fixed_length_octets("Ed448 signature", 114);
 		break;
+	/* RFC 9980 */
+	case 30:
+		fixed_length_octets("Ed25519 signature", 64);
+		fixed_length_octets("ML-DSA-65 signature", 3309);
+		break;
+	case 31:
+		fixed_length_octets("Ed448 signature", 114);
+		fixed_length_octets("ML-DSA-87 signature", 4627);
+		break;
+	case 32:
+		fixed_length_octets("SLH-DSA signature", 7856);
+		break;
+	case 33:
+		fixed_length_octets("SLH-DSA signature", 17088);
+		break;
+	case 34:
+		fixed_length_octets("SLH-DSA signature", 29792);
+		break;
 	default:
 		printf("\tUnknown signature(pub %d)\n", pub);
 		skip(len);

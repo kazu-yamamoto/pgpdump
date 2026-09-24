@@ -95,6 +95,17 @@ Public_Key_Encrypted_Session_Key_Packet(int len)
 		fixed_length_octets("X448 ephemeral public key", 56);
 		wrapped_session_key("X448 wrapped session key", v);
 		break;
+	/* RFC 9980 */
+	case 35:
+		fixed_length_octets("X25519 ephemeral public key", 32);
+		fixed_length_octets("ML-KEM-768 ciphertext", 1088);
+		wrapped_session_key("Wrapped session key", v);
+		break;
+	case 36:
+		fixed_length_octets("X448 ephemeral public key", 56);
+		fixed_length_octets("ML-KEM-1024 ciphertext", 1568);
+		wrapped_session_key("Wrapped session key", v);
+		break;
 	default:
 		printf("\t\tunknown(pub %d)\n", pub);
 		skip(len - Getc_getlen());
@@ -103,6 +114,8 @@ Public_Key_Encrypted_Session_Key_Packet(int len)
 	case 18:
 	case 25:
 	case 26:
+	case 35:
+	case 36:
 		break;
 	default:
 		if (v == 6)
