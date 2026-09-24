@@ -1,15 +1,15 @@
 Old: Public Key Packet(tag 6)(51 bytes)
 	Ver 4 - new
 	Public key creation time - Mon Nov 29 09:20:17 UTC 2021
-	Pub alg - EdDSA Edwards-curve Digital Signature Algorithm(pub 22)
-	Elliptic Curve - Ed25519 (0x2B 06 01 04 01 DA 47 0F 01)
+	Pub alg - EdDSALegacy Edwards-curve Digital Signature Algorithm(pub 22)
+	Elliptic Curve - Ed25519Legacy (0x2B 06 01 04 01 DA 47 0F 01)
 	EdDSA Q(263 bits) - ...
 Old: User ID Packet(tag 13)(46 bytes)
 	User ID -  (gpg233_ecc_sign_encrypt_Curve25519_test_key)
 Old: Signature Packet(tag 2)(147 bytes)
 	Ver 4 - new
 	Sig type - Positive certification of a User ID and Public Key packet(0x13).
-	Pub alg - EdDSA Edwards-curve Digital Signature Algorithm(pub 22)
+	Pub alg - EdDSALegacy Edwards-curve Digital Signature Algorithm(pub 22)
 	Hash alg - SHA512(hash 10)
 	Hashed Sub: issuer fingerprint(sub 33)(21 bytes)
 	 v4 -	Fingerprint - ab c4 6a 75 a9 04 9b 4e 44 06 36 8c 4b d0 54 0d 9b b6 bd 4d 
@@ -50,7 +50,7 @@ Old: Public Subkey Packet(tag 14)(56 bytes)
 	Ver 4 - new
 	Public key creation time - Mon Nov 29 09:20:17 UTC 2021
 	Pub alg - ECDH Elliptic Curve Diffie-Hellman Algorithm(pub 18)
-	Elliptic Curve - Curve25519 (0x2B 06 01 04 01 97 55 01 05 01)
+	Elliptic Curve - Curve25519Legacy (0x2B 06 01 04 01 97 55 01 05 01)
 	ECDH Q(263 bits) - ...
 	ECDH KDF params(32 bits) - ...
 		KDFhashID:  	Hash alg - SHA256(hash 8)
@@ -58,7 +58,7 @@ Old: Public Subkey Packet(tag 14)(56 bytes)
 Old: Signature Packet(tag 2)(120 bytes)
 	Ver 4 - new
 	Sig type - Subkey Binding Signature(0x18).
-	Pub alg - EdDSA Edwards-curve Digital Signature Algorithm(pub 22)
+	Pub alg - EdDSALegacy Edwards-curve Digital Signature Algorithm(pub 22)
 	Hash alg - SHA512(hash 10)
 	Hashed Sub: issuer fingerprint(sub 33)(21 bytes)
 	 v4 -	Fingerprint - ab c4 6a 75 a9 04 9b 4e 44 06 36 8c 4b d0 54 0d 9b b6 bd 4d 

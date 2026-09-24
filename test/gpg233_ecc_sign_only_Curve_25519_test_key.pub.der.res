@@ -1,15 +1,15 @@
 Old: Public Key Packet(tag 6)(51 bytes)
 	Ver 4 - new
 	Public key creation time - Mon Nov 29 09:31:28 UTC 2021
-	Pub alg - EdDSA Edwards-curve Digital Signature Algorithm(pub 22)
-	Elliptic Curve - Ed25519 (0x2B 06 01 04 01 DA 47 0F 01)
+	Pub alg - EdDSALegacy Edwards-curve Digital Signature Algorithm(pub 22)
+	Elliptic Curve - Ed25519Legacy (0x2B 06 01 04 01 DA 47 0F 01)
 	EdDSA Q(263 bits) - ...
 Old: User ID Packet(tag 13)(44 bytes)
 	User ID -  (gpg233_ecc_sign_only_Curve_25519_test_key)
 Old: Signature Packet(tag 2)(147 bytes)
 	Ver 4 - new
 	Sig type - Positive certification of a User ID and Public Key packet(0x13).
-	Pub alg - EdDSA Edwards-curve Digital Signature Algorithm(pub 22)
+	Pub alg - EdDSALegacy Edwards-curve Digital Signature Algorithm(pub 22)
 	Hash alg - SHA512(hash 10)
 	Hashed Sub: issuer fingerprint(sub 33)(21 bytes)
 	 v4 -	Fingerprint - 4c 52 54 fc 6b 8f 1a 9f 6d aa fb 58 2d 36 0a 5c 0c 5f fe df 
