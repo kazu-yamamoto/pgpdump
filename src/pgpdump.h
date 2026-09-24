@@ -163,6 +163,8 @@ public void embedded_signature(int);
 public void issuer_fingerprint(int);
 public void intended_recipient_fingerprint(int);
 public void preferred_aead_ciphersuites(int);
+public void literal_data_meta_hash(int);
+public void trust_alias(int);
 
 /*
  * uatfunc.c
