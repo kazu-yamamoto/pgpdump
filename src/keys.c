@@ -216,6 +216,30 @@ public_key_material(int len)
 	case 28:
 		fixed_length_octets("Ed448 public key", 57);
 		break;
+	/* RFC 9980 */
+	case 30:
+		fixed_length_octets("Ed25519 public key", 32);
+		fixed_length_octets("ML-DSA-65 public key", 1952);
+		break;
+	case 31:
+		fixed_length_octets("Ed448 public key", 57);
+		fixed_length_octets("ML-DSA-87 public key", 2592);
+		break;
+	case 32:
+	case 33:
+		fixed_length_octets("SLH-DSA public key", 32);
+		break;
+	case 34:
+		fixed_length_octets("SLH-DSA public key", 64);
+		break;
+	case 35:
+		fixed_length_octets("X25519 public key", 32);
+		fixed_length_octets("ML-KEM-768 public key", 1184);
+		break;
+	case 36:
+		fixed_length_octets("X448 public key", 56);
+		fixed_length_octets("ML-KEM-1024 public key", 1568);
+		break;
 	default:
 		printf("\tUnknown public key(pub %d)\n", PUBLIC);
 		skip(len);
@@ -340,6 +364,30 @@ secret_key_material(int len)
 	case 28:
 		fixed_length_octets("Ed448 secret key", 57);
 		break;
+	/* RFC 9980 */
+	case 30:
+		fixed_length_octets("Ed25519 secret key", 32);
+		fixed_length_octets("ML-DSA-65 secret key seed", 32);
+		break;
+	case 31:
+		fixed_length_octets("Ed448 secret key", 57);
+		fixed_length_octets("ML-DSA-87 secret key seed", 32);
+		break;
+	case 32:
+	case 33:
+		fixed_length_octets("SLH-DSA secret key", 64);
+		break;
+	case 34:
+		fixed_length_octets("SLH-DSA secret key", 128);
+		break;
+	case 35:
+		fixed_length_octets("X25519 secret key", 32);
+		fixed_length_octets("ML-KEM-768 secret key seed", 64);
+		break;
+	case 36:
+		fixed_length_octets("X448 secret key", 56);
+		fixed_length_octets("ML-KEM-1024 secret key seed", 64);
+		break;
 	default:
 		printf("\tUnknown secret key(pub %d)\n", PUBLIC);
 		skip(len);
@@ -452,6 +500,23 @@ encrypted_Secret_Key(int len, int s2k)
 			break;
 		case 28:
 			printf("\tEncrypted Ed448 secret key\n");
+			break;
+		case 30:
+			printf("\tEncrypted Ed25519 secret key and ML-DSA-65 secret key seed\n");
+			break;
+		case 31:
+			printf("\tEncrypted Ed448 secret key and ML-DSA-87 secret key seed\n");
+			break;
+		case 32:
+		case 33:
+		case 34:
+			printf("\tEncrypted SLH-DSA secret key\n");
+			break;
+		case 35:
+			printf("\tEncrypted X25519 secret key and ML-KEM-768 secret key seed\n");
+			break;
+		case 36:
+			printf("\tEncrypted X448 secret key and ML-KEM-1024 secret key seed\n");
 			break;
 		default:
 			printf("\tUnknown encrypted key(pub %d)\n", PUBLIC);
