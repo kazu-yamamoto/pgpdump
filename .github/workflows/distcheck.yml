@@ -7,16 +7,36 @@ on:
   workflow_dispatch:
 jobs:
   distcheck:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
         with:
           # Fetch tags so that Autoconf can discover the version.
           fetch-depth: 0
+      - if: runner.os == 'macOS'
+        run: brew install autoconf automake
       - run: autoreconf -fviW all,error
       - run: ./configure
+      # Treat compiler warnings as errors.
+      - run: make CFLAGS='-g -O2 -Werror'
       - run: make distcheck
-      - uses: actions/upload-artifact@v4
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-logs-${{ matrix.os }}
+          path: |
+            **/test-suite.log
+            **/test/*.log
+            config.log
+          if-no-files-found: ignore
+      - if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v4
         with:
           name: distribution-tarball
           path: pgpdump-*.tar.gz
