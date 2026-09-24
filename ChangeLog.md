@@ -1,6 +1,6 @@
 # Change Log for pgpdump
 
-## 0.37 2027/02/12
+## 0.37 2026/02/12
 
 * Fix incorrect TAG_NUM macro causing out-of-bounds access.
   [#48](https://github.com/kazu-yamamoto/pgpdump/pull/48)
