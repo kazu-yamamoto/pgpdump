@@ -362,6 +362,7 @@ versioned_fingerprint(int len)
 	case 4:
 		flen = 20;
 		break;
+	case 5:
 	case 6:
 		flen = 32;
 		break;

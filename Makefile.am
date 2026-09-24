@@ -38,6 +38,12 @@ TESTS = \
 	test/gpg3.res \
 	test/librepgp-ocb-ecdh.res \
 	test/librepgp-ocb-skesk5.res \
+	test/librepgp-v5-encrypted.res \
+	test/librepgp-v5-pubkey.res \
+	test/librepgp-v5-rsa-pubkey.res \
+	test/librepgp-v5-seckey.res \
+	test/librepgp-v5-seckey-protected.res \
+	test/librepgp-v5-sig.res \
 	test/pub1.res \
 	test/pub.res \
 	test/rfc9580-argon2.res \
