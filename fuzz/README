@@ -21,3 +21,12 @@ Assuming we are in the top directory:
 	% make clean
 	% make CC=clang CFLAGS="-O -g -fsanitize=address -fno-omit-frame-pointer"
 	% ./pgpdump fuzz/results/crashes/id:000000*
+
+
+* Seeds
+
+fuzz/seed contains small inputs (less than 1 KB each) covering RFC 4880,
+RFC 9580 (v6 keys and signatures, X25519/Ed25519, AEAD, Argon2, Padding),
+and LibrePGP (v5 keys and signatures, OCB Encrypted Data). They are the
+binary forms of the corresponding files in test/. hello.asc is kept to
+exercise the ASCII armor decoder.
