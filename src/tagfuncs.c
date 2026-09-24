@@ -119,7 +119,10 @@ Symmetric_Key_Encrypted_Session_Key_Packet(int len)
 {
 	int left = len, v, alg, aead = 0, ivlen;
 	v = Getc();
-	ver(NULL_VER, 4, 6, v);
+	if (v == 5)
+		printf("\tLibrePGP version(5)\n");
+	else
+		ver(NULL_VER, 4, 6, v);
 	left--;
 	if (v == 6) {
 		Getc(); /* count of the following fields */
@@ -128,16 +131,19 @@ Symmetric_Key_Encrypted_Session_Key_Packet(int len)
 	alg = Getc();
 	sym_algs(alg);
 	left--;
-	if (v == 6) {
+	if (v == 5 || v == 6) {
 		aead = Getc();
 		aead_algs(aead);
+		left--;
+	}
+	if (v == 6) {
 		Getc(); /* count of the S2K specifier */
-		left -= 2;
+		left--;
 	}
 	Getc_resetlen();
 	string_to_key();
 	left -= Getc_getlen();
-	if (v == 6) {
+	if (v == 5 || v == 6) {
 		ivlen = aead_iv_len(aead);
 		printf("\tIV - ");
 		dump(ivlen);
@@ -175,6 +181,27 @@ Symmetrically_Encrypted_Data_Packet(int len)
 		break;
 	}
 	skip(len);
+	reset_sym_alg_mode();
+}
+
+/* LibrePGP (draft-koch-librepgp), reserved in RFC 9580 */
+public void
+OCB_Encrypted_Data_Packet(int len)
+{
+	int c, aead, ivlen;
+	printf("\tVer %d\n", Getc());
+	sym_algs(Getc());
+	aead = Getc();
+	aead_algs(aead);
+	c = Getc();
+	printf("\tChunk size - %d(coded %d)\n", 1 << (c + 6), c);
+	ivlen = aead_iv_len(aead);
+	printf("\tIV - ");
+	dump(ivlen);
+	printf("\n");
+	printf("\tEncrypted data\n");
+	printf("\t\t(plain text chunks + AEAD tags + final AEAD tag)\n");
+	skip(len - 4 - ivlen);
 	reset_sym_alg_mode();
 }
 

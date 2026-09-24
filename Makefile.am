@@ -36,6 +36,8 @@ TESTS = \
 	test/gpg233_rsa_sign_only_test_key.pub.der.res \
 	test/gpg2.res \
 	test/gpg3.res \
+	test/librepgp-ocb-ecdh.res \
+	test/librepgp-ocb-skesk5.res \
 	test/pub1.res \
 	test/pub.res \
 	test/rfc9580-argon2.res \
