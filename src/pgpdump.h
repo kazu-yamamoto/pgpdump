@@ -83,16 +83,19 @@ public int  iv_len(unsigned int);
 public void comp_algs(unsigned int);
 public void hash_algs(unsigned int);
 public void aead_algs(unsigned int);
+public void aead_algs2(unsigned int);
+public int  aead_iv_len(unsigned int);
 public void key_id(void);
-public void fingerprint(void);
+public void fingerprint(int);
 public void time4(string);
 public void sig_creation_time4(string);
 public void sig_expiration_time4(string);
 public void key_creation_time4(string);
 public void key_expiration_time4(string);
-public void ver(int, int, int);
+public void ver(int, int, int, int);
 public int string_to_key(void);
 public void multi_precision_integer(string);
+public void fixed_length_octets(string, int);
 
 /*
  * tagfunc.c
@@ -108,6 +111,7 @@ public void User_ID_Packet(int);
 public void User_Attribute_Packet(int);
 public void Symmetrically_Encrypted_and_MDC_Packet(int);
 public void Modification_Detection_Code_Packet(int);
+public void Padding_Packet(int);
 public void Private_Packet(int);
 
 /*
@@ -156,6 +160,8 @@ public void features(int);
 public void signature_target(int);
 public void embedded_signature(int);
 public void issuer_fingerprint(int);
+public void intended_recipient_fingerprint(int);
+public void preferred_aead_ciphersuites(int);
 
 /*
  * uatfunc.c

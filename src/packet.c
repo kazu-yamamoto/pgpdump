@@ -44,7 +44,7 @@ TAG[] = {
 	"Symmetrically Encrypted and MDC Packet",
 	"Modification Detection Code Packet",
 	"unknown",
-	"unknown",
+	"Padding Packet",
 	"unknown",
 	"unknown",
 	"unknown",
@@ -113,7 +113,7 @@ private void
 	Symmetrically_Encrypted_and_MDC_Packet,
 	Modification_Detection_Code_Packet,
 	NULL,
-	NULL,
+	Padding_Packet,
 	NULL,
 	NULL,
 	NULL,
@@ -196,6 +196,11 @@ SIGSUB[] = {
 	"embedded signature(sub 32)",
 	"issuer fingerprint(sub 33)",
         "preferred_aead_algorithms(sub 34)",
+	"intended recipient fingerprint(sub 35)",
+	"reserved(sub 36)",
+	"reserved(sub 37)",
+	"reserved(sub 38)",
+	"preferred AEAD ciphersuites(sub 39)",
 };
 #define SIGSUB_NUM (sizeof(SIGSUB) / sizeof(string))
 
@@ -236,6 +241,11 @@ sigsub_func[] = {
 	embedded_signature,
 	issuer_fingerprint,
 	preferred_aead_algorithms,
+	intended_recipient_fingerprint,
+	NULL,
+	NULL,
+	NULL,
+	preferred_aead_ciphersuites,
 };
 
 private string

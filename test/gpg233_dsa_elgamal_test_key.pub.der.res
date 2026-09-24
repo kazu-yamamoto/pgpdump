@@ -39,6 +39,8 @@ Old: Signature Packet(tag 2)(147 bytes)
 		Comp alg - ZIP <RFC1951>(comp 1)
 	Hashed Sub: features(sub 30)(1 bytes)
 		Flag - Modification detection (packets 18 and 19)
+		Flag - Reserved (AEAD Encrypted Data)
+		Flag - Reserved (v5 keys)
 	Hashed Sub: key server preferences(sub 23)(1 bytes)
 		Flag - No-modify
 	Sub: issuer key ID(sub 16)(8 bytes)

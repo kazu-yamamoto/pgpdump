@@ -86,7 +86,7 @@ additional_decryption_key(int len)
 	printf("\t");
 	pub_algs(Getc());
 	printf("\t");
-	fingerprint();
+	fingerprint(20);
 }
 
 public void
@@ -134,7 +134,7 @@ revocation_key(int len)
 	printf("\t");
 	pub_algs(Getc());
 	printf("\t");
-	fingerprint();
+	fingerprint(20);
 }
 
 public void
@@ -269,7 +269,14 @@ key_flags(int len)
 		printf("\t\tFlag - This key may be used for authentication\n");
 	if (c & 0x80)
 		printf("\t\tFlag - The private component of this key may be in the possession of more than one person\n");
-	skip(len-1);
+	if (len < 2)
+		return;
+	c = Getc();
+	if (c & 0x04)
+		printf("\t\tFlag - Reserved (ADSK)\n");
+	if (c & 0x08)
+		printf("\t\tFlag - Reserved (timestamping)\n");
+	skip(len-2);
 }
 
 public void
@@ -316,8 +323,14 @@ features(int len)
         int c = Getc();
         if (c & 0x01)
                 printf("\t\tFlag - Modification detection (packets 18 and 19)\n");
-        if ((c & ~0xfe) == 0)
-                printf("\t\tFlag - undefined\n");
+        if (c & 0x02)
+                printf("\t\tFlag - Reserved (AEAD Encrypted Data)\n");
+        if (c & 0x04)
+                printf("\t\tFlag - Reserved (v5 keys)\n");
+        if (c & 0x08)
+                printf("\t\tFlag - Version 2 Symmetrically Encrypted and Integrity Protected Data packet\n");
+        if (c & ~0x0f)
+                printf("\t\tFlag - undefined(%02x)\n", c & ~0x0f);
         skip(len - 1);
 }
 
@@ -338,23 +351,57 @@ embedded_signature(int len)
 	Signature_Packet(len);
 }
 
+private void
+versioned_fingerprint(int len)
+{
+	int v = Getc();
+	int flen;
+	len = len - 1;
+	printf("\t v%d -", v);
+	switch (v) {
+	case 4:
+		flen = 20;
+		break;
+	case 6:
+		flen = 32;
+		break;
+	default:
+		printf(" unknown version\n");
+		skip(len);
+		return;
+	}
+	if (len != flen) {
+		printf(" had %d bytes, should have had %d\n", len, flen);
+		skip(len);
+	} else {
+		fingerprint(len);
+	}
+}
+
 public void
 issuer_fingerprint(int len)
 {
-        int v = Getc();
-        len = len-1;
-	printf("\t v%d -", v);
-        if (v == 4) {
-          if (len != 20) {
-            printf(" had %d bytes, should have had 20\n", len);
-            skip(len);
-          } else {
-            fingerprint();
-          }
-        } else {
-          printf(" unknown version\n");
-          skip(len);
-        }
+	versioned_fingerprint(len);
+}
+
+public void
+intended_recipient_fingerprint(int len)
+{
+	versioned_fingerprint(len);
+}
+
+public void
+preferred_aead_ciphersuites(int len)
+{
+	int i;
+	for (i = 0; i + 1 < len; i += 2) {
+		printf("\t\tCiphersuite - ");
+		sym_algs2(Getc());
+		printf(" + ");
+		aead_algs2(Getc());
+		printf("\n");
+	}
+	skip(len - i);
 }
 
 /*
