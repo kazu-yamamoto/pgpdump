@@ -25,7 +25,7 @@
 .\" WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
 .\" OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 .\" IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-.TH PGPDUMP 1 "June 27, 2002"
+.TH PGPDUMP 1 "September 24, 2026"
 .SH NAME
 pgpdump - A PGP packet visualizer
 .\"
@@ -38,7 +38,11 @@ pgpdump
 The
 .B pgpdump
 is a PGP packet visualizer which displays the packet format
-of OpenPGP (RFC 4880) and PGP version 2 (RFC 1991).
+of OpenPGP (RFC 9580 and RFC 4880) and PGP version 2 (RFC 1991).
+If
+.I PGPfile
+is not specified, the standard input is read.
+Both binary and ASCII armored input are accepted.
 .PP
 The options are as follows:
 .TP 8
@@ -46,13 +50,14 @@ The options are as follows:
 Accepts ASCII input only.
 .TP 8
 .B \-g
-Selects alternate dump format.
+Selects alternate dump format, which displays printable characters
+as they are and others as \exNN (like GnuPG).
 .TP 8
 .B \-h
 Displays a help message.
 .TP 8
 .B \-i
-Dumps integer packets.
+Dumps multi-precision integers and fixed-length key material.
 .TP 8
 .B \-l
 Dumps literal packets.
@@ -69,3 +74,49 @@ Displays UTC time.
 .B \-v
 Displays the version.
 .\"
+.\"
+.SH OUTPUT
+Each packet starts with a line such as
+.PP
+.RS
+New: Signature Packet(tag 2)(63 bytes)
+.RE
+.PP
+.B Old:
+or
+.B New:
+is the format of the packet header:
+.B Old:
+is the legacy format (also used by PGP 2.x) and
+.B New:
+is the OpenPGP format.
+This is independent of the version of the packet itself.
+.B (tag 2)
+is the packet type ID and
+.B (63 bytes)
+is the length of the packet body.
+.PP
+The indented lines are the fields of the packet body.
+.B Ver 3 \- old,
+.B Ver 4 \- new,
+and
+.B Ver 6 \- latest
+are the versions of keys and signatures defined in RFC 1991,
+RFC 4880, and RFC 9580, respectively.
+A number in parentheses, such as
+.B (pub 17)
+or
+.BR "(hash 8)" ,
+is the algorithm ID or the subpacket type ID defined in the RFCs.
+.B Hashed Sub:
+and
+.B Sub:
+are subpackets in the hashed and unhashed areas of a signature.
+.B ...
+means that the data is omitted; use the options above to show it.
+.\"
+.SH SEE ALSO
+.BR gpg (1),
+.BR sq (1)
+.PP
+RFC 9580, RFC 4880, RFC 1991

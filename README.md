@@ -7,7 +7,7 @@
 
 ## Overview
 
-**pgpdump** is a PGP packet visualizer which displays the packet format of OpenPGP ([RFC 4880](https://datatracker.ietf.org/doc/html/rfc4880)) and PGP version 2 ([RFC 1991](https://datatracker.ietf.org/doc/html/rfc1991)).
+**pgpdump** is a PGP packet visualizer which displays the packet format of OpenPGP ([RFC 9580](https://datatracker.ietf.org/doc/html/rfc9580) and [RFC 4880](https://datatracker.ietf.org/doc/html/rfc4880)) and PGP version 2 ([RFC 1991](https://datatracker.ietf.org/doc/html/rfc1991)).
 
 Here is an example:
 
@@ -33,6 +33,49 @@ Here is an example:
 		DSA r(160 bits) - ...
 		DSA s(157 bits) - ...
 			-> hash(DSA q bits)
+
+## Reading the output
+
+Each packet starts with a line like this:
+
+	New: Signature Packet(tag 2)(63 bytes)
+
+- `Old:` or `New:` is the format of the packet *header*. `Old:` is the
+  legacy format, which is also used by PGP 2.x, and `New:` is the OpenPGP
+  format (see Section 4.2 of RFC 9580). This is independent of the
+  version of the packet itself. A version 4 key may be stored in an
+  old-format packet, for example.
+- `(tag 2)` is the packet type ID.
+- `(63 bytes)` is the length of the packet body. `(until eof)` means that
+  the length is indeterminate. `partial start`, `partial continue`, and
+  `partial end` show the chunks of a packet with partial body lengths.
+
+The indented lines are the fields of the packet body. The version of the
+packet is shown in one of these forms:
+
+| Output | Meaning |
+|---|---|
+| `Ver 3 - old` | version 2 or 3 key or signature (PGP 2.x, RFC 1991) |
+| `Ver 4 - new` | version 4 key or signature (RFC 4880) |
+| `Ver 6 - latest` | version 6 key or signature (RFC 9580) |
+| `Old version(2)`, `New version(3)`, `Latest version(6)` | version of a session key or one-pass signature packet |
+| `Ver 1`, `Ver 2` | version of a Symmetrically Encrypted and Integrity Protected Data packet |
+
+Other conventions:
+
+- A number in parentheses such as `(pub 17)`, `(sym 9)`, `(hash 8)`,
+  `(aead 2)`, `(comp 1)`, `(s2k 3)`, or `(sub 2)` is the algorithm ID or
+  subpacket type ID defined in the RFCs.
+- `Hashed Sub:` is a subpacket in the hashed area of a signature and
+  `Sub:` is one in the unhashed area. `(critical)` means that the
+  critical bit is set.
+- `(N bits)` is the size of a multi-precision integer, and `(N bytes)` is
+  the size of fixed-length key material or other data.
+- `...` means that the data is omitted. Use `-i` (integers and key
+  material), `-l` (literal data), `-m` (marker packets), or `-p` (private
+  packets) to show it.
+- A line starting with `->` is a hint about the contents of the
+  preceding encrypted or signed data.
 
 ## Installation
 
@@ -65,6 +108,8 @@ The official home page of pgpdump is:
 ## Bugs
 
 * pgpdump assumes that a compressed packet continues until the end of the specified file.
+* pgpdump reads only the first ASCII armored block of a file.
+* pgpdump does not decrypt encrypted packets.
 
 ## Testing
 

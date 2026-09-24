@@ -345,6 +345,11 @@ key_expiration_time4(string str)
 	time4_base(str, &t);
 }
 
+/*
+ * Displays the version of a packet. "old", "new", and "latest" are
+ * the version numbers regarded as old, new, and latest, respectively,
+ * for the packet type. NULL_VER is specified if not applicable.
+ */
 public void
 ver(int old, int new, int latest, int ver)
 {
