@@ -58,6 +58,7 @@ public void Compressed_Data_Packet(int);
 
 public void set_armor(void);
 public void set_binary(void);
+public int next_armor(void);
 
 public int Getc(void);
 public int Getc1(void);

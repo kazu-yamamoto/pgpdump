@@ -1,0 +1,49 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+hello
+-----BEGIN PGP SIGNATURE-----
+Comment: test
+
+zQlzaWcgYmxvY2s=
+=5GWE
+-----END PGP SIGNATURE-----
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+Comment: test
+
+zQZzZWNvbmQ=
+=kV/C
+-----END PGP PUBLIC KEY BLOCK-----
+junk before
+-----BEGIN PGP MESSAGE-----
+Comment: test
+
+zQVmaXJzdA==
+-----END PGP MESSAGE-----
+some text
+more text
+
+-----BEGIN PGP MESSAGE-----
+Comment: test
+
+zQZzZWNvbmQ=
+-----END PGP MESSAGE-----
+trailing
+-----BEGIN PGP MESSAGE-----
+Comment: test
+
+zQNvbmU=
+=xfEg
+-----END PGP MESSAGE-----
+-----BEGIN PGP MESSAGE-----
+Comment: test
+
+zQR0d28y
+=ZlkC
+-----END PGP MESSAGE-----
+-----BEGIN PGP MESSAGE-----
+Comment: test
+
+zQV0aHJlZQ==
+=I316
+-----END PGP MESSAGE-----

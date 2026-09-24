@@ -45,6 +45,8 @@ TESTS = \
 	test/librepgp-v5-seckey.res \
 	test/librepgp-v5-seckey-protected.res \
 	test/librepgp-v5-sig.res \
+	test/multiple-armor-mixed.res \
+	test/multiple-armor.res \
 	test/pub1.res \
 	test/pub.res \
 	test/rfc9580-argon2.res \

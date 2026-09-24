@@ -17,6 +17,8 @@
   signature subpackets 40 (Literal Data Meta Hash) and 41 (Trust Alias).
 * Use the RFC 9580 names EdDSALegacy (pub 22), Ed25519Legacy, and
   Curve25519Legacy.
+* Read all ASCII armored blocks in a file, not only the first one.
+  [#5](https://github.com/kazu-yamamoto/pgpdump/issues/5)
 * Fix parsing of signatures with the ECDH algorithm, which cannot sign;
   the following packets were misparsed.
 * Fix parsing of unencrypted v4 ECDH/ECDSA/EdDSA secret keys.

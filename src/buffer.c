@@ -12,6 +12,7 @@ private int line_not_blank(byte *);
 private int read_binary(byte *, unsigned int);
 private int read_radix64(byte *, unsigned int);
 private int decode_radix64(byte *, unsigned int);
+private int find_armor(int);
 
 #ifdef HAVE_LIBZ
 #include <zlib.h>
@@ -44,6 +45,18 @@ private int (*d_func2)(byte *, unsigned int);
 private int (*d_func3)(byte *, unsigned int);
 
 private byte tmpbuf[BUFSIZ];
+
+/* state of the decoders, reset for each ASCII armor block */
+private int radix64_done = NO, radix64_found = NO;
+private int decode_done = NO;
+private unsigned int decode_avail = 0;
+private byte *decode_q;
+#ifdef HAVE_LIBZ
+private int gzip_done = NO;
+#endif /* HAVE_LIBZ */
+#ifdef HAVE_LIBBZ2
+private int bzip2_done = NO;
+#endif /* HAVE_LIBBZ2 */
 private byte d_buf1[BUFSIZ];
 private byte d_buf2[BUFSIZ];
 private byte d_buf3[BUFSIZ];
@@ -94,37 +107,49 @@ read_binary(byte *p, unsigned int max)
 	return ret;
 }
 
+/*
+ * Finds the next ASCII armor block and skips its header lines.
+ * Returns NO if not found.
+ */
+private int
+find_armor(int fatal)
+{
+ again:
+	do {
+		if (fgets((cast_t)tmpbuf, BUFSIZ, stdin) == NULL) {
+			if (fatal)
+				warn_exit("can't find PGP armor boundary.");
+			return NO;
+		}
+	} while (strncmp("-----BEGIN PGP", (cast_t)tmpbuf, 14) != 0);
+
+	if (strncmp("-----BEGIN PGP SIGNED", (cast_t)tmpbuf, 21) == 0)
+		goto again;
+
+	do {
+		if (fgets((cast_t)tmpbuf, BUFSIZ, stdin) == NULL)
+			warn_exit("can't find PGP armor.");
+	} while (line_not_blank(tmpbuf) == YES);
+	return YES;
+}
+
 private int
 read_radix64(byte *p, unsigned int max)
 {
-	static int done = NO, found = NO;
 	int c, d, out = 0, lf = 0, cr = 0;
 	byte *lim = p + max;
 
-	if (done == YES) return 0;
+	if (radix64_done == YES) return 0;
 
-	if (found == NO) {
-
-	again:
-		do {
-			if (fgets((cast_t)tmpbuf, BUFSIZ, stdin) == NULL)
-				warn_exit("can't find PGP armor boundary.");
-		} while (strncmp("-----BEGIN PGP", (cast_t)tmpbuf, 14) != 0);
-
-		if (strncmp("-----BEGIN PGP SIGNED", (cast_t)tmpbuf, 21) == 0)
-			goto again;
-
-		do {
-			if (fgets((cast_t)tmpbuf, BUFSIZ, stdin) == NULL)
-				warn_exit("can't find PGP armor.");
-		} while (line_not_blank(tmpbuf) == YES);
-		found = YES;
+	if (radix64_found == NO) {
+		find_armor(YES);
+		radix64_found = YES;
 	}
 
 	while (p < lim) {
 		c = getchar();
 		if (c == EOF) {
-			done = YES;
+			radix64_done = YES;
 			return out;
 		}
 		if (c >= 128) {
@@ -153,48 +178,45 @@ read_radix64(byte *p, unsigned int max)
 	}
 	return out;
  skiptail:
-	while (getchar() != EOF);
-	done = YES;
+	/* The end of this block. The rest is skipped by find_armor(). */
+	radix64_done = YES;
 	return out;
 }
 
 private int
 decode_radix64(byte *p, unsigned int max)
 {
-	static int done = NO;
-	static unsigned int avail = 0;
-	static byte *q;
 	unsigned int i, size, out = 0;
 	byte c1, c2, c3, c4, *r, *lim = p + max;
 
-	if (done == YES) return 0;
+	if (decode_done == YES) return 0;
 
 	while (p + 3 < lim) {
-		if (avail < 4) {
-			r = q;
-			q = d_buf1;
-			for (i = 0; i < avail; i++)
-				*q++ = *r++;
-			size = (*d_func1)(q, sizeof(d_buf1) - avail);
-			q = d_buf1;
-			avail += size;
+		if (decode_avail < 4) {
+			r = decode_q;
+			decode_q = d_buf1;
+			for (i = 0; i < decode_avail; i++)
+				*decode_q++ = *r++;
+			size = (*d_func1)(decode_q, sizeof(d_buf1) - decode_avail);
+			decode_q = d_buf1;
+			decode_avail += size;
 			if (size == 0) {
-				done = YES;
-				switch (avail) {
+				decode_done = YES;
+				switch (decode_avail) {
 				case 0:
 					return out;
 				case 1:
 					warning("illegal radix64 length.");
 					return out; /* anyway */
 				case 2:
-					c1 = *q++;
-					c2 = *q++;
+					c1 = *decode_q++;
+					c2 = *decode_q++;
 					*p++ = (c1 << 2) | ((c2 & 0x30) >> 4);
 					return out + 1;
 				case 3:
-					c1 = *q++;
-					c2 = *q++;
-					c3 = *q++;
+					c1 = *decode_q++;
+					c2 = *decode_q++;
+					c3 = *decode_q++;
 					*p++ = (c1 << 2) | ((c2 & 0x30) >> 4);
 					*p++ = ((c2 & 0x0f) << 4) |
 						((c3 & 0x3c) >> 2);
@@ -203,15 +225,15 @@ decode_radix64(byte *p, unsigned int max)
 			}
 		}
 
-		if (avail >= 4) {
-			c1 = *q++;
-			c2 = *q++;
-			c3 = *q++;
-			c4 = *q++;
+		if (decode_avail >= 4) {
+			c1 = *decode_q++;
+			c2 = *decode_q++;
+			c3 = *decode_q++;
+			c4 = *decode_q++;
 			*p++ = (c1 << 2) | ((c2 & 0x30) >> 4);
 			*p++ = ((c2 & 0x0f) << 4) | ((c3 & 0x3c) >> 2);
 			*p++ = ((c3 & 0x03) << 6) | c4;
-			avail -= 4;
+			decode_avail -= 4;
 			out += 3;
 		}
 	}
@@ -222,10 +244,9 @@ decode_radix64(byte *p, unsigned int max)
 private int
 inflate_gzip(byte *p, unsigned int max)
 {
-	static int done = NO;
 	int err, size, inflated = 0, old;
 
-	if (done == YES) return 0;
+	if (gzip_done == YES) return 0;
 
 	z.next_out = p;
 	z.avail_out = max;
@@ -249,7 +270,7 @@ inflate_gzip(byte *p, unsigned int max)
 			break;
 
 		if (err == Z_STREAM_END) {
-			done = YES;
+			gzip_done = YES;
 			/* 8 bytes (crc and isize) are left. */
 			if (inflateEnd(&z) != Z_OK)
 				warn_exit("zlib inflateEnd error.");
@@ -265,10 +286,9 @@ inflate_gzip(byte *p, unsigned int max)
 private int
 inflate_bzip2(byte *p, unsigned int max)
 {
-	static int done = NO;
 	int err, size, inflated = 0, old;
 
-	if (done == YES) return 0;
+	if (bzip2_done == YES) return 0;
 
 	bz.next_out = (cast_t)p;
 	bz.avail_out = max;
@@ -294,7 +314,7 @@ inflate_bzip2(byte *p, unsigned int max)
 			break;
 
 		if (err == BZ_STREAM_END) {
-			done = YES;
+			bzip2_done = YES;
 			/* 8 bytes (crc and isize) are left. */
 			if (BZ2_bzDecompressEnd(&bz) != BZ_OK)
 				warn_exit("bzip2 BZ2_bzDecompressEnd error.");
@@ -352,6 +372,33 @@ set_armor(void)
 	d_func1 = read_radix64;
 	d_func2 = NULL;
 	d_func3 = decode_radix64;
+}
+
+/*
+ * Prepares to read the next ASCII armor block after the current one
+ * has been read. Returns NO for binary input or if there is no more
+ * block.
+ */
+public int
+next_armor(void)
+{
+	if (d_func1 == NULL)
+		return NO;
+	if (find_armor(NO) == NO)
+		return NO;
+	radix64_done = NO;
+	radix64_found = YES;
+	decode_done = NO;
+	decode_avail = 0;
+#ifdef HAVE_LIBZ
+	gzip_done = NO;
+#endif /* HAVE_LIBZ */
+#ifdef HAVE_LIBBZ2
+	bzip2_done = NO;
+#endif /* HAVE_LIBBZ2 */
+	AVAIL_COUNT = 0;
+	set_armor();
+	return YES;
 }
 
 public void
