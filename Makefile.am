@@ -38,6 +38,17 @@ TESTS = \
 	test/gpg3.res \
 	test/pub1.res \
 	test/pub.res \
+	test/rfc9580-argon2.res \
+	test/rfc9580-eax.res \
+	test/rfc9580-gcm.res \
+	test/rfc9580-ocb.res \
+	test/rfc9580-v4-ed25519legacy-key.res \
+	test/rfc9580-v6-cert.res \
+	test/rfc9580-v6-inline-signed.res \
+	test/rfc9580-v6-locked-seckey.res \
+	test/rfc9580-v6-rsa-cert-padding.res \
+	test/rfc9580-v6-seckey.res \
+	test/rfc9580-x25519-ocb.res \
 	test/sig1.res \
 	test/sig2.res \
 	test/sig3.res \

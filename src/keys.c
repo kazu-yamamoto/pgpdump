@@ -9,6 +9,9 @@ private int VERSION;
 
 private void old_Public_Key_Packet(void);
 private void new_Public_Key_Packet(int);
+private void elliptic_curve(void);
+private void public_key_material(int);
+private void secret_key_material(int);
 private void IV(unsigned int);
 private void plain_Secret_Key(int);
 private void encrypted_Secret_Key(int, int);
@@ -32,6 +35,10 @@ Public_Key_Packet(int len)
 		break;
 	case 4:
 		printf("new\n");
+		new_Public_Key_Packet(len - 1);
+		break;
+	case 6:
+		printf("latest\n");
 		new_Public_Key_Packet(len - 1);
 		break;
 	default:
@@ -73,9 +80,6 @@ private unsigned char X448_OID[10]={0x2B,0x65,0x6F,0,0,0,0,0,0,0};
 
 private unsigned char oid_input_HEX[10]={0,0,0,0,0,0,0,0,0,0};
 #define oid_input_HEX_size sizeof(oid_input_HEX)
-private size_t oidLEN;
-private int FoundECC=NO;
-private int jj;
 
 private struct {
   const unsigned char *oidhex;
@@ -97,13 +101,57 @@ private struct {
 
 /* end 2021-11-11 */
 
+private void
+elliptic_curve(void)
+{
+	int i, oidlen;
+
+	oidlen = Getc();
+	memset(oid_input_HEX, 0, oid_input_HEX_size);
+	for (i = 0; i < oidlen; i++) {
+		if (i < oid_input_HEX_size)
+			oid_input_HEX[i] = Getc();
+		else
+			Getc();
+	}
+	if (oidlen <= oid_input_HEX_size) {
+		for (i = 0; i < ELLIP_CURVES_NUM; i++) {
+			if (memcmp(ELLIP_CURVES[i].oidhex, oid_input_HEX, oid_input_HEX_size) == 0) {
+				printf("\tElliptic Curve - ");
+				printf("%s (%s)\n", ELLIP_CURVES[i].name, ELLIP_CURVES[i].oidstring);
+				return;
+			}
+		}
+	}
+	printf("\tunknown(elliptic curve - ");
+	for (i = 0; i < oidlen && i < oid_input_HEX_size; i++) {
+		printf("%02hhu,%02x ", oid_input_HEX[i], oid_input_HEX[i]);
+	}
+	puts(")");
+}
 
 private void
 new_Public_Key_Packet(int len)
 {
+	int mlen;
+
 	key_creation_time4("Public key creation time");
 	PUBLIC = Getc();
 	pub_algs(PUBLIC);
+	if (VERSION == 6) {
+		/* 4-octet scalar octet count for the public key material */
+		mlen = Getc() << 24;
+		mlen |= Getc() << 16;
+		mlen |= Getc() << 8;
+		mlen |= Getc();
+	} else
+		mlen = len - 5;
+	public_key_material(mlen);
+}
+
+private void
+public_key_material(int len)
+{
 	switch (PUBLIC) {
 	case 1:
 	case 2:
@@ -124,26 +172,7 @@ new_Public_Key_Packet(int len)
 		multi_precision_integer("DSA y");
 		break;
 	case 18:/*ECDH*/
-		oidLEN = Getc();
-		memset(oid_input_HEX,0,oid_input_HEX_size);
-		for(jj=0;jj<oidLEN;jj++){oid_input_HEX[jj]=Getc();}
-	        for(jj=0;jj<ELLIP_CURVES_NUM;jj++){
-		  if(memcmp(ELLIP_CURVES[jj].oidhex,oid_input_HEX,oid_input_HEX_size) == 0){
-	            FoundECC=YES;
-	            break;
-	          }
-	        }
-	        if(FoundECC){
-	          printf("\tElliptic Curve - ");
-	          printf("%s (%s)\n",ELLIP_CURVES[jj].name,ELLIP_CURVES[jj].oidstring);
-	        }
-	        else{
-	          printf("\tunknown(elliptic curve - ");
-	          for(jj=0;jj<oidLEN;jj++){
-	            printf("%02hhu,%02x ",oid_input_HEX[jj],oid_input_HEX[jj]);
-	          }
-	          puts(")");
-	        }
+		elliptic_curve();
 		multi_precision_integer("ECDH Q");
 /* note - what follows is most of what the "draft-ietf-openpgp-crypto-refresh-04"
  * specifies for "13.5 EC DH Algorithm (ECDH)" minus the following:
@@ -166,54 +195,28 @@ new_Public_Key_Packet(int len)
 		sym_algs(KDFsymAlgoID);
 		break;
 	case 19:/*ECDSA*/
-		oidLEN = Getc();
-		memset(oid_input_HEX,0,oid_input_HEX_size);
-		for(jj=0;jj<oidLEN;jj++){oid_input_HEX[jj]=Getc();}
-	        for(jj=0;jj<ELLIP_CURVES_NUM;jj++){
-		  if(memcmp(ELLIP_CURVES[jj].oidhex,oid_input_HEX,oid_input_HEX_size) == 0){
-	            FoundECC=YES;
-	            break;
-	          }
-                }
-	        if(FoundECC){
-	          printf("\tElliptic Curve - ");
-	          printf("%s (%s)\n",ELLIP_CURVES[jj].name,ELLIP_CURVES[jj].oidstring);
-	        }
-	        else{
-	          printf("\tunknown(elliptic curve - ");
-	          for(jj=0;jj<oidLEN;jj++){
-	            printf("%02hhu,%02x ",oid_input_HEX[jj],oid_input_HEX[jj]);
-	          }
-	          puts(")");
-	        }
+		elliptic_curve();
 		multi_precision_integer("ECDSA Q");
 		break;
         case 22:/*EdDSA*/
-		oidLEN = Getc();
-		memset(oid_input_HEX,0,oid_input_HEX_size);
-		for(jj=0;jj<oidLEN;jj++){oid_input_HEX[jj]=Getc();}
-	        for(jj=0;jj<ELLIP_CURVES_NUM;jj++){
-		  if(memcmp(ELLIP_CURVES[jj].oidhex,oid_input_HEX,oid_input_HEX_size) == 0){
-	            FoundECC=YES;
-	            break;
-	          }
-                }
-	        if(FoundECC){
-	          printf("\tElliptic Curve - ");
-	          printf("%s (%s)\n",ELLIP_CURVES[jj].name,ELLIP_CURVES[jj].oidstring);
-	        }
-	        else{
-	          printf("\tunknown(elliptic curve - ");
-	          for(jj=0;jj<oidLEN;jj++){
-	            printf("%02hhu,%02x ",oid_input_HEX[jj],oid_input_HEX[jj]);
-	          }
-	          puts(")");
-	        }
+		elliptic_curve();
 		multi_precision_integer("EdDSA Q");
                 break;
+	case 25:
+		fixed_length_octets("X25519 public key", 32);
+		break;
+	case 26:
+		fixed_length_octets("X448 public key", 56);
+		break;
+	case 27:
+		fixed_length_octets("Ed25519 public key", 32);
+		break;
+	case 28:
+		fixed_length_octets("Ed448 public key", 57);
+		break;
 	default:
 		printf("\tUnknown public key(pub %d)\n", PUBLIC);
-		skip(len - 5);
+		skip(len);
 		break;
 	}
 }
@@ -235,42 +238,94 @@ Secret_Subkey_Packet(int len)
 public void
 Secret_Key_Packet(int len)
 {
-	int s2k, sym;
+	int s2k, sym, aead;
 
 	Getc_resetlen();
 	Public_Key_Packet(len);
 	s2k = Getc();
+	if (VERSION == 6 && s2k != 0)
+		Getc(); /* count of the following optional fields */
 	switch (s2k) {
 	case 0:
 		plain_Secret_Key(len - Getc_getlen());
 		break;
-	case 254:
+	case 253:
 		sym = Getc();
 		sym_algs(sym);
+		aead = Getc();
+		aead_algs(aead);
+		if (VERSION == 6)
+			Getc(); /* count of the S2K specifier */
 		if (string_to_key() == YES)
-			IV(iv_len(sym));
-		encrypted_Secret_Key(len - Getc_getlen(), YES);
+			IV(aead_iv_len(aead));
+		encrypted_Secret_Key(len - Getc_getlen(), s2k);
 		break;
+	case 254:
 	case 255:
 		sym = Getc();
 		sym_algs(sym);
+		if (VERSION == 6)
+			Getc(); /* count of the S2K specifier */
 		if (string_to_key() == YES)
 			IV(iv_len(sym));
-		encrypted_Secret_Key(len - Getc_getlen(), NO);
+		encrypted_Secret_Key(len - Getc_getlen(), s2k);
 		break;
 	default:
 		sym = s2k;
 		sym_algs(sym);
 		printf("\tSimple string-to-key for IDEA\n");
 		IV(iv_len(sym));
-		encrypted_Secret_Key(len - Getc_getlen(), NO);
+		encrypted_Secret_Key(len - Getc_getlen(), s2k);
 		break;
 	}
 }
 
-/*
- * 2021-11-29: added cases 18,19,22 (copied from Public key)
- */
+private void
+secret_key_material(int len)
+{
+	switch (PUBLIC) {
+	case 1:
+	case 2:
+	case 3:
+		multi_precision_integer("RSA d");
+		multi_precision_integer("RSA p");
+		multi_precision_integer("RSA q");
+		multi_precision_integer("RSA u");
+		break;
+	case 16:
+	case 20:
+		multi_precision_integer("ElGamal x");
+		break;
+	case 17:
+		multi_precision_integer("DSA x");
+		break;
+	case 18:
+		multi_precision_integer("ECDH x");
+		break;
+	case 19:
+		multi_precision_integer("ECDSA x");
+		break;
+	case 22:
+		multi_precision_integer("EdDSA x");
+		break;
+	case 25:
+		fixed_length_octets("X25519 secret key", 32);
+		break;
+	case 26:
+		fixed_length_octets("X448 secret key", 56);
+		break;
+	case 27:
+		fixed_length_octets("Ed25519 secret key", 32);
+		break;
+	case 28:
+		fixed_length_octets("Ed448 secret key", 57);
+		break;
+	default:
+		printf("\tUnknown secret key(pub %d)\n", PUBLIC);
+		skip(len);
+		break;
+	}
+}
 
 private void
 plain_Secret_Key(int len)
@@ -289,119 +344,14 @@ plain_Secret_Key(int len)
 		printf("\n");
 		break;
 	case 4:
-		switch (PUBLIC) {
-		case 1:
-		case 2:
-		case 3:
-			multi_precision_integer("RSA d");
-			multi_precision_integer("RSA p");
-			multi_precision_integer("RSA q");
-			multi_precision_integer("RSA u");
-			break;
-		case 16:
-		case 20:
-			multi_precision_integer("ElGamal x");
-			break;
-		case 17:
-			multi_precision_integer("DSA x");
-			break;
-	case 18:/*ECDH*/
-		oidLEN = Getc();
-		memset(oid_input_HEX,0,oid_input_HEX_size);
-		for(jj=0;jj<oidLEN;jj++){oid_input_HEX[jj]=Getc();}
-	        for(jj=0;jj<ELLIP_CURVES_NUM;jj++){
-		  if(memcmp(ELLIP_CURVES[jj].oidhex,oid_input_HEX,oid_input_HEX_size) == 0){
-	            FoundECC=YES;
-	            break;
-	          }
-	        }
-	        if(FoundECC){
-	          printf("\tElliptic Curve - ");
-	          printf("%s (%s)\n",ELLIP_CURVES[jj].name,ELLIP_CURVES[jj].oidstring);
-	        }
-	        else{
-	          printf("\tunknown(elliptic curve - ");
-	          for(jj=0;jj<oidLEN;jj++){
-	            printf("%02hhu,%02x ",oid_input_HEX[jj],oid_input_HEX[jj]);
-	          }
-	          puts(")");
-	        }
-		multi_precision_integer("ECDH Q");
-/* note - what follows is most of what the "draft-ietf-openpgp-crypto-refresh-04"
- * specifies for "13.5 EC DH Algorithm (ECDH)" minus the following:
- * a) 'one-octet public key algorithm ID defined in Section 9.1'
- * b) '20 octets representing the UTF-8 encoding of the string "Anonymous Sender"'
- * c) '20 octets representing a recipient encryption subkey or a primary key fingerprint'
- * The end result is consonant with GnuPG-2.3.3 "list-packets" output in fields/bytes,
- * though gpg-2.3.3 displays "pkey[2]" [32 bits]" where the supposed KDF parameters exist.
- */
-		unsigned int KDFparmsSize,KDFbits,KDFhashID,KDFsymAlgoID;
-		KDFparmsSize=Getc();/*don't display*/
-                KDFbits=(KDFparmsSize + 1)*8;
-                Getc();/*bypass supposed KDF constant */
-		KDFhashID=Getc();
-		KDFsymAlgoID=Getc();
-		printf("\tECDH KDF params(%d bits) - ...\n",KDFbits);
-                printf("\t\t%s ","KDFhashID: ");
-		hash_algs(KDFhashID);
-                printf("\t\t%s ","KDFsymAlgoID: ");
-		sym_algs(KDFsymAlgoID);
-		break;
-	case 19:/*ECDSA*/
-		oidLEN = Getc();
-		memset(oid_input_HEX,0,oid_input_HEX_size);
-		for(jj=0;jj<oidLEN;jj++){oid_input_HEX[jj]=Getc();}
-	        for(jj=0;jj<ELLIP_CURVES_NUM;jj++){
-		  if(memcmp(ELLIP_CURVES[jj].oidhex,oid_input_HEX,oid_input_HEX_size) == 0){
-	            FoundECC=YES;
-	            break;
-	          }
-                }
-	        if(FoundECC){
-	          printf("\tElliptic Curve - ");
-	          printf("%s (%s)\n",ELLIP_CURVES[jj].name,ELLIP_CURVES[jj].oidstring);
-	        }
-	        else{
-	          printf("\tunknown(elliptic curve - ");
-	          for(jj=0;jj<oidLEN;jj++){
-	            printf("%02hhu,%02x ",oid_input_HEX[jj],oid_input_HEX[jj]);
-	          }
-	          puts(")");
-	        }
-		multi_precision_integer("ECDSA Q");
-		break;
-        case 22:/*EdDSA*/
-		oidLEN = Getc();
-		memset(oid_input_HEX,0,oid_input_HEX_size);
-		for(jj=0;jj<oidLEN;jj++){oid_input_HEX[jj]=Getc();}
-	        for(jj=0;jj<ELLIP_CURVES_NUM;jj++){
-		  if(memcmp(ELLIP_CURVES[jj].oidhex,oid_input_HEX,oid_input_HEX_size) == 0){
-	            FoundECC=YES;
-	            break;
-	          }
-                }
-	        if(FoundECC){
-	          printf("\tElliptic Curve - ");
-	          printf("%s (%s)\n",ELLIP_CURVES[jj].name,ELLIP_CURVES[jj].oidstring);
-	        }
-	        else{
-	          printf("\tunknown(elliptic curve - ");
-	          for(jj=0;jj<oidLEN;jj++){
-	            printf("%02hhu,%02x ",oid_input_HEX[jj],oid_input_HEX[jj]);
-	          }
-	          puts(")");
-	        }
-		multi_precision_integer("EdDSA Q");
-                break;
-
-		default:
-			printf("\tUnknown secret key(pub %d)\n", PUBLIC);
-			skip(len - 2);
-			break;
-		}
+		secret_key_material(len - 2);
 		printf("\tChecksum - ");
 		dump(2);
 		printf("\n");
+		break;
+	case 6:
+		/* v6 keys have no checksum */
+		secret_key_material(len);
 		break;
 	default:
 		printf("\tunknown version (%d)\n", VERSION);
@@ -414,7 +364,7 @@ plain_Secret_Key(int len)
  * 2021-11-29: Added cases 18,19,20
  */
 private void
-encrypted_Secret_Key(int len, int sha1)
+encrypted_Secret_Key(int len, int s2k)
 {
 	if (len == 0)
 		return;
@@ -433,6 +383,7 @@ encrypted_Secret_Key(int len, int sha1)
 		printf("\n");
 		break;
 	case 4:
+	case 6:
 		switch (PUBLIC) {
 		case 1:
 		case 2:
@@ -458,11 +409,25 @@ encrypted_Secret_Key(int len, int sha1)
                 case 22:
                         printf("\tEncrypted EdDSA x\n");
                         break;
+		case 25:
+			printf("\tEncrypted X25519 secret key\n");
+			break;
+		case 26:
+			printf("\tEncrypted X448 secret key\n");
+			break;
+		case 27:
+			printf("\tEncrypted Ed25519 secret key\n");
+			break;
+		case 28:
+			printf("\tEncrypted Ed448 secret key\n");
+			break;
 		default:
 			printf("\tUnknown encrypted key(pub %d)\n", PUBLIC);
 			break;
 		}
-		if (sha1 == YES)
+		if (s2k == 253)
+			printf("\tAEAD authentication tag\n");
+		else if (s2k == 254)
 			printf("\tEncrypted SHA1 hash\n");
 		else
 			printf("\tEncrypted checksum\n");

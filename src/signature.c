@@ -7,7 +7,8 @@
 private void hash2(void);
 private void signature_multi_precision_integer(int, int);
 private void signature_type(int);
-private void new_Signature_Packet(int);
+private void new_Signature_Packet(int, int);
+private int salt(void);
 private void old_Signature_Packet(int);
 
 private void
@@ -17,6 +18,17 @@ hash2(void)
 	dump(2);
 	printf("\n");
 }
+
+private int
+salt(void)
+{
+	int len = Getc();
+	printf("\tSalt - ");
+	dump(len);
+	printf("\n");
+	return len + 1;
+}
+
 /*
  * (2021-11-25) Added code for signatures #18, #19, and #22
  * Reference: https://www.ietf.org/archive/id/draft-ietf-openpgp-crypto-refresh-04.html
@@ -52,6 +64,12 @@ signature_multi_precision_integer(int pub, int len)
 		multi_precision_integer("EdDSA R");
 		multi_precision_integer("EdDSA s");
                 break;
+	case 27:
+		fixed_length_octets("Ed25519 signature", 64);
+		break;
+	case 28:
+		fixed_length_octets("Ed448 signature", 114);
+		break;
 	default:
 		printf("\tUnknown signature(pub %d)\n", pub);
 		skip(len);
@@ -119,11 +137,16 @@ signature_type(int type)
 public void
 One_Pass_Signature_Packet(int len)
 {
-	ver(NULL_VER, 3, Getc());
+	int v = Getc();
+	ver(NULL_VER, 3, 6, v);
 	signature_type(Getc());
 	hash_algs(Getc());
 	pub_algs(Getc());
-	key_id();
+	if (v == 6) {
+		salt();
+		fingerprint(32);
+	} else
+		key_id();
 	printf("\tNext packet - ");
 	if (Getc() == 0)
 		printf("another one pass signature");
@@ -147,7 +170,11 @@ Signature_Packet(int len)
 		break;
 	case 4:
 		printf("new\n");
-		new_Signature_Packet(len - 1);
+		new_Signature_Packet(len - 1, ver);
+		break;
+	case 6:
+		printf("latest\n");
+		new_Signature_Packet(len - 1, ver);
 		break;
 	default:
 		printf("unknown\n");
@@ -175,22 +202,28 @@ old_Signature_Packet(int len)
 }
 
 private void
-new_Signature_Packet(int len)
+new_Signature_Packet(int len, int ver)
 {
-	int pub, hsplen, usplen;
+	int pub, hsplen, usplen, i, lim, saltlen = 0;
 
+	/* the length of subpacket counts is 2 for v4 and 4 for v6 */
+	lim = ver == 6 ? 4 : 2;
 	signature_type(Getc());
 	pub = Getc();
 	pub_algs(pub);
 	hash_algs(Getc());
-	hsplen = Getc() * 256;
-	hsplen += Getc();
+	hsplen = 0;
+	for (i = 0; i < lim; i++)
+		hsplen = hsplen * 256 + Getc();
 	parse_signature_subpacket("Hashed Sub", hsplen);
-	usplen = Getc() * 256;
-	usplen += Getc();
+	usplen = 0;
+	for (i = 0; i < lim; i++)
+		usplen = usplen * 256 + Getc();
 	parse_signature_subpacket("Sub", usplen);
 	hash2();
-	signature_multi_precision_integer(pub, len - 9 - hsplen - usplen);
+	if (ver == 6)
+		saltlen = salt();
+	signature_multi_precision_integer(pub, len - 5 - 2 * lim - hsplen - usplen - saltlen);
 }
 
 

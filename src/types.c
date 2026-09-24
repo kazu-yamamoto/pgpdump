@@ -57,6 +57,10 @@ PUB_ALGS[] = {
 	"EdDSA Edwards-curve Digital Signature Algorithm(pub 22)",
 	"Reserved - AEDH",
 	"Reserved - AEDSA",
+	"X25519(pub 25)",
+	"X448(pub 26)",
+	"Ed25519(pub 27)",
+	"Ed448(pub 28)",
 };
 #define PUB_ALGS_NUM (sizeof(PUB_ALGS) / sizeof(string))
 
@@ -164,6 +168,7 @@ AEAD_ALGS[] = {
 	"unknown(aead 0)",
 	"EAX(aead 1)",
 	"OCB(aead 2)",
+	"GCM(aead 3)",
 };
 #define AEAD_ALGS_NUM (sizeof(AEAD_ALGS) / sizeof(string))
 
@@ -171,11 +176,34 @@ public void
 aead_algs(unsigned int type)
 {
 	printf("\tAEAD alg - ");
+	aead_algs2(type);
+	printf("\n");
+}
+
+public void
+aead_algs2(unsigned int type)
+{
 	if (type < AEAD_ALGS_NUM)
 		printf("%s", AEAD_ALGS[type]);
 	else
 		printf("unknown(aead %d)", type);
-	printf("\n");
+}
+
+private int
+AEAD_IV_LEN[] = {
+	0,	/* unknown */
+	16,	/* EAX */
+	15,	/* OCB */
+	12,	/* GCM */
+};
+
+public int
+aead_iv_len(unsigned int type)
+{
+	if (type < AEAD_ALGS_NUM)
+		return AEAD_IV_LEN[type];
+	else
+		return 0;
 }
 
 private string
@@ -218,10 +246,10 @@ key_id(void)
 }
 
 public void
-fingerprint(void)
+fingerprint(int len)
 {
 	printf("\tFingerprint - ");
-	dump(20);
+	dump(len);
 	printf("\n");
 }
 
@@ -318,10 +346,12 @@ key_expiration_time4(string str)
 }
 
 public void
-ver(int old, int new, int ver)
+ver(int old, int new, int latest, int ver)
 {
 	printf("\t");
-	if (new != NULL_VER && new == ver)
+	if (latest != NULL_VER && latest == ver)
+		printf("Latest");
+	else if (new != NULL_VER && new == ver)
 		printf("New");
 	else if (old != NULL_VER && old == ver)
 		printf("Old");
@@ -337,7 +367,24 @@ string_to_key(void)
 {
 	int has_iv = YES;
 	int type = Getc();
-	int hash = Getc();
+	int hash;
+
+	if (type == 4) {
+		int t, p, m;
+		printf("\tArgon2 string-to-key(s2k %d):\n", type);
+		printf("\t\tSalt - ");
+		dump(16);
+		printf("\n");
+		t = Getc();
+		p = Getc();
+		m = Getc();
+		printf("\t\tPasses - %d\n", t);
+		printf("\t\tParallelism - %d\n", p);
+		printf("\t\tMemory - 2^%d KiB\n", m);
+		return has_iv;
+	}
+
+	hash = Getc();
 
 	switch (type) {
 	case 0:
@@ -411,6 +458,19 @@ multi_precision_integer(string str)
         bytes = (bits + 7) / 8;
 
 	printf("\t%s(%d bits) - ", str, bits);
+	if (iflag) {
+		dump(bytes);
+	} else {
+		printf("...");
+		skip(bytes);
+	}
+	printf("\n");
+}
+
+public void
+fixed_length_octets(string str, int bytes)
+{
+	printf("\t%s(%d bytes) - ", str, bytes);
 	if (iflag) {
 		dump(bytes);
 	} else {

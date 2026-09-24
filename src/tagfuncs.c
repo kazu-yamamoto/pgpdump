@@ -37,12 +37,35 @@ Reserved(int len)
 	skip(len);
 }
 
+private void
+wrapped_session_key(string str, int v)
+{
+	int len = Getc();
+	if (v == 3) {
+		/* the symmetric algorithm is not encrypted in v3 */
+		sym_algs(Getc());
+		len--;
+	}
+	fixed_length_octets(str, len);
+}
+
 public void
 Public_Key_Encrypted_Session_Key_Packet(int len)
 {
-	int pub;
-	ver(2, 3, Getc());
-	key_id();
+	int pub, v, n;
+	Getc_resetlen();
+	v = Getc();
+	ver(2, 3, 6, v);
+	if (v == 6) {
+		n = Getc();
+		if (n == 0)
+			printf("\tAnonymous recipient\n");
+		else {
+			printf("\tKey version - %d\n", Getc());
+			fingerprint(n - 1);
+		}
+	} else
+		key_id();
 	pub = Getc();
 	pub_algs(pub);
 	switch (pub) {
@@ -60,26 +83,75 @@ Public_Key_Encrypted_Session_Key_Packet(int len)
 		multi_precision_integer("DSA ?");
 		multi_precision_integer("DSA ?");
 		break;
+	case 18:
+		multi_precision_integer("ECDH ephemeral public key");
+		fixed_length_octets("ECDH wrapped session key", Getc());
+		break;
+	case 25:
+		fixed_length_octets("X25519 ephemeral public key", 32);
+		wrapped_session_key("X25519 wrapped session key", v);
+		break;
+	case 26:
+		fixed_length_octets("X448 ephemeral public key", 56);
+		wrapped_session_key("X448 wrapped session key", v);
+		break;
 	default:
 		printf("\t\tunknown(pub %d)\n", pub);
-		skip(len - 10);
+		skip(len - Getc_getlen());
 	}
-	printf("\t\t-> m = sym alg(1 byte) + checksum(2 bytes) + PKCS-1 block type 02\n");
+	switch (pub) {
+	case 18:
+	case 25:
+	case 26:
+		break;
+	default:
+		if (v == 6)
+			printf("\t\t-> m = session key + checksum(2 bytes) + PKCS-1 block type 02\n");
+		else
+			printf("\t\t-> m = sym alg(1 byte) + checksum(2 bytes) + PKCS-1 block type 02\n");
+		break;
+	}
 	set_sym_alg_mode(SYM_ALG_MODE_PUB_ENC);
 }
 
 public void
 Symmetric_Key_Encrypted_Session_Key_Packet(int len)
 {
-	int left = len, alg;
-	ver(NULL_VER, 4, Getc());
+	int left = len, v, alg, aead = 0, ivlen;
+	v = Getc();
+	ver(NULL_VER, 4, 6, v);
+	left--;
+	if (v == 6) {
+		Getc(); /* count of the following fields */
+		left--;
+	}
 	alg = Getc();
 	sym_algs(alg);
-	left -= 2;
+	left--;
+	if (v == 6) {
+		aead = Getc();
+		aead_algs(aead);
+		Getc(); /* count of the S2K specifier */
+		left -= 2;
+	}
 	Getc_resetlen();
 	string_to_key();
 	left -= Getc_getlen();
-	if (left != 0) {
+	if (v == 6) {
+		ivlen = aead_iv_len(aead);
+		printf("\tIV - ");
+		dump(ivlen);
+		printf("\n");
+		left -= ivlen;
+		if (left > 16) {
+			printf("\tEncrypted session key\n");
+			skip(left - 16);
+			left = 16;
+		}
+		printf("\tAuthentication tag - ");
+		dump(left);
+		printf("\n");
+	} else if (left != 0) {
 		printf("\tEncrypted session key\n");
 		printf("\t\t-> sym alg(1 bytes) + session key\n");
 		skip(left);
@@ -187,7 +259,23 @@ public void
 Symmetrically_Encrypted_and_MDC_Packet(int len)
 {
 	int mode = get_sym_alg_mode();
-	printf("\tVer %d\n", Getc());
+	int v = Getc();
+	printf("\tVer %d\n", v);
+	if (v == 2) {
+		int c;
+		sym_algs(Getc());
+		aead_algs(Getc());
+		c = Getc();
+		printf("\tChunk size - %d(coded %d)\n", 1 << (c + 6), c);
+		printf("\tSalt - ");
+		dump(32);
+		printf("\n");
+		printf("\tEncrypted data\n");
+		printf("\t\t(plain text chunks + AEAD tags)\n");
+		skip(len - 36);
+		reset_sym_alg_mode();
+		return;
+	}
 	switch (mode) {
 	case SYM_ALG_MODE_SYM_ENC:
 		printf("\tEncrypted data [sym alg is specified in sym-key encrypted session key]\n");
@@ -207,6 +295,13 @@ public void
 Modification_Detection_Code_Packet(int len)
 {
 	printf("\tMDC - SHA1(20 bytes)\n");
+	skip(len);
+}
+
+public void
+Padding_Packet(int len)
+{
+	printf("\tPadding - ...\n");
 	skip(len);
 }
 
