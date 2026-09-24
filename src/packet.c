@@ -195,11 +195,11 @@ SIGSUB[] = {
         "signature target(sub 31)",
 	"embedded signature(sub 32)",
 	"issuer fingerprint(sub 33)",
-        "preferred_aead_algorithms(sub 34)",
+	"preferred encryption modes(sub 34)",
 	"intended recipient fingerprint(sub 35)",
 	"reserved(sub 36)",
-	"reserved(sub 37)",
-	"reserved(sub 38)",
+	"attested certifications(sub 37)",
+	"key block(sub 38)",
 	"preferred AEAD ciphersuites(sub 39)",
 };
 #define SIGSUB_NUM (sizeof(SIGSUB) / sizeof(string))

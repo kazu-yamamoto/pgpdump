@@ -324,9 +324,9 @@ features(int len)
         if (c & 0x01)
                 printf("\t\tFlag - Modification detection (packets 18 and 19)\n");
         if (c & 0x02)
-                printf("\t\tFlag - Reserved (AEAD Encrypted Data)\n");
+                printf("\t\tFlag - OCB Encrypted Data (packet 20) and version 5 Symmetric-Key Encrypted Session Key (packet 3) [LibrePGP]\n");
         if (c & 0x04)
-                printf("\t\tFlag - Reserved (v5 keys)\n");
+                printf("\t\tFlag - Version 5 keys and fingerprints [LibrePGP]\n");
         if (c & 0x08)
                 printf("\t\tFlag - Version 2 Symmetrically Encrypted and Integrity Protected Data packet\n");
         if (c & ~0x0f)

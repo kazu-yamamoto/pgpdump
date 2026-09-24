@@ -27,7 +27,7 @@ Old: Signature Packet(tag 2)(367 bytes)
 		Sym alg - AES with 192-bit key(sym 8)
 		Sym alg - AES with 128-bit key(sym 7)
 		Sym alg - Triple-DES(sym 2)
-	Hashed Sub: preferred_aead_algorithms(sub 34)(1 bytes)
+	Hashed Sub: preferred encryption modes(sub 34)(1 bytes)
 		AEAD alg - OCB(aead 2)
 	Hashed Sub: preferred hash algorithms(sub 21)(5 bytes)
 		Hash alg - SHA512(hash 10)
@@ -41,8 +41,8 @@ Old: Signature Packet(tag 2)(367 bytes)
 		Comp alg - ZIP <RFC1951>(comp 1)
 	Hashed Sub: features(sub 30)(1 bytes)
 		Flag - Modification detection (packets 18 and 19)
-		Flag - Reserved (AEAD Encrypted Data)
-		Flag - Reserved (v5 keys)
+		Flag - OCB Encrypted Data (packet 20) and version 5 Symmetric-Key Encrypted Session Key (packet 3) [LibrePGP]
+		Flag - Version 5 keys and fingerprints [LibrePGP]
 	Hashed Sub: key server preferences(sub 23)(1 bytes)
 		Flag - No-modify
 	Hash left 2 bytes - 22 2d 
