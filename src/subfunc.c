@@ -405,6 +405,30 @@ preferred_aead_ciphersuites(int len)
 	skip(len - i);
 }
 
+/* LibrePGP */
+public void
+literal_data_meta_hash(int len)
+{
+	int c = Getc();
+	if (c != 0 || len != 33) {
+		printf("\t\tUnknown format(%02x, %d bytes)\n", c, len);
+		skip(len - 1);
+		return;
+	}
+	printf("\t\tSHA256 hash of literal data meta data - ");
+	dump(32);
+	printf("\n");
+}
+
+/* LibrePGP */
+public void
+trust_alias(int len)
+{
+	printf("\t\tAlias - ");
+	pdump(len);
+	printf("\n");
+}
+
 /*
  * Copyright (C) 1998 Kazuhiko Yamamoto
  * All rights reserved.

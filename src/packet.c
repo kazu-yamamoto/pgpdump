@@ -201,6 +201,8 @@ SIGSUB[] = {
 	"attested certifications(sub 37)",
 	"key block(sub 38)",
 	"preferred AEAD ciphersuites(sub 39)",
+	"literal data meta hash(sub 40)",
+	"trust alias(sub 41)",
 };
 #define SIGSUB_NUM (sizeof(SIGSUB) / sizeof(string))
 
@@ -246,6 +248,8 @@ sigsub_func[] = {
 	NULL,
 	NULL,
 	preferred_aead_ciphersuites,
+	literal_data_meta_hash,
+	trust_alias,
 };
 
 private string
