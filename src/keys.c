@@ -12,6 +12,7 @@ private void new_Public_Key_Packet(int);
 private void elliptic_curve(void);
 private void public_key_material(int);
 private void secret_key_material(int);
+private int count4(void);
 private void IV(unsigned int);
 private void plain_Secret_Key(int);
 private void encrypted_Secret_Key(int, int);
@@ -35,6 +36,10 @@ Public_Key_Packet(int len)
 		break;
 	case 4:
 		printf("new\n");
+		new_Public_Key_Packet(len - 1);
+		break;
+	case 5:
+		printf("librepgp\n");
 		new_Public_Key_Packet(len - 1);
 		break;
 	case 6:
@@ -138,13 +143,10 @@ new_Public_Key_Packet(int len)
 	key_creation_time4("Public key creation time");
 	PUBLIC = Getc();
 	pub_algs(PUBLIC);
-	if (VERSION == 6) {
+	if (VERSION == 5 || VERSION == 6)
 		/* 4-octet scalar octet count for the public key material */
-		mlen = Getc() << 24;
-		mlen |= Getc() << 16;
-		mlen |= Getc() << 8;
-		mlen |= Getc();
-	} else
+		mlen = count4();
+	else
 		mlen = len - 5;
 	public_key_material(mlen);
 }
@@ -221,6 +223,17 @@ public_key_material(int len)
 	}
 }
 
+private int
+count4(void)
+{
+	int n;
+	n = Getc() << 24;
+	n |= Getc() << 16;
+	n |= Getc() << 8;
+	n |= Getc();
+	return n;
+}
+
 private void
 IV(unsigned int len)
 {
@@ -243,8 +256,10 @@ Secret_Key_Packet(int len)
 	Getc_resetlen();
 	Public_Key_Packet(len);
 	s2k = Getc();
-	if (VERSION == 6 && s2k != 0)
-		Getc(); /* count of the following optional fields */
+	/* count of the following optional fields
+	   (always for v5, only if encrypted for v6) */
+	if (VERSION == 5 || (VERSION == 6 && s2k != 0))
+		Getc();
 	switch (s2k) {
 	case 0:
 		plain_Secret_Key(len - Getc_getlen());
@@ -256,8 +271,13 @@ Secret_Key_Packet(int len)
 		aead_algs(aead);
 		if (VERSION == 6)
 			Getc(); /* count of the S2K specifier */
-		if (string_to_key() == YES)
-			IV(aead_iv_len(aead));
+		if (string_to_key() == YES) {
+			/* LibrePGP uses the block size of the cipher */
+			if (VERSION == 5)
+				IV(iv_len(sym));
+			else
+				IV(aead_iv_len(aead));
+		}
 		encrypted_Secret_Key(len - Getc_getlen(), s2k);
 		break;
 	case 254:
@@ -349,6 +369,13 @@ plain_Secret_Key(int len)
 		dump(2);
 		printf("\n");
 		break;
+	case 5:
+		/* 4-octet count of the secret key material, excluding checksum */
+		secret_key_material(count4());
+		printf("\tChecksum - ");
+		dump(2);
+		printf("\n");
+		break;
 	case 6:
 		/* v6 keys have no checksum */
 		secret_key_material(len);
@@ -383,7 +410,12 @@ encrypted_Secret_Key(int len, int s2k)
 		printf("\n");
 		break;
 	case 4:
+	case 5:
 	case 6:
+		if (VERSION == 5) {
+			count4(); /* count of the secret key material */
+			len -= 4;
+		}
 		switch (PUBLIC) {
 		case 1:
 		case 2:

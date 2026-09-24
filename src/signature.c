@@ -172,6 +172,11 @@ Signature_Packet(int len)
 		printf("new\n");
 		new_Signature_Packet(len - 1, ver);
 		break;
+	case 5:
+		/* LibrePGP: the same format as v4 */
+		printf("librepgp\n");
+		new_Signature_Packet(len - 1, ver);
+		break;
 	case 6:
 		printf("latest\n");
 		new_Signature_Packet(len - 1, ver);
