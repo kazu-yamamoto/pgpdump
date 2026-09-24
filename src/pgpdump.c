@@ -53,8 +53,8 @@ usage(void)
 	fprintf(stderr, "\t -h -- displays this help\n");
 	fprintf(stderr, "\t -v -- displays version\n");
 	fprintf(stderr, "\t -a -- accepts ASCII input only\n");
-	fprintf(stderr, "\t -g -- selects alternate dump format\n");
-	fprintf(stderr, "\t -i -- dumps integer packets\n");
+	fprintf(stderr, "\t -g -- selects alternate dump format (like GnuPG)\n");
+	fprintf(stderr, "\t -i -- dumps multi-precision integers and key material\n");
 	fprintf(stderr, "\t -l -- dumps literal packets\n");
 	fprintf(stderr, "\t -m -- dumps marker packets\n");
 	fprintf(stderr, "\t -p -- dumps private packets\n");
