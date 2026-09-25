@@ -252,6 +252,46 @@ sigsub_func[] = {
 	trust_alias,
 };
 
+/* minimum length of the body of each signature subpacket */
+private int
+sigsub_min[] = {
+	0, 0,
+	4,	/* signature creation time */
+	4,	/* signature expiration time */
+	1,	/* exportable certification */
+	2,	/* trust signature */
+	0,	/* regular expression */
+	1,	/* revocable */
+	0,
+	4,	/* key expiration time */
+	22,	/* additional decryption key */
+	0,	/* preferred symmetric algorithms */
+	22,	/* revocation key */
+	0, 0, 0,
+	8,	/* issuer key ID */
+	0, 0, 0,
+	8,	/* notation data */
+	0,	/* preferred hash algorithms */
+	0,	/* preferred compression algorithms */
+	1,	/* key server preferences */
+	0,	/* preferred key server */
+	1,	/* primary User ID */
+	0,	/* policy URL */
+	1,	/* key flags */
+	0,	/* signer's User ID */
+	1,	/* reason for revocation */
+	1,	/* features */
+	2,	/* signature target */
+	1,	/* embedded signature */
+	1,	/* issuer fingerprint */
+	0,	/* preferred encryption modes */
+	1,	/* intended recipient fingerprint */
+	0, 0, 0,
+	0,	/* preferred AEAD ciphersuites */
+	1,	/* literal data meta hash */
+	0,	/* trust alias */
+};
+
 private string
 UATSUB[] = {
 	"unknown(sub 0)",
@@ -419,6 +459,11 @@ parse_signature_subpacket(string prefix, int tlen)
 			tlen -= 5;
 		}
 		tlen -= len;
+		if (len == 0) {
+			/* no room even for the type octet */
+			printf("\t%s: malformed subpacket(0 bytes)\n", prefix);
+			continue;
+		}
 		subtype = Getc(); /* len includes this field byte */
 		len--;
 
@@ -434,9 +479,20 @@ parse_signature_subpacket(string prefix, int tlen)
 		else
 			printf("\t%s: unknown(sub %d%s)", prefix, subtype, critical ? ", critical" : "");
 		printf("(%d bytes)\n", len);
-		if (subtype < SIGSUB_NUM && sigsub_func[subtype] != NULL)
+		if (subtype < SIGSUB_NUM && sigsub_func[subtype] != NULL) {
+			int start = Getc_getlen(), used;
+			if (len < sigsub_min[subtype]) {
+				printf("\t\tMalformed(too short)\n");
+				skip(len);
+				continue;
+			}
 			(*sigsub_func[subtype])(len);
-		else
+			used = Getc_getlen() - start;
+			if (used < len)
+				skip(len - used);
+			else if (used > len)
+				printf("\t\tWarning: read %d bytes beyond the subpacket\n", used - len);
+		} else
 			skip(len);
 	}
 }
@@ -461,6 +517,11 @@ parse_userattr_subpacket(string prefix, int tlen)
 			tlen -= 5;
 		}
 		tlen -= len;
+		if (len == 0) {
+			/* no room even for the type octet */
+			printf("\t%s: malformed subpacket(0 bytes)\n", prefix);
+			continue;
+		}
 		subtype = Getc();
 		len--;  /* len includes this field byte */
 

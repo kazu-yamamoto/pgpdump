@@ -72,6 +72,7 @@ TESTS = \
 	test/rfc9980-v6-mlkem768-x25519-message.res \
 	test/sig1.res \
 	test/sig-ecdh-invalid.res \
+	test/sig-malformed-subpackets.res \
 	test/sig2.res \
 	test/sig3.res \
 	test/sig.res

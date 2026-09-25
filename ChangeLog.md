@@ -1,5 +1,11 @@
 # Change Log for pgpdump
 
+## Unreleased
+
+* Handle signature subpackets that are too short (including zero-length
+  ones) and notation data whose lengths exceed the subpacket; the
+  following subpackets and packets were misparsed.
+
 ## 0.38 2026/09/25
 
 * Support RFC 9580 (OpenPGP v6): v6 keys, signatures, and one-pass
