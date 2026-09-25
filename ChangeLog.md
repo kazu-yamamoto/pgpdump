@@ -1,6 +1,6 @@
 # Change Log for pgpdump
 
-## 0.38 2026/09/24
+## 0.38 2026/09/25
 
 * Support RFC 9580 (OpenPGP v6): v6 keys, signatures, and one-pass
   signatures, X25519/X448/Ed25519/Ed448, PKESK/SKESK v6, SEIPD v2,
