@@ -173,6 +173,11 @@ notation_data(int len)
 	nlen += Getc();
 	vlen = Getc() * 256;
 	vlen += Getc();
+	if (8 + nlen + vlen > len) {
+		printf("\t\tMalformed(name %d bytes, value %d bytes)\n", nlen, vlen);
+		skip(len - 8);
+		return;
+	}
 	printf("\t\tName - ");
 	pdump(nlen);
 	printf("\n");
